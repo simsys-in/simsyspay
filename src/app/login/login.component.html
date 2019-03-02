@@ -1,0 +1,24 @@
+<mat-card class="col-md-4" style="margin:auto">
+  <mat-card-header class="bg-info text-light mb-1 pt-1">
+    <mat-card-title><mat-icon class="mr-2">people</mat-icon>Login</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+      <form [formGroup]="headForm" (ngSubmit)="simsSave()">
+
+        <mat-form-field class="col-md-12 col-12">
+            <input type="hidden">
+            <input matInput placeholder="Username" formControlName="username">
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12 col-12">
+            <input type="hidden">
+            <input matInput placeholder="Password" formControlName="password">
+          </mat-form-field>
+
+          </form>
+  </mat-card-content>
+  <mat-card-actions class="bg-warning text-center pb-2">
+    <button mat-raised-button class="bg-success text-light" (click)="simsSave()"><mat-icon>login</mat-icon></button>
+    <button mat-raised-button class="bg-info text-light"><mat-icon>list</mat-icon></button>
+  </mat-card-actions>
+</mat-card>
