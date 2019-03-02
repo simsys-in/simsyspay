@@ -22,7 +22,7 @@ export class EmployeeListComponent implements OnInit {
       })
     };
 
-      this.http.post<any>(config.apiUrl+'payroll/employee/query', {},httpOptions).subscribe(res => {
+      this.http.post<any>(config.apiUrl+'/payroll/employee/query', {},httpOptions).subscribe(res => {
         console.log(res);
       },error => {
           console.log(error);

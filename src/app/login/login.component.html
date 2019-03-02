@@ -19,6 +19,15 @@
   </mat-card-content>
   <mat-card-actions class="bg-warning text-center pb-2">
     <button mat-raised-button class="bg-success text-light" (click)="simsSave()"><mat-icon>login</mat-icon></button>
-    <button mat-raised-button class="bg-info text-light"><mat-icon>list</mat-icon></button>
+
+    <p>
+      login works!
+    </p>
+    <input type="text" #u1 /><br>
+    <input type="password" #p2 /><br/>
+    <button (click)="check(u1.value, p2.value)">Login</button>
+    <br/>
+    <span>{{ msg }}</span>
+
   </mat-card-actions>
 </mat-card>

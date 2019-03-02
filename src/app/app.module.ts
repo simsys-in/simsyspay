@@ -14,6 +14,8 @@ import { AttendanceRegisterComponent } from './attendance-register/attendance-re
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { EmployeeListComponent } from './payroll/employee-list/employee-list.component';
+import {AuthGuard} from './auth.guard';
+import { LogoutComponent } from './core/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { EmployeeListComponent } from './payroll/employee-list/employee-list.com
     DashboardComponent,
     AttendanceRegisterComponent,
     LoginComponent,
-    EmployeeListComponent
+    EmployeeListComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,7 @@ import { EmployeeListComponent } from './payroll/employee-list/employee-list.com
 
 
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
