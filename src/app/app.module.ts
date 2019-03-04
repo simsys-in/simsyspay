@@ -28,7 +28,7 @@ import { HeaderComponent } from './core/header/header.component';
     LoginComponent,
     EmployeeListComponent,
     LogoutComponent,
-    HeaderComponent
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
