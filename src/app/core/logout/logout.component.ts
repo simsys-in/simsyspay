@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MyServiceService } from 'src/app/my-service.service';
+import { AuthService } from 'src/app/core/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private authservice:MyServiceService,
+  constructor(private authservice:AuthService,
     private router:Router
     ) { }
 

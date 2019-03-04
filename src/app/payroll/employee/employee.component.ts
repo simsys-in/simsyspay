@@ -2,21 +2,21 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {map, debounceTime} from 'rxjs/operators';
-import { BooksService } from '../books.service';
+//import { BooksService } from '../../core/books.service';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-form',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss'],
-  providers: [BooksService]
+  //providers: [BooksService]
 })
 export class EmployeeComponent implements OnInit {
   myControl = new FormControl();
 
        searchTerm : FormControl = new FormControl();
        myBooks = <any>[];
-  constructor(private service: BooksService,
+  constructor(//private service: BooksService,
     private http: HttpClient
     ) {
 

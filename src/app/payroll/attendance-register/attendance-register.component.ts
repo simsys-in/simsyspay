@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { config } from '../config';
+import { config } from '../../config';
 import { HttpClient,HttpHeaders, HttpParams } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material';

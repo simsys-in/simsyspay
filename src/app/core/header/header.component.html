@@ -1,0 +1,34 @@
+<mat-sidenav-container class="example-sidenav-container example-sidenav bg-secondary" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+  <mat-sidenav class="text-light" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-nav-list class="text-dark bg-white d-print-none" *ngIf="isLoggedIn$ | async as isLoggedIn" >
+      <!--<a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>-->
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">dashboard</mat-icon> Dashboard</a>
+      <h6 class="p-2  bg-info text-center"> Master</h6>
+      <a mat-list-item routerLink="/employee"><mat-icon class="mr-2 text-secondary">people</mat-icon> Employee</a>
+      <a mat-list-item routerLink="/employee_category"><mat-icon class="mr-2 text-secondary">collections</mat-icon>Employee Category</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">collections</mat-icon>Shift</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">collections</mat-icon>Company</a>
+      <h6 class="p-2  bg-info text-center">Entry</h6>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Attanance</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Time Log</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Leave</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Holiday</a>
+      <h6 class="p-2  bg-info text-center">Tools</h6>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>User</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>User Group</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Backup Restore</a>
+
+      <h6 class="p-2  bg-info text-center">Report</h6>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Attendance</a>
+      <a mat-list-item routerLink="attendance_register"><mat-icon class="mr-2 text-secondary">people</mat-icon>Register</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Bonus</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Punch</a>
+
+      <a routerLink="/logout"><h6 class="p-2  bg-info text-center" >Logout</h6></a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+      <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

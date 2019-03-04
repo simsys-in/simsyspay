@@ -6,7 +6,7 @@
 
   <mat-sidenav-container class="example-sidenav-container example-sidenav bg-secondary" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav class="text-light" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-      <mat-nav-list class="text-dark bg-white d-print-none">
+      <mat-nav-list class="text-dark bg-white d-print-none" *ngIf="currentUser" >
         <!--<a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>-->
         <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">dashboard</mat-icon> Dashboard</a>
         <h6 class="p-2  bg-info text-center"> Master</h6>
