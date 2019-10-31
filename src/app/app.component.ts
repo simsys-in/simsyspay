@@ -1,19 +1,25 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthService } from './core/auth.service';
 import { config } from './config';
+import { PrintService } from './service/print.service';
+import { MatSidenav } from '@angular/material';
+import { NavService } from './service/nav.service';
 
 @Component({
   selector: 'app',
   templateUrl: './app.component.html',
   //styleUrls: ['./app.component.scss'],
-  //providers:[AuthService]
+    //providers:[AuthService]
 })
 
 export class AppComponent {
+  @ViewChild('snav') public a:MatSidenav;
+
+  openedSubject = new Subject<boolean>();
   currentUser: any;
-  title = 'app-mat';
+  title = 'Garments';
   filteredOptions: Observable<string[]>;
   mobileQuery: MediaQueryList;
 
@@ -25,7 +31,9 @@ export class AppComponent {
   ]
 
        constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-        private service : AuthService
+        private service : AuthService,
+        public printService: PrintService,
+        private navService:NavService
         ) {
 
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -38,11 +46,13 @@ export class AppComponent {
 
   private _mobileQueryListener: () => void;
 
-
+  dismissSidebar() {
+    this.openedSubject.next(false);
+  }
   ngOnInit() {
+    this.navService.setSidenav(this.a);
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-
 }

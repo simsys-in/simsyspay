@@ -1,0 +1,53 @@
+<mat-toolbar class="bg-light isPrinting">
+                <mat-toolbar-row>
+                        <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+                </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="col-md-4 offset-md-4 p-1 bg-light" *ngIf="isForm">
+  <div class="col-md-12 border">
+  <div class="row">
+  <div class="col-md-12 bg-warning  card-header-ss"><h6 class="h6-ss text-dark  text-uppercase">Process</h6></div>
+  <form class="" [formGroup]="headForm">
+  <div class="col-md-12 p-1 bg-white">
+  <div class="row">
+  <input type="hidden" class="form-control font-weight-bold" formControlName="id" #id>
+  
+  <div class="input-group input-group-sm ">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Process</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" formControlName="process">
+  </div>
+
+ 
+  </div>
+  </div>
+  </form>
+  <div class="text-center bg-light col-12">
+          <a class="ml-1 bg-success" mat-mini-fab (click)="simsInsert()" *ngIf="!id.value"><mat-icon>add</mat-icon></a>
+          <a  class="ml-1 bg-success"  mat-mini-fab  (click)="simsUpdate(id.value)" *ngIf="id.value"><mat-icon>edit</mat-icon></a>
+          <a class="ml-1" mat-mini-fab color="primary" (click)="simsList()" title="List" accesskey="l"><mat-icon>list</mat-icon></a>
+          <a  class="ml-1 bg-danger" mat-mini-fab *ngIf="id.value" (click)="simsDelete(id.value)" title="Delete"><mat-icon class="">delete</mat-icon></a>
+          <a  class="ml-1"  mat-mini-fab routerLink="." (click)="simsNew()"><mat-icon>open_in_new</mat-icon></a>
+          </div>
+  </div>
+  </div>
+  </div>
+  
+  <div class="List" *ngIf="!isForm">
+  <table id="tblLists" class="table table-sm table-bordered border border-primary bg-light">
+  <thead>
+  <tr class="bg-heading">
+  <td class="text-center">ID</td>
+  <td class="text-center">Group</td>
+  </tr>
+  </thead>
+  <tbody class="part1">
+  <tr class="" *ngFor="let row of rows">
+  <td class="text-center">{{row.process}}</td>
+  <td class="text-center"><a href="javascript:" (click)="simsView(row.id)"><mat-icon>edit</mat-icon></a></td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+  

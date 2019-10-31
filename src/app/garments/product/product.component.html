@@ -1,0 +1,194 @@
+<mat-toolbar class="bg-light isPrinting">
+    <mat-toolbar-row>
+            <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="productForm col-12 p-1">
+  <form class="" [formGroup]="headForm">
+  <input type="hidden" class="form-control font-weight-bold" name="id" value="" #id >
+  <div class="row">
+  <div class="col-md-4 col-12 bg-white p-1 offset-md-4">
+  <div class="row">
+  <div class="col-md-12">
+  <div class="col-md-12">
+  <div class="row">
+  <div class="bg-warning  card-header-ss col-12">
+  <h6 class="h6-ss text-dark">Product</h6>
+  </div>
+  </div>
+  </div>
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Product</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" formControlName="product" value="">
+  </div>
+  <div class="input-group input-group-sm">
+    <div class="input-group-prepend">
+    <span class="input-group-text product-text">Product Group</span>
+    </div>
+    <input type="text" class="form-control"  formControlName="product_group" [matAutocomplete]="product_group">
+    
+    <mat-autocomplete #product_group="matAutocomplete">
+    <mat-option *ngFor="let product_group of product_groups" [value]="product_groupproduct_group" (click)="product_groupSelect(product_group)">
+    {{product_group.product_group}}
+    </mat-option>
+    </mat-autocomplete>
+    </div>
+ <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text product-text">Product Category</span>
+  </div>
+  <input type="text" class="form-control"  formControlName="product_category" [matAutocomplete]="product_category">
+  
+  <mat-autocomplete #product_category="matAutocomplete">
+  <mat-option *ngFor="let product_category of product_categories" [value]="product_category.product_category" (click)="product_categorySelect(product_category)">
+  {{product_category.product_category}}
+  </mat-option>
+  </mat-autocomplete>
+  </div>
+  <div class="col-md-6 col-6">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">QR Code</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" formControlName="qrcode" value="">
+  </div>
+  </div>
+  <div class="col-md-6 col-6">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Status</span>
+  </div>
+  <select class="form-control" formControlName="status_id">
+  <option value="1">Active</option>
+  <option value="0">InActive</option>
+  </select>
+  </div> 
+  </div>
+  </div>
+  <div class="bg-info  card-header-ss col-12">
+  <h6 class="h6-ss text-white ">Stataury Info</h6>
+  </div>
+  <table id="tblLoanOutstanding" class="table table-sm table-bordered border border-primary bg-light">
+  <thead>
+  <tr class="bg-heading">
+  <th class="text-center">Ledger</th>
+  <th class="text-center">Value</th>
+  <th class="text-center">Rule</th>
+  </tr>
+  </thead>
+  <tbody class="part1">
+  <tr class="">
+  <td class="text-center"><input type="text" class="form-control text-left font-weight-bold" id="ledger" value=""><input type="hidden" id="ledger_id" /></td>
+  <td class="text-center"><input type="number" class="form-control text-right font-weight-bold" id="ledger_value" value=""></td>
+  <td class="text-center"><select class="form-control" id="ledger_type"><option value="based_qty">%</option><option value="fixed">Fixed</option></select></td>
+  </tr>
+ 
+  </tbody>
+  <tfoot>
+  <tr class="bg-heading">
+  <th scope="col"></th>
+  <th scope="col" class="text-right">Total</th>
+  <th scope="col" class="font-weight-bold loan_amount_total text-right"></th>
+  </tr>
+  </tfoot>   
+  </table>
+  <div class="col-md-12 col-12">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">HSN/SAC</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" formControlName="hsnsac" value="">
+  </div>
+  </div>
+  
+  <div class="bg-info  card-header-ss col-12">
+  <h6 class="h6-ss text-white ">Price Details</h6>
+  </div>
+  
+  <div class="col-6">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Pur Rate</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" formControlName="purchase_amount" value="">
+  </div>
+  </div>
+  
+  <div class="col-6">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Sales Rate</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" formControlName="sales_amount" value="">
+  </div>
+  </div>
+  
+  <div class="bg-info  card-header-ss col-12">
+  <h6 class="h6-ss text-light">Unit</h6>
+  </div>
+  <div class="col-md-4 col-12">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Unit</span>
+  </div>
+  <select class="form-control" formControlName="unit_id">
+  </select>
+  </div>
+  </div>
+  <div class="col-md-4 col-12">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Unit2</span>
+  </div>
+  <select class="form-control" formControlName="unit2_id">
+  </select>
+  </div>
+  </div>
+  <div class="col-md-4 col-12">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">1</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" formControlName="one" value="">
+  <div class="input-group-prepend">
+  <span class="input-group-text"></span>
+  </div>
+  </div>
+  </div>
+  <div class="text-center bg-light col-12">
+    <a class="ml-1 bg-success" mat-mini-fab (click)="simsInsert()" *ngIf="!id.value"><mat-icon>add</mat-icon></a>
+    <a  class="ml-1 bg-success"  mat-mini-fab  (click)="simsUpdate(id.value)" *ngIf="id.value"><mat-icon>edit</mat-icon></a>
+    <a class="ml-1" mat-mini-fab color="primary" (click)="simsList()" title="List" accesskey="l"><mat-icon>list</mat-icon></a>
+    <a  class="ml-1 bg-danger" mat-mini-fab *ngIf="id.value" (click)="simsDelete(id.value)" title="Delete"><mat-icon class="">delete</mat-icon></a>
+    <a  class="ml-1"  mat-mini-fab routerLink="." (click)="simsNew()"><mat-icon>open_in_new</mat-icon></a>
+    </div>
+  </div>
+  </div>
+  </div>
+  
+  </form>
+ 
+  </div>
+  <div class="List" *ngIf="!isForm">
+    <table id="tblLists" class="table table-sm table-bordered border border-primary bg-light">
+    <thead>
+    <tr class="bg-heading">
+    <td class="text-center">Product</td>
+    <td class="text-center">Group</td>
+    <td class="text-center">Category</td>
+    <td class="text-center">Action</td>
+    </tr>
+    </thead>
+    <tbody class="part1">
+    <tr class="" *ngFor="let row of rows">
+    <td class="text-center">{{row.Product}}</td>
+    <td class="text-center">{{row.Product_group_id}}</td>
+    <td class="text-center">{{row.Product_category_id}}</td>
+    <td class="text-center"><a href="javascript:" (click)="simsView(row.id)"><mat-icon>edit</mat-icon></a></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+  

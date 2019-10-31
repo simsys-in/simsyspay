@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm } from '@angular/forms';
-import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { config } from '../../config';
 import { AuthService } from '../auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { first, catchError, map } from 'rxjs/operators';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material';
+import { throwError } from 'rxjs';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -16,7 +17,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   //selector: 'app-login',
   templateUrl: './login.component.html',
-  //styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.scss'],
   //providers:[AuthService]
   providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
@@ -27,6 +28,8 @@ export class LoginComponent implements OnInit {
   msg ='';
   returnUrl: string;
   hide=true;
+  error='';
+  isLoading = false;
   constructor(private formBuilder:FormBuilder, 
     private http: HttpClient,
     private routes: Router,
@@ -35,17 +38,27 @@ export class LoginComponent implements OnInit {
     ) { }
 
     
-    emailFormControl = new FormControl('', [
+    username = new FormControl('', [
       Validators.required,
       Validators.email,
-    ]);    
+    ]); 
+    password = new FormControl('',[Validators.required]);
+    cpin = new FormControl('',[Validators.required]);
 
     matcher = new MyErrorStateMatcher();
+
+    ngAfterViewInit() {
+      document.querySelector('mat-sidenav-content').classList.add('bg-login');
+  }
+
+  ngOnDestroy() {
+    document.querySelector('mat-sidenav-content').classList.remove('bg-login');
+}
   ngOnInit() {
     this.headForm = this.formBuilder.group({
       username:['',[ Validators.required,Validators.email]],
       password:[''],
-      company_code :['']
+      cpin : ['']
     });
 
 
@@ -64,48 +77,30 @@ export class LoginComponent implements OnInit {
   get f() { return this.headForm.controls; }
 
 simsSave(){
-  this.service.login(this.f.username.value,this.f.password.value)
-  .pipe(first())
+  this.isLoading=true;
+  this.error='';
+  
+  this.service.login(this.username.value,this.password.value,this.cpin.value)
+  .pipe(first()
+  )
   .subscribe(
       data => {
-          console.log(data);
-          //this.routes.navigate([this.returnUrl]);
-          if (data.status !='failed'){
+          //this.routes.navigate([this.returnUrl]);            
           this.routes.navigate([this.returnUrl]);
-            //location.reload(true);
-          }
+          //location.reload(true);
+          this.isLoading=false;
       },
-      error => {
-          console.log(error);
-      });
-}
+      err => {
+        this.isLoading=false;
+        if (err.error.success==false){
+            this.error=err.error.error;
+        }else if(err.error.errors){
+          this.error = err.error.errors;
+        }else{
+          this.error = err.error.message;
+        }
+          
 
-  simsSave1(){
-    let request={
-    }
-    
-    const params = new HttpParams()
-
-    .set('username', this.f.username.value)
-
-    .set('password', this.f.password.value);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'username' :this.f.username.value,
-        'password':this.f.password.value,
-        'Authorization':''
       })
-    };
-
-    //let url = config.apiUrl+'/payroll_report/attendance_register';
-    let url = config.apiUrl+'/login/auth';
-    
-      this.http.post<any>(url, request,httpOptions).subscribe(res => {
-        console.log(res);
-      },error => {
-          console.log(error);
-      });
-    }
-
+}
 }

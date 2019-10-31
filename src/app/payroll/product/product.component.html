@@ -1,0 +1,178 @@
+<main role="main" class="container" style="height:100%" class="bg-login">
+  <div class="productForm col-12 p-1">
+  <form id="productForm" action="" enctype="multipart/form-data" method="post">
+  <input type="hidden" class="form-control font-weight-bold" name="id">
+  <div class="row">
+  <div class="col-md-4 col-12 bg-white p-1 offset-md-4">
+  <div class="row">
+  <div class="col-md-12">
+  <div class="col-md-12">
+  <div class="row">
+  <div class="bg-warning  card-header-ss col-12">
+  <h6 class="h6-ss text-dark">Product</h6>
+  </div>
+  </div>
+  </div>
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Product</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold">
+  </div>
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Product Group</span>
+  </div>
+  <select class="form-control" name="product_group_id">
+    <option *ngFor="let product_group_info of product_groups" [value]="product_group_info.id">{{product_group_info.product_group}}</option>
+  </select>
+  </div>			  
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Product Category</span>
+  </div>
+  
+  <input type="text" class="form-control" placeholder="Search books ..." matInput  [matAutocomplete]="auto">  
+
+<!-- CREATE AUTO COMPLETE PANEL WITH OPTIONS. -->
+<mat-autocomplete #auto="matAutocomplete">
+<mat-option *ngFor="let pc_info of product_categories" [value]="pc_info.id">
+  {{ pc_info.product_category }}
+</mat-option>
+</mat-autocomplete>
+
+  </div>
+  <div class="col-md-6 col-6">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">QR Code</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" name="qrcode">
+  </div>
+  </div>
+  <div class="col-md-6 col-6">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Status</span>
+  </div>
+  <select class="form-control" name="status_id">
+  <option value="1">Active</option>
+  <option value="0">InActive</option>
+  </select>
+  </div> 
+  </div>
+  </div>
+  <div class="bg-info  card-header-ss col-12">
+  <h6 class="h6-ss text-white ">Stataury Info</h6>
+  </div>
+  <table id="tblLoanOutstanding" class="table table-sm table-bordered border border-primary bg-light">
+  <thead>
+  <tr class="bg-heading">
+  <th class="text-center">Ledger</th>
+  <th class="text-center">Value</th>
+  <th class="text-center">Rule</th>
+  </tr>
+  </thead>
+  <tbody class="part1">
+  <tr class="">
+  <td class="text-center"><input type="text" class="form-control text-left font-weight-bold" id="ledger" value=""><input type="hidden" id="ledger_id" /></td>
+  <td class="text-center"><input type="number" class="form-control text-right font-weight-bold" id="ledger_value" value=""></td>
+  <td class="text-center"><select class="form-control" id="ledger_type"><option value="based_qty">%</option><option value="fixed">Fixed</option></select></td>
+  </tr>
+  </tbody>
+  <tfoot>
+  <tr class="bg-heading">
+  <th scope="col"></th>
+  <th scope="col" class="text-right">Total</th>
+  <th scope="col" class="font-weight-bold loan_amount_total text-right"></th>
+  </tr>
+  </tfoot>   
+  </table>
+  <div class="col-md-12 col-12">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">HSN/SAC</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" name="hsnsac">
+  </div>
+  </div>
+  
+  <div class="bg-info  card-header-ss col-12">
+  <h6 class="h6-ss text-white ">Price Details</h6>
+  </div>
+  
+  <div class="col-6">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Pur Rate</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" name="purchase_amount">
+  </div>
+  </div>
+  
+  <div class="col-6">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Sales Rate</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" name="sales_amount">
+  </div>
+  </div>
+  
+  <div class="bg-info  card-header-ss col-12">
+  <h6 class="h6-ss text-light">Unit</h6>
+  </div>
+  <div class="col-md-4 col-12">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Unit</span>
+  </div>
+  <select class="form-control" name="unit_id">
+  </select>
+  </div>
+  </div>
+  <div class="col-md-4 col-12">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">Unit2</span>
+  </div>
+  <select class="form-control" name="unit2_id">
+  </select>
+  </div>
+  </div>
+  <div class="col-md-4 col-12">
+  <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text">1</span>
+  </div>
+  <input type="text" class="form-control font-weight-bold" name="" value="">
+  <div class="input-group-prepend">
+  <span class="input-group-text"></span>
+  </div>
+  </div>
+  </div>
+  
+  </div>
+  </div>
+  </div>
+  </form>
+  </div>
+  <div class="col-md-12 productList d-none">
+  <div class="bg-info  card-header-ss col-12">
+  <h6 class="h6-ss text-white ">Product List</h6>
+  </div>
+  <table id="tblProductList" class="table table-sm table-bordered border border-primary bg-light">
+  <thead>
+  <tr class="bg-heading">
+  <th class="text-center">Product</th>
+  <th class="text-center">QR Code</th>
+  <th class="text-center">Group</th>
+  <th class="text-center">Category</th>
+  <th class="text-center">Unit</th>
+  </tr>
+  </thead>
+  <tbody class="part1">
+  </tbody>
+   </table>
+  </div>
+  </main>

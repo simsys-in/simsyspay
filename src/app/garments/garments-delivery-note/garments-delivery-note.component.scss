@@ -1,0 +1,87 @@
+::ng-deep table .mat-form-field-underline {
+  display: none;
+  font-weight: bold;
+  width: 100%
+}
+::ng-deep table .mat-form-field{
+  width: 100%;
+}
+td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type{
+  padding-left: 4px;
+}
+td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:last-of-type{
+  padding-right: 4px;
+}
+:host ::ng-deep table td.mat-cell, td.mat-footer-cell, th.mat-header-cell{
+  padding: 0px 4px 0px 4px;
+}
+:host ::ng-deep table .mat-form-field-wrapper{
+  padding-bottom: 0;
+}
+:host ::ng-deep table .mat-form-field-appearance-legacy .mat-form-field-infix{
+  padding: 0px 0px;
+  border-top: 0px solid transparent;
+}
+
+:host ::ng-deep table .mat-column-position{
+  flex: 0 0 40px !important;
+  white-space: unset !important;
+  width: 40px;
+}
+
+:host ::ng-deep tr.mat-footer-row, tr.mat-row {
+  height: 35px;
+}
+
+:host ::ng-deep tr.mat-header-row{
+  height: 35px;
+  font-weight: bold;
+}
+
+.example-icon {
+  
+}
+
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+.example-first-footer-row {
+  font-weight: bold;
+}
+
+.example-second-footer-row td {
+  color: #900000;
+}
+
+@media print {
+  .isPrinting > * { display: none;
+      height: 0px;
+      min-height: 0px !important;
+      padding: 0px;
+   }
+   .p-2{
+       padding: 0px;
+   }
+  .isPrinting app-print-layout { display: block; }  
+
+
+
+  .mat-toolbar{
+      height: 0px;
+      min-height: 0px;
+      display: none;
+  }
+  .mat-card {
+      padding: 0px;
+  }
+  .table td, .table th {
+      background-color: transparent !important;
+  } 
+  .bg-light{
+      background-color:lightgray !important
+  }
+
+}

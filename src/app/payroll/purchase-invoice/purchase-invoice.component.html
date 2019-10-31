@@ -1,0 +1,47 @@
+<div class="col-12">
+    <div class="col-md-4 offset-md-4 p-2"  *ngIf="isForm">
+      <div class="row">
+      <mat-card class="col-md-12">
+          <mat-toolbar class="bg-login">
+              <mat-toolbar-row class="pt-3">
+                  <span class="font-weight-bold md-18 text-uppercase"><mat-icon class="text-danger">people</mat-icon> Product Category</span>
+                  <span class="example-spacer"></span>
+            </mat-toolbar-row>
+              </mat-toolbar>    
+    
+          <mat-card-content class="p-2 bg-white">
+              <form [formGroup]="headForm">   
+                <input type="hidden" formControlName="id" #id>     
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Product Category" class="font-weight-bold" formControlName ="product_category" input type="text" autocomplete="new-password">
+              </mat-form-field>
+            </form>
+          </mat-card-content>
+        <mat-card-actions class="text-center bg-light">
+                        <a class="ml-1 bg-success" mat-mini-fab (click)="simsInsert()" *ngIf="!id.value"><mat-icon>add</mat-icon></a>
+          <a  class="ml-1 bg-success"  mat-mini-fab  (click)="simsUpdate(id.value)" *ngIf="id.value"><mat-icon>edit</mat-icon></a>
+          <a class="ml-1" mat-mini-fab color="primary" (click)="simsList()" accesskey="l"><mat-icon>list</mat-icon></a>
+          <a  class="ml-1 bg-danger" mat-mini-fab *ngIf="id.value" (click)="simsDelete(id.value)" title="Delete"><mat-icon class="">delete</mat-icon></a>
+          <a  class="ml-1"  mat-mini-fab routerLink="." (click)="simsNew()"><mat-icon>open_in_new</mat-icon></a>
+    </mat-card-actions>
+        </mat-card> 
+      </div>
+      </div>
+      <div class="col-md-4 offset-md-4 p-1"  *ngIf="!isForm">
+          <div class="col-12 border">        
+         <table  id="tblLists" class="bg-white table table-bordered table-striped p-1 table-sm">
+            <thead>
+            <tr class="bg-info">
+            <th class="text-center">Product category</th>
+                  <th class="text-center" style="width:30px"><button mat-mini-fab style="width:25px; height:25px;" (click)="simsNew()"><mat-icon style="font-size: 80%">add</mat-icon></button></th>	
+            </tr>
+            </thead>
+            <tbody >
+            <tr *ngFor="let row of rows">
+              <td>{{row.product_category}}</td><td class="text-center"><a (click)="simsView(row.id)"><i class="material-icons" >mode_edit</i></a></td></tr>
+              </tbody>
+            <tfoot></tfoot>
+      </table>
+      </div>
+      </div>
+    </div>

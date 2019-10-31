@@ -1,0 +1,506 @@
+<div class="col-md-12" [class.isPrinting]="printService.isPrinting"> 
+<mat-card>
+    <mat-toolbar class="bg-light isPrinting">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+             <span class="pl-2 text-primary pr-2">Garments Delivery Note</span>
+             <button mat-mini-fab disabled class="text-dark">{{f.h.id}}</button>
+             <span class="example-spacer"></span>
+          <button mat-icon-button (click)="simsSave()" *ngIf="formState=='form' && !f.h.id"><mat-icon>save</mat-icon></button>
+          <button mat-icon-button (click)="simsUpdate(f.h.id)" *ngIf="formState=='form' && f.h.id>0"><mat-icon>save_alt</mat-icon></button>
+          <button mat-icon-button (click)="simsPrint()" *ngIf="f.h.id"><mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon></button>
+          <button mat-icon-button (click)="simsPreview()" *ngIf="formState!='preview'"><mat-icon>pageview</mat-icon></button>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="simsNew()" *ngIf="f.h.id"><mat-icon>notifications_off</mat-icon><span>New</span></button>
+
+              <button mat-menu-item (click)="testTally()">
+                <mat-icon>mail</mat-icon>
+                <span>Send Mail</span>
+              </button> 
+              <button mat-menu-item disabled>
+                <mat-icon>voicemail</mat-icon>
+                <span>Save as PDF</span>
+              </button>
+              <button mat-menu-item (click)="simsPreview()" *ngIf="formState=='form' && f.h.id"><mat-icon>pageview</mat-icon><span>Preview</span></button>
+              <button mat-menu-item (click)="simsList()" *ngIf="formState=='form'"><mat-icon>notifications_off</mat-icon><span>List</span></button>
+
+              <button mat-menu-item (click)="simsNew()" *ngIf="formState=='list'"><mat-icon>notifications_off</mat-icon><span>New</span></button>
+
+              <button mat-menu-item (click)="simsDelete(f.h.id)" *ngIf="formState=='form'"><mat-icon>notifications_off</mat-icon><span>Delete</span></button>
+                  </mat-menu>
+        </mat-toolbar-row>
+      </mat-toolbar>
+  <mat-card-content  *ngIf="formState=='form'">
+          <mat-form-field class="col-md-3 p-2">
+              <input matInput [matDatepicker]="picker" placeholder="Vou Date" class="font-weight-bold" required [(ngModel)]="f.h.vou_date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+        <mat-form-field class="col-md-3 p-2">
+          
+          <input type="hidden"  [(ngModel)]="f.h.ledger_id">
+          <mat-label><mat-icon>people</mat-icon> <b> Party</b> <i> Ledger</i></mat-label>
+          <input matInput type="text" [(ngModel)]="f.h.ledger" placeholder="Select Ledger"   (ngModelChange) ="ledgerFilter($event);" [matAutocomplete]="ledgers" class="font-weight-bold" >
+                    
+            <mat-autocomplete #ledgers="matAutocomplete" autoActiveFirstOption (optionSelected)="ledgerSelect($event)">
+              <mat-option *ngFor="let ldgr of filteredLedgers" [value]="ldgr">
+                {{ldgr.ledger}}
+              </mat-option>
+            </mat-autocomplete>          
+        </mat-form-field>
+
+        
+        <mat-form-field
+        [hideRequiredMarker]="options.value.hideRequired"
+        [floatLabel]="options.value.floatLabel" class="col-md-3 p-2">
+      <mat-select required  class="font-weight-bold" [(ngModel)]="f.h.marketing_user_id">
+        <mat-option>-- None --</mat-option>
+        <mat-option *ngFor="let usr of users" value="{{usr.id}}">{{usr.email}}</mat-option>
+      </mat-select>
+      <mat-label><mat-icon>favorite</mat-icon> <b> Marketed</b> <i> by</i></mat-label>
+    </mat-form-field>
+        
+        <mat-form-field class="col-md-3 p-2">
+            <textarea matInput placeholder="Narration"  [(ngModel)]="f.h.narration"  class="font-weight-bold"></textarea>
+          </mat-form-field>
+      
+        <div class="p-2">
+  <mat-card class="">
+    <div class="col-md-12">
+      <div class="row">
+          <span class="text-primary h6 pl-2 pt-2">Inventory</span>  
+      <div class="p-2 col-md-12" style="overflow-y:auto">
+          <table mat-table [dataSource]="dataSource" class="col-md-12 table-bordered">
+              <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Product </th>
+                <td mat-cell *matCellDef="let inventory; let i = index"><input type="hidden" [(ngModel)]="product_id">
+                  <mat-form-field class=""  style="width:350px;"><input id="f.i[i].product" #instate #gState="ngModel" matInput type="text" [ngModel]="f.i[i].product"  (ngModelChange) ="productFilter($event, i);" [matAutocomplete]="auto">
+                    
+                    <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayFn" (optionSelected)="productSelect($event,i)">
+                      <mat-option *ngFor="let opi of filteredProducts" [value]="opi">
+                        <span [innerHTML]='opi.product'></span>
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                </td>
+                <td mat-footer-cell *matFooterCellDef class="text-right"></td>
+              </ng-container>
+              
+              <ng-container matColumnDef="narration">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Description </th>
+                <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class=""><input matInput [(ngModel)]="f.i[i].narration"></mat-form-field></td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+
+              <ng-container matColumnDef="color">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Color </th>
+                <td mat-cell *matCellDef="let inventory;let i=index">
+                    <input type="hidden" [(ngModel)]="color_id">
+                    <mat-form-field class=""  style="width:100px;"><input name="f.i[i].color"  matInput type="text" [ngModel]="f.i[i].color"  (ngModelChange) ="colorFilter($event, i);" [matAutocomplete]="colorAc">
+                      
+                      <mat-autocomplete #colorAc="matAutocomplete" autoActiveFirstOption (optionSelected)="colorSelect($event,i)">
+                        <mat-option *ngFor="let clr of filteredColors" [value]="clr">
+                          <span [innerHTML]='clr.color'></span>
+                        </mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> Total </td>
+              </ng-container>
+
+              <ng-container matColumnDef="size1">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">{{sizes.size1}}</th>
+                  <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size1" (change) ="calc(i);"></mat-form-field></td>
+                  <td mat-footer-cell *matFooterCellDef>{{f.h.size1_total}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="size2">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">{{sizes.size2}}</th>
+                    <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size2" (change) ="calc(i);"></mat-form-field></td>
+                    <td mat-footer-cell *matFooterCellDef>{{f.h.size2_total}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="size3">
+                      <th mat-header-cell *matHeaderCellDef class="text-center">{{sizes.size3}}</th>
+                      <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size3" (change) ="calc(i);"></mat-form-field></td>
+                      <td mat-footer-cell *matFooterCellDef>{{f.h.size3_total}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="size4">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">{{sizes.size4}}</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size4" (change) ="calc(i);"></mat-form-field></td>
+                        <td mat-footer-cell *matFooterCellDef>{{f.h.size4_total}}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="size5">
+                          <th mat-header-cell *matHeaderCellDef class="text-center"> {{sizes.size5}}</th>
+                          <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size5" (change) ="calc(i);"></mat-form-field></td>
+                          <td mat-footer-cell *matFooterCellDef>{{f.h.size5_total}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="size6">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> {{sizes.size6}}</th>
+                            <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size6" (change) ="calc(i);"></mat-form-field></td>
+                            <td mat-footer-cell *matFooterCellDef>{{f.h.size6_total}}</td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="size7">
+                              <th mat-header-cell *matHeaderCellDef class="text-center"> {{sizes.size7}}</th>
+                              <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size7" (change) ="calc(i);"></mat-form-field></td>
+                              <td mat-footer-cell *matFooterCellDef>{{f.h.size7_total}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="size8">
+                                <th mat-header-cell *matHeaderCellDef class="text-center"> {{sizes.size8}}</th>
+                                <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size8" (change) ="calc(i);"></mat-form-field></td>
+                                <td mat-footer-cell *matFooterCellDef>{{f.h.size8_total}}</td>
+                              </ng-container>
+
+                              <ng-container matColumnDef="size9">
+                                <th mat-header-cell *matHeaderCellDef class="text-center"> {{sizes.size9}}</th>
+                                <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:50px"><input matInput type="number" [(ngModel)]="f.i[i].size9" (change) ="calc(i);"></mat-form-field></td>
+                                <td mat-footer-cell *matFooterCellDef>{{f.h.size9_total}}</td>
+                              </ng-container>
+
+                             
+
+                            <ng-container matColumnDef="qty">
+                                    <th mat-header-cell *matHeaderCellDef class="text-center"> qty </th>
+                                    <td mat-cell *matCellDef="let inventory;let i=index"><mat-form-field class="" style="width:80px"><input type="number" readonly matInput [(ngModel)]="f.i[i].qty" class="text-right"></mat-form-field></td>
+                                    <td mat-footer-cell *matFooterCellDef class="text-right">{{f.h.inventory_qty_total}}</td>
+                                  </ng-container>
+  
+              <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef class="text-center"> Amount </th>
+                  <td mat-cell *matCellDef="let inventory;let i=index" class="text-right"><mat-form-field class="text-right" style="width:80px"><input matInput type="number" readonly [(ngModel)]="f.i[i].amount" class="text-right" ></mat-form-field></td>
+                  <td mat-footer-cell *matFooterCellDef  class="text-right  font-weight-bold">{{f.h.inventory_amount_total}}</td>
+                </ng-container>
+              
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef class="" style="width:30px;"><a (click)="inventoryAdd()" href="javascript:" class="text-success"><mat-icon>add_circle</mat-icon></a></th>
+                    <td mat-cell *matCellDef="let inventory;let i=index"><a (click)="inventoryRemove(i)" href="javascript:" class="text-danger"><mat-icon aria-label="icon-button with a heart icon">remove_circle</mat-icon></a></td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                  </ng-container>
+            
+              <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns" class="example-first-header-row bg-light"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-footer-row *matFooterRowDef="displayedColumns" class="example-first-footer-row bg-light"></tr>
+            </table>
+          </div>
+          <div class="p-2 col-md-12" style="overflow-y:auto">                    
+            <table mat-table [dataSource]="accountsDataSource" class="col-md-6 table-bordered float-right mt-2 mb-2">
+                <ng-container matColumnDef="ledger2">
+                  <th mat-header-cell *matHeaderCellDef class="text-center"> Ledger2 </th>
+                  <td mat-cell *matCellDef="let account; let i = index"><input type="hidden" [(ngModel)]="f.a[i].ledger2_id">
+                    <mat-form-field class=""  style="width:250px;"><input matInput type="text" [ngModel]="f.a[i].ledger2"  (ngModelChange) ="accountsLedger2Filter($event, i);" [matAutocomplete]="auto">
+                      
+                      <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayFn" (optionSelected)="accountsLedger2Select($event,i)">
+                        <mat-option *ngFor="let ldgr of filteredAccountsLedgers" [value]="ldgr">
+                          <span [innerHTML]='ldgr.ledger'></span>
+                        </mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef class="text-right"></td>
+                </ng-container>
+    
+                <ng-container matColumnDef="narration">
+                  <th mat-header-cell *matHeaderCellDef class="text-center"> Description </th>
+                  <td mat-cell *matCellDef="let account;let i=index" class=""><mat-form-field class="text-right"><input matInput type="text" [(ngModel)]="f.a[i].narration" class="text-left" ></mat-form-field></td>
+                  <td mat-footer-cell *matFooterCellDef  class="text-right  font-weight-bold"> Total </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="percentage">
+                  <th mat-header-cell *matHeaderCellDef class="text-center"> % </th>
+                  <td mat-cell *matCellDef="let account;let i=index" class=""><mat-form-field class="text-right" style="width:30px"><input matInput type="text" [(ngModel)]="f.a[i].percentage" class="text-left" (change)="calc()" ></mat-form-field></td>
+                  <td mat-footer-cell *matFooterCellDef  class="text-right  font-weight-bold"></td>
+                </ng-container>
+              
+                <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef class="text-center"> Amount </th>
+                  <td mat-cell *matCellDef="let account;let i=index" class="text-right"><mat-form-field class="text-right" style="width:80px"><input matInput type="number" [(ngModel)]="f.a[i].amount" class="text-right" (change)="calc()" ></mat-form-field></td>
+                  <td mat-footer-cell *matFooterCellDef  class="text-right  font-weight-bold">{{f.h.amount}}</td>
+                </ng-container>
+              
+              <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef style="width:30px;"><a (click)="accountsAdd()" href="javascript:" class="text-success"><mat-icon>add_circle</mat-icon></a></th>
+                      <td mat-cell *matCellDef="let account;let i=index"><a (click)="accountsRemove(i)" href="javascript:" class="text-danger"><mat-icon aria-label="icon-button with a heart icon">remove_circle</mat-icon></a></td>
+                      <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                  
+                <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+                <tr mat-header-row *matHeaderRowDef="accountsColumns" class="example-first-header-row bg-light"></tr>
+              
+                <tr mat-row *matRowDef="let row; columns: accountsColumns;"></tr>
+              
+                <tr mat-footer-row *matFooterRowDef="accountsColumns" class="example-first-footer-row bg-light"></tr>
+              </table>            
+              </div>
+            </div>
+          </div>
+      
+  </mat-card>        
+</div>  
+  </mat-card-content>
+  <mat-card-content *ngIf="formState=='list'">
+      <div class="p-2 col-md-12" style="overflow-y:auto">
+          <table mat-table [dataSource]="lists" class="col-md-12 table-bordered">
+  
+              <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef class="text-center" style="width:50px"> Vou No </th>
+                  <td mat-cell *matCellDef="let row" class="text-center">{{row.id}}</td>
+                </ng-container>
+  
+                <ng-container matColumnDef="vou_date">
+                    <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px"> Vou Date </th>
+                    <td mat-cell *matCellDef="let row" class="text-center">{{row.vou_date}}</td>
+                  </ng-container>
+
+              <ng-container matColumnDef="ledger">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Ledger </th>
+                <td mat-cell *matCellDef="let row">{{row.ledger}}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px"> Amount </th>
+                  <td mat-cell *matCellDef="let row" class="text-right">{{row.amount}}</td>
+                </ng-container>
+              
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width:30px;"></th>
+                    <td mat-cell *matCellDef="let row">
+                        <button mat-icon-button (click)="simsView(row.id)"><mat-icon>edit</mat-icon></button>
+                  
+                    </td>
+                  </ng-container>
+            
+              <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+              <tr mat-header-row *matHeaderRowDef="listColumns" class="example-first-header-row bg-light"></tr>
+              <tr mat-row *matRowDef="let row; columns: listColumns;"></tr>
+            </table>
+          </div> 
+  </mat-card-content>
+
+  <main role="main" class="container bg-white col-md-12" *ngIf="formState=='preview'">
+    <div class="col-md-12 border">
+    <div class="col-md-12">
+    <div class=" row ">
+      <div class="col-md-6 col-6">
+        <div class="row">
+          <div class="col-8 col-md-8 border-bottom border-right">
+      <div class="p-2">
+        <div class="font-weight-bold h4">NRM TEX</div>
+         GSTIN :<b>33AXSPM0407G1ZM</b>
+          </div>
+        </div>
+        <div class="col-4 col-md-4 border-bottom border-right p-1 text-center align-middle align-text-middle" style="overflow:hidden">
+          <br>
+          <img class="" width="130px" height="42px" src="assets/image/logo.png">
+        </div>
+        
+      <div class="col-12 col-md-12 border-right">
+        <span class="pl-1"><i>Invoice to</i></span><br>
+        <div class="pl-3 text-left">
+        <b>THULASI GARMENTS</b><br>
+           5/2 T.S.R.LAYOUT 6TH STREET,KONGU MAIN ROAD,<br>
+           TIRUPUR-641602<br>
+          Phone :9952443770<br> 
+        GSTST:<b>33BYXPS2327A1ZD</b>
+    
+        </div>
+        </div>	
+        </div>
+      </div>
+      <div class="col-md-6 col-6 border-right">
+        <div class="col-12 col-md-12 text-center font-weight-bold bg-light" style="font-size: 18px">TAX INVOICE</div>
+        <table class="table table-sm table-borderless">
+          <tr class="border-bottom"><td><i>Invoice No</i></td><td class="border-right text-left border-left"><b class="pl-1">{{f.h.id}}</b></td><td><i>Invoice Date</i></td><td class="text-left border-left"><b class="pl-1">{{f.h.vou_date}}</b></td></tr>
+          <tr class="border-bottom"><td><i>Order No</i></td><td class="border-left"><b class="pl-1 ">049</b></td><td class="border-left"><i>Transport No</i></td><td class="border-left"><b class="pl-1 ">{{f.h.narration}}</b></td></tr>
+          <tr><td colspan="4" class="border-top-0 border-bottom-0">Bank Details</td></tr>
+          <tr><td colspan="2" class="border-top-0 border-bottom-0 text-right">Bank Name :</td><td colspan="2" class="pl-1 text-left border-top-0 border-bottom-0 font-weight-bold">ICICI Bank Ltd</td></tr>
+          <tr><td colspan="2" class="border-top-0 border-bottom-0 text-right">A/c No :</td><td colspan="2" class="pl-1 text-left border-top-0 border-bottom-0 font-weight-bold">33122521125</td></tr>
+          <tr><td colspan="2" class="border-top-0 border-bottom-0 text-right">Branch :</td><td colspan="2" class="pl-1 text-left border-top-0 border-bottom-0 font-weight-bold">Tirupur Main </td></tr>
+          <tr><td colspan="2" class="border-top-0 border-bottom-0 text-right">IFSC Code :</td><td colspan="2" class="pl-1 text-left border-top-0 border-bottom-0 font-weight-bold">ICIC252210</td></tr>
+        </table>
+    </div>
+      </div>
+    </div>	
+      
+    <div class="col-12 col-md-12">
+    <table id="" class="table table-sm  table-borderless" >
+    <tr class="bg-light text-center align-middle">
+        <td class=" border-right" style="width:150px">#Style</td>    
+        <td class=" border-right" style="width:100px">#HSN</td>
+        <td class="bg-light border-right">GST</td>
+        <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class=" border-right" style="width:100px"><span class="float-left">Qty</span><br><span class="float-right">Rate</span></td>
+    <td class="bg-light border-right" style="width:100px">Qty</td>
+    <td class=" border-right" style="width:100px">Disc<br>%</td>
+    <td class="bg-light border-right" style="width:30px">Unit</td>
+    <td class="" style="width:100px">Amount</td>
+    
+    </tr>
+    
+   
+<tbody *ngFor="let i of f.i;">
+<tr class="font-weight-bold text-center align-middle bg-warning" *ngIf="inventoryHead(i)">
+
+<td class=""></td>
+<td class="bg-warning"></td>
+<td class="bg-warning"></td>
+<td class="bg-warning border-right">{{i.size1}}</td>
+<td class="bg-warning border-right">{{i.size2}}</td>
+<td class="bg-warning border-right">{{i.size3}}</td>
+<td class="bg-warning border-right">{{i.size4}}</td>
+<td class="bg-warning border-right">{{i.size5}}</td>
+<td class="bg-warning border-right">{{i.size6}}</td>
+<td class="bg-warning border-right">{{i.size7}}</td>
+<td class="bg-warning border-right">{{i.size8}}</td>
+<td class="bg-warning border-right">{{i.size9}}</td>
+<td class="bg-warning border-right"></td>
+<td class="bg-warning border-right"></td>
+<td class="bg-warning border-right"></td>
+<td class=""></td>
+
+</tr>
+
+        <tr class="border-bottom">
+            <td class="text-left border-right" rowspan="2">{{i.product}}</td>
+            <td class="text-center border-right " rowspan="2">{{i.hsnsac}}</td>
+            <td class="text-left border-right " rowspan="2">{{i.gst}}</td>
+            <td class="text-left border-right ">{{i.size1_qty}}</td>
+            <td class="text-left border-right ">{{i.size2_qty}}</td>
+            <td class="text-left  border-right">{{i.size3_qty}}</td>
+            <td class="text-left border-right ">{{i.size4_qty}}</td>
+            <td class="text-left border-right ">{{i.size5_qty}}</td>
+            <td class="text-left  border-right">{{i.size6_qty}}</td>
+            <td class="text-left  border-right">{{i.size7_qty}}</td>
+            <td class="text-left  border-right">{{i.size8_qty}}</td>
+            <td class="text-left  border-right">{{i.size9_qty}}</td>
+            <td class="text-left  border-right">{{i.qty}}</td>
+            <td class="text-left  border-right">{{i.disc_percentage}}</td>
+            <td class="text-left text-center border-right" rowspan="2">{{i.unit}}</td>
+            <td class="text-right align-bottom" rowspan="2">{{i.amount|currency:"INR"}}</td>
+          </tr>
+
+            <tr class="bg-light">
+                <td class="text-right  border-right border-bottom">{{i.size1_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom">{{i.size2_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom">{{i.size3_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom">{{i.size4_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom">{{i.size5_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom">{{i.size6_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom">{{i.size7_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom">{{i.size8_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom">{{i.size9_rate|currency:"INR"}}</td>
+                <td class="text-right border-right border-bottom"></td>
+                <td class="text-right border-bottom">{{i.disc_value|currency:"INR"}}</td>
+            </tr>  
+      </tbody>
+
+      <tbody class="">
+      <tr class=""  *ngFor="let n of empty_row_count">
+      <td class="text-left border-bottom-0 border-top-0 border-right">&nbsp;</td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-left border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-left border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-center border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-left border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-left border-bottom-0 border-top-0 border-right "></td>
+      <td class="text-left text-center border-bottom-0 border-top-0 border-right"></td>
+      <td class="text-right border-bottom-0 border-top-0 "></td>
+      </tr>
+
+    </tbody>
+    <tfoot >
+
+    <tr class="bg-light font-weight-bold border-bottom">
+    
+    <td class="text-right border-right " colspan="3">NET TOTAL</td>
+    <td class="text-left border-right ">{{f.h.size1_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.size2_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.size3_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.size4_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.size5_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.size6_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.size7_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.size8_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.size9_qty_total}}</td>
+    <td class="text-left border-right ">{{f.h.qty_total}}</td>
+    <td class="text-right border-right text-right">{{f.h.disc_total|currency:"INR"}}</td>
+    <td class="text-center border-right "></td>
+    <td class="text-right border-right ">{{f.h.inventory_amount_total|currency:"INR"}}</td>
+    </tr>
+
+
+    <tr class="" *ngFor = "let a of f.a">
+        <td class="text-right border-right border-bottom-0 border-top-0 " colspan="12">{{a.ledger2}}{{a.narration}}</td>
+        <td class=" border-right border-bottom-0 border-top-0"></td>
+        <td class=" border-right border-bottom-0 border-top-0"></td>
+        <td class="text-center border-right border-bottom-0 border-top-0 ">{{a.percentage}}</td>
+        <td class="text-right border-bottom-0 border-top-0 ">{{a.amount|currency:"INR"}}</td>
+        </tr>      
+        <tr class="bg-light font-weight-bold border-bottom">
+        <td class="text-right border-right " colspan="12">Grand Total</td>
+        <td class=" border-right"></td>
+        <td class=" border-right"></td>
+        <td class="text-center border-right "></td>
+        <td class="text-right ">{{f.h.amount|currency:'INR'}}</td>
+        </tr>
+
+    </tfoot>
+    </table>
+    </div>	
+    <div  class="col-12 col-md-12" >
+    <div class="row">
+        <div class="col-md-12 p-2">
+            <i>Amount in words : </i><b>{{f.h.amount|numberToWords}}</b>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-md-6 col-6 border-top border-bottom">
+    <u><i>Terms</i></u><br>
+    <ul>
+      <li>Any discrepancy found in this invoice should be notified imediately Subject to "Tirupur Jurisdiction only."</li>
+      </ul>
+    </div>	
+    <div class="col-md-3 border align-bottom text-center">
+      <br><br>
+    Receiver's Seal Signature
+    </div>
+    <div class="col-md-3 text-right pr-3 align-middle border-top border-bottom">
+    For <b> NRM KNIT TEX </b>
+    <br><br>
+    </div>
+    </div>
+    </div>	
+  <div class="text-center"><b>Reg Address: </b> S.F No.3/186, E(6), Chinniya Gounden Pudur,Cheran AvenueAndipalayam PO,Tirupur - 641687, Tamil Nadu [30].INDIA<br>
+    Phone: 9688514649,9894514649 | E-Mail:info@pinkygirlss.com | Online Shopping: <b>www.pinkygirlss.com</b>
+
+  </div>
+  <div class="text-center bg-warning font-weight-bold text-danger">GARMENTS HOSERIY MANUFACTURE : GIRLS,BOYS, MENS, WOMENS T-SHIRTS,PYJAMA SET,LEGGINS</div>
+    </div>	
+      </main>
+</mat-card>
+
+</div>
+

@@ -1,0 +1,56 @@
+<mat-sidenav-container class="example-sidenav-container example-sidenav bg-secondary">
+  <mat-sidenav class="text-light" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-nav-list class="text-dark bg-white d-print-none" *ngIf="currentUser">
+      <!--<a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>-->
+      <a mat-list-item routerLink=".">Dashboard</a>
+      
+      <span mat-list-item  class="text-info pl-2 font-weight-bold">Master</span>
+      <a mat-list-item routerLink="ledger">Ledger</a>
+      <a mat-list-item routerLink="ledger_category">Ledger Category</a>
+      <a mat-list-item routerLink="ledger_group">Ledger Group</a>
+      <a mat-list-item routerLink="product">Product</a>
+       <a mat-list-item routerLink="product_category">Product Category</a>
+      <a mat-list-item routerLink="product_group">Product Group</a> 
+      <a mat-list-item routerLink="order_program">Order Program</a>
+      <a mat-list-item routerLink="process">Process</a>
+      <a mat-list-item routerLink="product_details">Product Details</a>
+      <a mat-list-item routerLink="color">Color</a>  
+      <a mat-list-item routerLink="unit">Unit</a>  
+      <a mat-list-item routerLink="shortcut">Shortcut</a> 
+      <a mat-list-item routerLink="size">Size</a>
+      
+      <span mat-list-item  class="text-info pl-2 font-weight-bold">Entry</span>
+      <a mat-list-item routerLink="dyeing_program">Dyeing Program</a>
+      <a mat-list-item routerLink="fabric_invoice">Fabric Invoice</a>
+      <a mat-list-item routerLink="/fabric_inward">Fabric Inward</a>
+      <a mat-list-item routerLink="/fabric_outward">Fabric Outward</a>
+      <a mat-list-item routerLink="/fabric_return">Fabric Return</a>
+      <a mat-list-item routerLink="/garments_delivery_note">Garments Delivery Note</a>
+      <a mat-list-item routerLink="/garments_receipt_note">Garments Receipt Note</a>
+      <a mat-list-item routerLink="/garments_invoice">Garments Invoice</a>
+      <a mat-list-item routerLink="/jobwork_inward">Jobwork Inward</a>
+      <a mat-list-item routerLink="/jobwork_outward">Jobwork Outward</a>
+      <a mat-list-item routerLink="/yarn_invoice">Yarn Invoice</a>
+      <a mat-list-item routerLink="/yarn_inward">Yarn Inward</a>
+      <a mat-list-item routerLink="/yarn_return">Yarn Return</a>
+      
+      <span mat-list-item  class="text-info pl-2 font-weight-bold">Tools</span>
+      <a mat-list-item routerLink=".">User</a>
+
+      <span mat-list-item  class="text-info pl-2 font-weight-bold">Report</span>
+      <a mat-list-item routerLink=".">Attendance</a>
+      <a mat-list-item routerLink="attendance_register">Register</a>
+      <a mat-list-item routerLink=".">Bonus</a>
+      <a mat-list-item routerLink=".">Punch</a>
+      <a mat-list-item routerLink="/employee_list"><i class="material-icons text-danger  md-18 pr-1">person_add</i>Employee List</a>
+
+      <a routerLink="/logout" class="btn btn-sm btn-outline-info text-center col-12">Logout</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+      <router-outlet></router-outlet>
+
+      
+  </mat-sidenav-content>
+</mat-sidenav-container>

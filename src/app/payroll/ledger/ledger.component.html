@@ -1,0 +1,117 @@
+<div class="col-12">
+  <div class="col-md-4 offset-md-4 p-2"  *ngIf="isForm">
+    <div class="row">
+    <mat-card class="col-md-12">
+        <mat-toolbar class="bg-login">
+            <mat-toolbar-row class="pt-3">
+                <span class="font-weight-bold md-18 text-uppercase"><mat-icon class="text-danger">people</mat-icon> Ledger </span>
+                <span class="example-spacer"></span>
+          </mat-toolbar-row>
+            </mat-toolbar>    
+  
+        <mat-card-content class="p-2 bg-white">
+            <form [formGroup]="headForm">   
+              <input type="hidden" formControlName="id" #id>     
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Ledger Name" class="font-weight-bold" formControlName="ledger" input type="text">
+            </mat-form-field>
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Alias" class="font-weight-bold" formControlName="alias" input type="text">
+              </mat-form-field>
+              <mat-form-field class="col-md-6 pl-2">
+                <mat-select matNativeControl placeholder="Ledger Catogory" formControlName="ledger_category_id">
+                    <mat-option *ngFor="let led_category_info of led_categories" [value]="led_category_info.id">
+                        {{ led_category_info.ledger_category }}
+                      </mat-option>
+                    </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-md-6 pl-2">
+                <input type="text" placeholder="Search books ..."
+                matInput 
+                formControlName="ledger_group_id" 
+                [matAutocomplete]="auto">  
+  
+            <!-- CREATE AUTO COMPLETE PANEL WITH OPTIONS. -->
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let lg_info of ledger_groups" [value]="lg_info.id">
+                {{ lg_info.ledger_group }}
+              </mat-option>
+            </mat-autocomplete>
+
+          </mat-form-field>
+          <mat-form-field class="col-md-6">
+            <input matInput placeholder="O.Bal" class="font-weight-bold" formControlName="amount" input type="text" autocomplete="new-password">
+            </mat-form-field>
+            <mat-form-field class="col-md-6 pl-2">
+              <mat-select matNativeControl placeholder="Status" formControlName="status">
+                  <mat-option *ngFor="let status_info of status_id" [value]="status_info.id">
+                      {{ status_info.status_id }}
+                    </mat-option>
+                  </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Narration" class="font-weight-bold" formControlName="narration" input type="textarea" autocomplete="new-password">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+              <select matNativeControl placeholder="Status" formControlName="status">
+              <option>active</option>
+              <option>de-active</option>
+              </select>
+            </mat-form-field>
+            <mat-form-field class="col-md-6">
+              <select matNativeControl placeholder="Price Group" formControlName="price_group_id">
+              <option>Active</option>
+              </select>
+            </mat-form-field>
+            <mat-card-header class="bg-info text-light mb-1">
+              <mat-card-title><mat-icon class="mr-2">supervised_user_circle</mat-icon>communication</mat-card-title>
+          </mat-card-header>
+
+            <mat-form-field class="col-md-12">
+                <textarea matInput placeholder="Address" formControlName="address" input type="text"></textarea>
+              </mat-form-field> 
+              <mat-form-field class="col-md-12">
+                  <input matInput placeholder="Mail" formControlName="email" input type="email">
+                </mat-form-field>  
+                <mat-form-field class="col-md-6">
+                    <input matInput placeholder="Phone" formControlName="phone" input type="number">
+                  </mat-form-field> 
+                  <mat-form-field class="col-md-6 pl-2">
+                      <input matInput placeholder="Mobile" formControlName="mobile" input type="number">
+                    </mat-form-field>   
+                    <mat-form-field class="col-md-8">
+                      <select matNativeControl placeholder="State" formControlName="state_id">
+                      <option>TamilNadu</option>
+                      </select>
+                    </mat-form-field> 
+          </form>
+        </mat-card-content>
+      <mat-card-actions class="text-center bg-light">
+                      <a class="ml-1 bg-success" mat-mini-fab (click)="simsInsert()" *ngIf="!id.value"><mat-icon>add</mat-icon></a>
+        <a  class="ml-1 bg-success"  mat-mini-fab  (click)="simsUpdate(id.value)" *ngIf="id.value"><mat-icon>edit</mat-icon></a>
+        <a class="ml-1" mat-mini-fab color="primary" (click)="simsList()" accesskey="l"><mat-icon>list</mat-icon></a>
+        <a  class="ml-1 bg-danger" mat-mini-fab *ngIf="id.value" (click)="simsDelete(id.value)" title="Delete"><mat-icon class="">delete</mat-icon></a>
+        <a  class="ml-1"  mat-mini-fab routerLink="." (click)="simsNew()"><mat-icon>open_in_new</mat-icon></a>
+  </mat-card-actions>
+      </mat-card> 
+    </div>
+    </div>
+    <div class="col-md-4 offset-md-4 p-1"  *ngIf="!isForm">
+        <div class="col-12 border">        
+       <table  id="tblLists" class="bg-white table table-bordered table-striped p-1 table-sm">
+          <thead>
+          <tr class="bg-info">
+          <th class="text-center">Ledger category</th>
+                <th class="text-center"><button mat-mini-fab style="width:25px; height:25px;" (click)="simsNew()"><mat-icon style="font-size: 80%">add</mat-icon></button></th>	
+          </tr>
+          </thead>
+          <tbody >
+          <tr *ngFor="let row of rows">
+            <td>{{row.ledger_category}}</td><td class="text-center"><a (click)="simsView(row.id)"><i class="material-icons" >mode_edit</i></a></td></tr>
+            </tbody>
+          <tfoot></tfoot>
+    </table>
+    </div>
+    </div>
+  </div>

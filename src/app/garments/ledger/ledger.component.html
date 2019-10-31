@@ -1,0 +1,224 @@
+<mat-toolbar class="bg-light isPrinting">
+    <mat-toolbar-row>
+            <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="col-12 col-md-4 offset-md-4 border bg-white pb-1">
+  <form class="" [formGroup]="headForm">
+<input type="hidden" id="ledger_id" name="id" value="" #id />
+<div class="row" id="head">
+    
+   <div class="bg-heading  card-header-ss col-12 ">
+  <h6 class="h6-ss text-danger">Ledger</h6>
+     </div>
+</div>
+<div class="row ledgerForm pr-1 pl-1">
+  <div class="col-12">
+       <div class="input-group input-group-sm">
+     <div class="input-group-prepend">
+       <span class="input-group-text ">Ledger Name<span class="text-danger font-weight-bold">*</span></span>
+    </div>
+    <input type="text" class="form-control font-weight-bold"  formControlName="ledger" value="">
+  </div>
+     <div class="input-group input-group-sm">
+     <div class="input-group-prepend">
+       <span class="input-group-text ">Alias</span>
+    </div>
+    <input type="text" class="form-control font-weight-bold"  formControlName="alias" value="">
+  </div>
+  <div class="input-group input-group-sm">
+    <div class="input-group-prepend">
+    <span class="input-group-text ledger-text">Ledger Group</span>
+    </div>
+    <input type="text" class="form-control"  formControlName="ledger_group" [matAutocomplete]="ledger_group">
+    
+    <mat-autocomplete #ledger_group="matAutocomplete">
+    <mat-option *ngFor="let ledger_group of ledger_groups" [value]="ledger_group.ledger_group" (click)="ledger_groupSelect(ledger_group)">
+    {{ledger_group.ledger_group}}
+    </mat-option>
+    </mat-autocomplete>
+    </div>
+ <div class="input-group input-group-sm">
+  <div class="input-group-prepend">
+  <span class="input-group-text ledger-text">Ledger Category</span>
+  </div>
+  <input type="text" class="form-control"  formControlName="ledger_category" [matAutocomplete]="ledger_category">
+  
+  <mat-autocomplete #ledger_category="matAutocomplete">
+  <mat-option *ngFor="let ledger_category of ledger_categories" [value]="ledger_category.ledger_category" (click)="ledger_categorySelect(ledger_category)">
+  {{ledger_category.ledger_category}}
+  </mat-option>
+  </mat-autocomplete>
+  </div>
+   <div class="row">
+    <div class="col-md-8 col-8 pr-1">
+     <div class="input-group input-group-sm col-12 col-md-12">
+       <div class="input-group-prepend">
+         <span class="input-group-text "> O.Bal </span>
+       </div>
+       <input type="text" class="form-control font-weight-bold" formControlName="amount" value="">
+           </div>
+       <div class="input-group input-group-sm">
+           <div class="input-group-prepend">
+            <span class="input-group-text ">Status</span>
+            </div>
+            <select class="form-control" formControlName="status_id">
+            <option value="1" >Active</option>
+            <option value="0">Inactive</option>
+          </select>
+        </div>
+       <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+              <span class="input-group-text ">Admin Notes</span>
+            </div>
+         <textarea id="" class="form-control" formControlName="narration" rows="3" cols="5"></textarea>
+        </div>
+     </div>
+     <div class="col-md-4 col-4 ">
+        <div class="col-12 pl-1 pb-1 pt-1 pr-1 text-center border border-secondary ledger_photo_div" style="overflow: hidden;">
+      <a href="javascript:" id="ledger_photo_btn"><img data-src="holder.js/75x75" class="rounded-0" alt="75x75" style="width: 100; height: 100px;" id="ledger_img" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2275%22%20height%3D%2275%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2075%2075%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_166574327fa%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_166574327fa%22%3E%3Crect%20width%3D%2275%22%20height%3D%2275%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2219.34375%22%20y%3D%2242%22%3E75x75%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true"></a>
+      <input type="file" name="ledger_photo" class="form-control-file input-group-sm d-none" id="ledger_photo">
+      <div id="progress-wrp" class="d-none">
+      <div class="progress-bar bg-info"></div>
+      <div class="status invisible">0%</div>
+      </div>		
+      </div>
+     </div>
+     </div>
+       <div class="row">
+       <div class="col-md-6 col-6">
+         <div class="input-group input-group-sm col-md-12 col-12">
+         <div class="input-group-prepend">
+         <span class="input-group-text ">Formula</span>
+          </div>
+            <select class="form-control" formControlName="formula">
+            <option value=""></option>
+            <option value="igst">IGST</option>
+            <option value="cgst">CGST</option>
+            <option value="sgst">SGST</option>
+            <option value="roundoff">Round Off</option>
+            <option value="discount">Discount</option>
+         </select>
+       </div> 
+       </div>
+       <div class="col-md-6 col-6">
+       <div class="input-group input-group-sm col-12 col-md-12">
+       <div class="input-group-prepend">
+         <span class="input-group-text "> Price Group </span>
+      </div>
+                  <select class="form-control" formControlName="price_group_id">
+            <option value="0">None</option>
+          </select>
+        </div>
+    
+       </div>
+     </div>
+   <div class="row">
+         <div class="card-header bg-heading card-header-ss col-md-12">
+                <h6 class="h6-ss text-primary">Communication</h6>
+              </div>
+         <div class="input-group input-group-sm">
+           <div class="input-group-prepend">
+            <span class="input-group-text">Address</span>
+           </div>
+          <textarea id="" class="form-control" formControlName="address" rows="3" cols="5"></textarea>
+          </div>
+               <div class="input-group input-group-sm">
+           <div class="input-group-prepend">
+             <span class="input-group-text ">Mail</span>
+          </div>
+          <input type="mail" class="form-control font-weight-bold" formControlName="email" value="">
+          </div>
+          <div class=" col-md-6 col-6 input-group input-group-sm">
+           <div class="input-group-prepend">
+             <span class="input-group-text ">Phone</span>
+          </div>
+           <input type="number" class="form-control font-weight-bold" formControlName="phone" value="">
+         </div>
+           <div class="col-md-6 col-6 input-group input-group-sm ">
+         <div class="input-group-prepend">
+           <span class="input-group-text ">Mobile<span class="text-danger font-weight-bold">*</span></span>
+        </div>
+          <input type="number" class="form-control font-weight-bold is-valid" formControlName="mobile" value="" required>
+       </div> 
+       <div class="input-group input-group-sm">
+          <div class="input-group-prepend">
+           <span class="input-group-text ">State</span>
+           </div>
+           <select class="form-control" formControlName="state_id">
+           <option value="1" >Tamilnadu</option>
+           <option value="0">Inactive</option>
+         </select>
+       </div>
+      
+   </div>
+  </div>
+   <div class="card-header bg-heading card-header-ss col-md-12">
+                <h6 class="h6-ss text-primary">Statuary Info</h6>
+              </div>
+        <div class="input-group input-group-sm col-md-6 col-6">
+       <div class="input-group-prepend">
+        <span class="input-group-text ">GST No </span>
+       </div>
+      <input type="text" class="form-control font-weight-bold" formControlName="gstno" value="">
+      </div>
+     </div>
+    <div class="row ledgerTble">
+  <div class="col-md-12 col-12">
+     <table id="" class="table table-sm table-bordered border border-primary bg-light">
+      <thead>
+      <tr class="bg-heading">
+        <th class="text-center">Ledger</th>
+        <th class="text-center">Value</th>	
+        <th class="text-center">Rule</th>
+                <th class="text-text">
+                <a href="javascript:" onclick="addInventory()"><i class="material-icons text-success" style="font-size:18px">add_circle</i></a>
+                </th>
+                </tr>
+        </thead>
+           <tbody class="">
+                   <td><input type="text" class="form-control font-weight-bold ui-autocomplete-input" id="product" formControlName="product_id" vlaue=""></td>
+                    <td><input type="text" class="form-control font-weight-bold ui-autocomplete-input"  id="value" formControlName="value" value=""></td>
+                   <td>
+                       <select class="form-control">
+                        <option value="">Fixed</option>
+                       <option value="">Based On Qty</option>
+                       <option value="">Percentage</option>
+                       </select>
+                   </td>
+           <td></td>
+                  </tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
+  </div>
+  <div class="text-center bg-light col-12">
+      <a class="ml-1 bg-success" mat-mini-fab (click)="simsInsert()" *ngIf="!id.value"><mat-icon>add</mat-icon></a>
+      <a  class="ml-1 bg-success"  mat-mini-fab  (click)="simsUpdate(id.value)" *ngIf="id.value"><mat-icon>edit</mat-icon></a>
+      <a class="ml-1" mat-mini-fab color="primary" (click)="simsList()" title="List" accesskey="l"><mat-icon>list</mat-icon></a>
+      <a  class="ml-1 bg-danger" mat-mini-fab *ngIf="id.value" (click)="simsDelete(id.value)" title="Delete"><mat-icon class="">delete</mat-icon></a>
+      <a  class="ml-1"  mat-mini-fab routerLink="." (click)="simsNew()"><mat-icon>open_in_new</mat-icon></a>
+      </div>
+    </form>
+    
+    </div>
+    <div class="List" *ngIf="!isForm">
+        <table id="tblLists" class="table table-sm table-bordered border border-primary bg-light">
+        <thead>
+        <tr class="bg-heading">
+        
+        <td class="text-center">ledger</td>
+        <td class="text-center">Mobile</td>
+        <td class="text-center">ledger Group</td>
+        </tr>
+        </thead>
+        <tbody class="part1">
+        <tr class="" *ngFor="let row of rows">
+        <td class="text-center">{{row.ledger}}</td>
+        <td class="text-center">{{row.mobile}}</td>
+        <td class="text-center">{{row.ledger_group_id}}</td>
+        <td class="text-center"><a href="javascript:" (click)="simsView(row.id)"><mat-icon>edit</mat-icon></a></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>

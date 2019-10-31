@@ -1,42 +1,65 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-  <mat-toolbar class="example-toolbar bg-dark text-light d-print-none" *ngIf="currentUser">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">HR Cloud</h1>
-  </mat-toolbar>
+<div class="example-container " [class.example-is1-mobile]="mobileQuery.matches" [class.isPrinting]="printService.isPrinting">
 
-  <mat-sidenav-container class="example-sidenav-container example-sidenav bg-secondary" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+  <mat-sidenav-container class="example-sidenav-container example-sidenav bg-secondary">
     <mat-sidenav class="text-light" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-      <mat-nav-list class="text-dark bg-white d-print-none" *ngIf="currentUser">
+      <mat-nav-list class="text-dark bg-white d-print-none" *ngIf="currentUser"  (click)="snav.toggle()">
         <!--<a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>-->
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">dashboard</mat-icon> Dashboard</a>
-        <h6 class="p-2  bg-info text-center"> Master</h6>
-        <a mat-list-item routerLink="/employee"><mat-icon class="mr-2 text-secondary">people</mat-icon> Employee</a>
-        <a mat-list-item routerLink="/employee_category"><mat-icon class="mr-2 text-secondary">collections</mat-icon>Employee Category</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">collections</mat-icon>Shift</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">collections</mat-icon>Company</a>
-        <h6 class="p-2  bg-info text-center">Entry</h6>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Attanance</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Time Log</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Leave</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Holiday</a>
-        <h6 class="p-2  bg-info text-center">Tools</h6>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>User</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>User Group</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Backup Restore</a>
+        <div mat-list-item  class="text-light text-center h5 pt-3 bg-secondary pb-3 font-weight-bold col-md-12">CloudERP</div>
+        
+        <span mat-list-item  class="text-dark"><a mat-list-item routerLink="."><i class="material-icons md-18 pr-1">person_add</i>Dashboard</a></span>
+        <span mat-list-item  class="text-info pl-2 font-weight-bold">Master</span>
+        <a mat-list-item routerLink="ledger">Ledger</a>
+        <a mat-list-item routerLink="ledger_category">Ledger Category</a>
+        <a mat-list-item routerLink="ledger_group">Ledger Group</a>
+        <a mat-list-item routerLink="product">Product</a>
+         <a mat-list-item routerLink="product_category">Product Category</a>
+        <a mat-list-item routerLink="product_group">Product Group</a> 
+        <a mat-list-item routerLink="order_program">Order Program</a>
+        <a mat-list-item routerLink="process">Process</a>
+        <a mat-list-item routerLink="product_details">Product Details</a>
+        <a mat-list-item routerLink="color">Color</a>  
+        <a mat-list-item routerLink="unit">Unit</a>  
+        <a mat-list-item routerLink="shortcut">Shortcut</a> 
+        <a mat-list-item routerLink="size">Size</a>
+        
+        <span mat-list-item  class="text-info pl-2 font-weight-bold">Entry</span>
+        <a mat-list-item routerLink="dyeing_program">Dyeing Program</a>
+        <a mat-list-item routerLink="fabric_invoice">Fabric Invoice</a>
+        <a mat-list-item routerLink="/fabric_inward">Fabric Inward</a>
+        <a mat-list-item routerLink="/fabric_outward">Fabric Outward</a>
+        <a mat-list-item routerLink="/fabric_return">Fabric Return</a>
+        <a mat-list-item routerLink="/garments_delivery_note">Garments Delivery Note</a>
+        <a mat-list-item routerLink="/garments_receipt_note">Garments Receipt Note</a>
+        <a mat-list-item routerLink="/garments_invoice">Garments Invoice</a>
+        <a mat-list-item routerLink="/jobwork_inward">Jobwork Inward</a>
+        <a mat-list-item routerLink="/jobwork_outward">Jobwork Outward</a>
+        <a mat-list-item routerLink="/yarn_invoice">Yarn Invoice</a>
+        <a mat-list-item routerLink="/yarn_inward">Yarn Inward</a>
+        <a mat-list-item routerLink="/yarn_return">Yarn Return</a>
+        
+        <span mat-list-item  class="text-info pl-2 font-weight-bold">Tools</span>
+        <a mat-list-item routerLink=".">User</a>
 
-        <h6 class="p-2  bg-info text-center">Report</h6>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Attendance</a>
-        <a mat-list-item routerLink="attendance_register"><mat-icon class="mr-2 text-secondary">people</mat-icon>Register</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Bonus</a>
-        <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">people</mat-icon>Punch</a>
+        <span mat-list-item  class="text-info pl-2 font-weight-bold">Report</span>
+        <a mat-list-item routerLink=".">Attendance</a>
+        <a mat-list-item routerLink="attendance_register">Register</a>
+        <a mat-list-item routerLink=".">Bonus</a>
+        <a mat-list-item routerLink=".">Punch</a>
+        <a mat-list-item routerLink="/employee_list"><i class="material-icons text-danger  md-18 pr-1">person_add</i>Employee List</a>
 
-        <a routerLink="/logout"><h6 class="p-2  bg-info text-center" >Logout</h6></a>
+        <a routerLink="/logout" class="btn btn-sm btn-outline-info text-center col-12">Logout</a>
       </mat-nav-list>
     </mat-sidenav>
 
     <mat-sidenav-content>
         <router-outlet></router-outlet>
+
+        
     </mat-sidenav-content>
   </mat-sidenav-container>
+
 </div>
 
+        
+<div >
+<router-outlet name="print"></router-outlet>

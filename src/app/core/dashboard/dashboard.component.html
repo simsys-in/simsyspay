@@ -1,3 +1,25 @@
-<p>
-  dashboard works!
-</p>
+<div class="col-md-12"> 
+    <mat-card>
+      <mat-toolbar class="bg-light isPrinting">
+    <mat-toolbar-row>
+        <button mat-icon-button (click)="nav.toggle()"><mat-icon>menu</mat-icon></button>
+         <span class="pl-2 text-primary">Dashboard</span>
+         <span class="example-spacer"></span>
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="float-right">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+
+          <button mat-menu-item (click)="testTally()">
+            <mat-icon>mail</mat-icon>
+            <span>Send Mail</span>
+          </button>
+          <button mat-menu-item disabled>
+            <mat-icon>voicemail</mat-icon>
+            <span>Save as PDF</span>
+          </button>
+              </mat-menu>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  </mat-card>
+  </div>

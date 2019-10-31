@@ -1,0 +1,154 @@
+<mat-toolbar class="bg-light isPrinting">
+        <mat-toolbar-row>
+                <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+        </mat-toolbar-row>
+</mat-toolbar>
+<div class="Form">
+    <form class="" [formGroup]="headForm">
+        <input type="hidden" class="form-control font-weight-bold" formControlName="id" value=""#id>
+    <div class="row ">
+    <div class="col-md-4 pr-1">
+    <div class="row">
+    <div class="col-md-12">
+    <div class="row">
+    <div class="bg-warning  card-header-ss col-12">
+    <h6 class="h6-ss  text-uppercase">Product Details</h6>
+    </div>
+    <div class=" col-4 text-right bg-warning">
+    </div>
+    </div>
+    <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+        <span class="input-group-text product-text">Product </span>
+        </div>
+        <input type="text" class="form-control"  formControlName="product" [matAutocomplete]="product">
+        <input type="hidden" formControlName="product_id">
+        <mat-autocomplete #product="matAutocomplete" autoActiveFirstOption (optionSelected)="productSelect($event)">
+        <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+        {{product.product}}
+        </mat-option>
+        </mat-autocomplete>
+        </div>
+   
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+            <span class="input-group-text product-text">Size </span>
+            </div>
+            <input type="text" class="form-control"  formControlName="size" [matAutocomplete]="size" >
+            <input type="hidden" formControlName="size_id">
+            
+            <mat-autocomplete #size="matAutocomplete">
+            <mat-option *ngFor="let size of filterSizes | async" [value]="size.size" (onSelectionChange)="sizeSelect(size)" >
+            {{size.size}}
+            </mat-option>
+            </mat-autocomplete>
+            </div>
+
+    </div>
+    </div>
+    </div>
+    <div class="col-md-12">
+    <div class="row">
+    <div class="col-12 pr-1">
+    <div class="row">
+    <div class="card-header bg-info card-header-ss col-md-12">
+    <h6 class="h6-ss text-white">Product Details</h6>
+    </div>
+    <table id="tblInventory" class="table table-sm table-bordered border border-primary bg-light ">
+    <thead>
+    <tr class="bg-heading">
+    <td class="text-center" style="width: 100px">&nbsp;</td>  
+    <td class="text-center" style="width: 100px" >{{size1_title}}</td>
+    <td class="text-center" style="width: 100px">{{size2_title}}</td>	
+     <td class="text-center" style="width: 100px">{{size3_title}}</td>
+     <td class="text-center" style="width: 100px">{{size4_title}}</td>
+    <td class="text-center" style="width: 100px">{{size5_title}}</td>
+     <td class="text-center" style="width: 100px">{{size6_title}}</td>
+    <td class="text-center" style="width: 100px">{{size7_title}}</td>
+     <td class="text-center" style="width: 100px">{{size8_title}}</td>
+    <td class="text-center" style="width: 100px">{{size9_title}}</td>
+    
+    </tr>
+    </thead>
+    <tbody class="heading" style="background-size: lightgreen">
+        <tr>
+                <td class="input-group-sm">OPN Stock</td>
+    <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size1" ></td>
+    <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size2" value=""></td>
+     <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size3" value=""></td>
+     <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size4" value=""></td>
+     <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size5" value=""></td>
+      <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size6" value=""></td>
+       <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size7" value=""></td>
+      <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size8" value=""></td>
+       <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size9" value=""></td>
+    
+</tr>   
+<tr>
+        <td class="input-group-sm">Price</td>
+    <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size1_rate"></td>
+    <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size2_rate" value=""></td>
+     <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size3_rate" value=""></td>
+     <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size4_rate" value=""></td>
+     <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size5_rate" value=""></td>
+      <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size6_rate" value=""></td>
+       <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size7_rate" value=""></td>
+      <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size8_rate" value=""></td>
+       <td class="input-group-sm"><input type="text" class="form-control font-weight-bold text-right"  formControlName="size9_rate" value=""></td>
+    
+</tr>   
+</tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </form>
+    <div class="text-center bg-light col-12">
+        <a class="ml-1 bg-success" mat-mini-fab (click)="simsInsert()" *ngIf="!id.value"><mat-icon>add</mat-icon></a>
+        <a  class="ml-1 bg-success"  mat-mini-fab  (click)="simsUpdate(id.value)" *ngIf="id.value"><mat-icon>edit</mat-icon></a>
+        <a class="ml-1" mat-mini-fab color="primary" (click)="simsList()" title="List" accesskey="l"><mat-icon>list</mat-icon></a>
+        <a  class="ml-1 bg-danger" mat-mini-fab *ngIf="id.value" (click)="simsDelete(id.value)" title="Delete"><mat-icon class="">delete</mat-icon></a>
+        <a  class="ml-1"  mat-mini-fab routerLink="." (click)="simsNew()"><mat-icon>open_in_new</mat-icon></a>
+        </div>
+      </div>
+      <div class="List" *ngIf="!isForm">
+          <table id="tblLists" class="table table-sm table-bordered border border-primary bg-light">
+          <thead>
+          <tr class="bg-heading">
+          <td class="text-center">Product</td>
+          <td class="text-center">Size Group</td>
+          <td class="text-center">Size1</td>
+          <td class="text-center">Size2</td>
+          <td class="text-center">Size3</td>
+          <td class="text-center">Size4</td>
+          <td class="text-center">Size5</td>
+          <td class="text-center">Size6</td>
+          <td class="text-center">Size7</td>
+          <td class="text-center">Size8</td>
+          <td class="text-center">Size9</td>
+          
+          <td class="text-center">Action</td>
+          </tr>
+          </thead>
+          <tbody class="part1">
+          <tr class="" *ngFor="let row of rows">
+          <td class="text-center">{{row.product}}</td>
+          <td class="text-center">{{row.size}}</td>
+          <td class="text-center">{{row.size1}}</td>
+          <td class="text-center">{{row.size2}}</td>
+          <td class="text-center">{{row.size3}}</td>
+          <td class="text-center">{{row.size4}}</td>
+          <td class="text-center">{{row.size5}}</td>
+          <td class="text-center">{{row.size6}}</td>
+          <td class="text-center">{{row.size7}}</td>
+          <td class="text-center">{{row.size8}}</td>
+          <td class="text-center">{{row.size9}}</td>
+
+          
+          <td class="text-center"><a href="javascript:" (click)="simsView(row.product_id)"><mat-icon>edit</mat-icon></a></td>
+          </tr>
+          </tbody>
+          </table>
+          </div>
