@@ -6,7 +6,11 @@ import { config } from 'src/app/config';
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
 })
-export class EmployeeListComponent implements OnInit {
+export class EmployeeListComponent implements AfterViewInit {
+  [x: string]: any;
+  displayedColumns: string[] = ['employee_code', 'employee', 'mobile', 'department'];
+  exampleDatabase: ExampleHttpDatabase | null;
+  data: GithubIssue[] = [];
 
   constructor(private http:HttpClient) { }
 
