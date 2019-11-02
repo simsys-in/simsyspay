@@ -1,0 +1,859 @@
+<div class="col-md-12">
+    <mat-card>
+        <mat-toolbar class="bg-light">
+            <mat-toolbar-row>
+                <button mat-mini-fab>{{f.h.id}}</button> <span><mat-icon (click)="back()">arrow_back</mat-icon></span><span class="pl-2 text-primary">Salary Compliance</span>
+                <span class="example-spacer"></span>
+
+                <button mat-icon-button (click)="simsSave()" *ngIf="formState=='form' && !f.h.id"><mat-icon>save</mat-icon></button>
+                <mat-icon (click)="simsPrint()">print</mat-icon>
+                <mat-icon (click)="otForm()">work</mat-icon>
+                <button mat-icon-button (click)="simsUpdate(f.h.id)" *ngIf="formState=='form' && f.h.id>0"><mat-icon>save_alt</mat-icon></button>
+
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+        </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="simsNew()" *ngIf="formState=='form' && f.h.id"><mat-icon>notifications_off</mat-icon><span>New</span></button>
+
+                    <button mat-menu-item>
+        <mat-icon>mail</mat-icon>
+        <span>Send Mail</span>
+        </button>
+                    <button mat-menu-item disabled>
+        <mat-icon>voicemail</mat-icon>
+        <span>Save as PDF</span>
+        </button>
+                    <button mat-menu-item (click)="simsPreview()" *ngIf="formState=='form' && f.h.id"><mat-icon>pageview</mat-icon><span>Preview</span></button>
+                    <button mat-menu-item (click)="simsList()" *ngIf="formState=='form'"><mat-icon>notifications_off</mat-icon><span>List</span></button>
+
+                    <button mat-menu-item (click)="simsNew()" *ngIf="formState=='list'"><mat-icon>notifications_off</mat-icon><span>New</span></button>
+
+                    <button mat-menu-item (click)="simsDelete(f.h.id)" *ngIf="formState=='form'"><mat-icon>notifications_off</mat-icon><span>Delete</span></button>
+                </mat-menu>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <mat-card-content *ngIf="formState=='form'">
+            <mat-form-field col-md-2>
+                <input type="hidden" [(ngModel)]="f.h.id">
+                <mat-label>Month</mat-label>
+                <mat-select matNativeControl required [(ngModel)]="f.h.month">
+                    <mat-option value="january">January</mat-option>
+                    <mat-option value="febraury">Febrary</mat-option>
+                    <mat-option value="march">March</mat-option>
+                    <mat-option value="april">April</mat-option>
+                    <mat-option value="may">May</mat-option>
+                    <mat-option value="june">June</mat-option>
+                    <mat-option value="july">July</mat-option>
+                    <mat-option value="august">August</mat-option>
+                    <mat-option value="september">September</mat-option>
+                    <mat-option value="october">Octobar</mat-option>
+                    <mat-option value="november">November</mat-option>
+                    <mat-option value="december">December</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-1 p-2">
+                <input type="number" matInput placeholder="Year" [(ngModel)]="f.h.year" class="font-weight-bold">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3 p-2">
+                <input matInput [matDatepicker]="date_from" placeholder="From Date" [(ngModel)]="f.h.from_date">
+                <mat-datepicker-toggle matSuffix [for]="date_from"></mat-datepicker-toggle>
+                <mat-datepicker #date_from></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3 p-2">
+                <input matInput [matDatepicker]="date_to" placeholder="Date To" [(ngModel)]="f.h.to_date">
+                <mat-datepicker-toggle matSuffix [for]="date_to"></mat-datepicker-toggle>
+                <mat-datepicker #date_to></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-1 p-2">
+                <input type="number" matInput placeholder="Working  Days" [(ngModel)]="f.h.working_days" class="font-weight-bold">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-2 p-2">
+                <input matInput [matDatepicker]="vou_date" placeholder="Voucher Date" [(ngModel)]="f.h.vou_date">
+                <mat-datepicker-toggle matSuffix [for]="vou_date"></mat-datepicker-toggle>
+                <mat-datepicker #vou_date></mat-datepicker>
+            </mat-form-field>
+
+            <div class="p-2 col-md-12">
+                <table mat-table [dataSource]="dataSource" class="col-md-12 table-bordered">
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef class="" style="width:30px;">
+                            <a href="javascipt::" (click)="employeeList()" *ngIf="!s.employeeList_loading">
+                                <mat-icon>refresh</mat-icon>
+                            </a>
+                            <mat-progress-spinner class="text-center" mode="indeterminate" color="accent" diameter="25" *ngIf="s.employeeList_loading"></mat-progress-spinner>
+                        </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <a (click)="getEmpShift(i)" href="javascript:" class="text-secondary" *ngIf="!s.i[i].isLoading">
+                                <mat-icon aria-label="icon-button with a heart icon">sync</mat-icon>
+                            </a>
+                            <mat-progress-spinner class="text-center" mode="indeterminate" color="accent" diameter="25" *ngIf="s.i[i].isLoading"></mat-progress-spinner>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="action2">
+                        <th mat-header-cell *matHeaderCellDef class="" style="width:30px;">
+                            <a href="javascipt::"></a>
+                        </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index"><a class="text-secondary" *ngIf="!s.i[i].isLoading"><button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+        </button><mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="saveCall(i)"><mat-icon>print</mat-icon><span>Payslip</span></button>
+
+        </mat-menu></a></td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="employee">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Employee</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].employee"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="employee_code">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Emp Code</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].employee_code"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="designation">
+                        <th mat-header-cell *matHeaderCellDef>Designation</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field style="width: 70px">
+                                <input type="text" matInput [(ngModel)]="f.i[i].designation">
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="dob">
+                        <th mat-header-cell *matHeaderCellDef>DOB</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field style="width:50px">
+                                <input matInput type="text" [(ngModel)]="f.i[i].dob">
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="day1">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">1 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day1_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day1_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day2">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">2 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day2_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day2_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day3">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">3 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day3_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day3_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day4">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">4</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day4_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day4_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day5">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">5 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day5"><br><input type="number" matInput [(ngModel)]="f.i[i].day5_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day6">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">6 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day6_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day6_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day7">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">7 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day7_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day7_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day8">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">8 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day8_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day8_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day9">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">9 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day9_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day9_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day10">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">10 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day10_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day10_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day11">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">11 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day11_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day11_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day12">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">12 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day12_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day12_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day13">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">13 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day13_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day13_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day14">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">14 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day14_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day14_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day15">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">15 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day15_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day15_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day16">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">16 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day16_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day16_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day17">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">17 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day17_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day17_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day18">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">18 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day18_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day18_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day19">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">19 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput type="number" [(ngModel)]="f.i[i].day19_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day19_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day20">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">20 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day20_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day20_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day21">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">21 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day21_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day21_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day22">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">22 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput type="number" [(ngModel)]="f.i[i].day22_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day22_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day23">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">23 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day23_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day23_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="day24">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">24 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day24_shift"><br><input type="number" matInput [(ngModel)]="f.i[i].day24_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day25">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">25 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input type="number" matInput [(ngModel)]="f.i[i].day25_shift"><br><input matInput [(ngModel)]="f.i[i].day25_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day26">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">26 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].day26_shift"><br><input matInput [(ngModel)]="f.i[i].day26_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day27">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">27 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].day27_shift"><br><input matInput [(ngModel)]="f.i[i].day27_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day28">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">28 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].day28_shift"><br><input matInput [(ngModel)]="f.i[i].day28_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day29">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">29 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].day29_shift"><br><input matInput [(ngModel)]="f.i[i].day29_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="day30">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">30 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].day30_shift"><br><input matInput [(ngModel)]="f.i[i].day30_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="day31">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">31 </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].day31_shift"><br><input matInput [(ngModel)]="f.i[i].day31_ot"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="emp_sl_count">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Employee Leave</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].emp_sl_count"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="year">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Year</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].year"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="total_shift">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Shift Conut</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].total_shift"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="emp_el_count">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Earned Leave</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].emp_el_count"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="holiday">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Holiday </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].holiday"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="total_workingdays">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">No Working Days</th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:30px"><input matInput [(ngModel)]="f.i[i].total_workingdays"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+
+
+                    <ng-container matColumnDef="deduction_total">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Deduction </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].deduction_total"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ot_count">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> OT Count </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].ot_count"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ot_wages">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> OT Wages </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].ot_wages"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ot_per_hr">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> OT Per Hr </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].ot_per_hr"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="overall_ot_wages">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Overtime Ot Wages </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].overall_ot_wages"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="basic">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Basic </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].basic"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="basic_salary">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Basic Salary </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].basic_salary"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gross_salary">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Gross Salary </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].gross_salary"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="esi">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> ESI </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].esi"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="pf">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> PF </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].pf"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="net_pay">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Net Pay </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index" (click)="test(i)">
+                            <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].net_pay"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+
+
+
+
+
+                    <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true" class="example-first-header-row bg-light"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns" class="example-first-footer-row bg-light"></tr>
+                </table>
+            </div>
+        </mat-card-content>
+
+
+        <mat-card-content *ngIf="formState=='list'">
+
+            <div class="p-2 col-md-12" style="overflow-y:auto">
+                <table mat-table [dataSource]="lists" class="col-md-12 table-bordered">
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:50px"> Vou No </th>
+                        <td mat-cell *matCellDef="let row" class="text-center">{{row.id}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="month">
+                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px"> Vou Date </th>
+                        <td mat-cell *matCellDef="let row" class="text-center">{{row.month}}</td>
+                    </ng-container>
+
+
+
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef style="width:30px;"></th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button (click)="simsView(row.id)"><mat-icon>edit</mat-icon></button>
+
+                        </td>
+                    </ng-container>
+                    <ng-container>
+                        <th mat-header-cell *matHeaderCelDef style="width:30px;">
+                        </th>
+                        <td><button><mat-icon>edit</mat-icon></button></td>
+                    </ng-container>
+
+                    <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+                    <tr mat-header-row *matHeaderRowDef="listColumns" class="example-first-header-row bg-light"></tr>
+                    <tr mat-row *matRowDef="let row; columns: listColumns;"></tr>
+                </table>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div *ngIf="formState=='print'" id="content" #content class="col-md-12">
+    <mat-icon color="primary" (click)="print()" class="md-icon-float md-button-right">print</mat-icon>
+    <div class="col-md-12 border bg-white pl-3 pt-4" id="contentToConvert">
+        <div class=" row ">
+            <div class="h4 text-center">Register of Adult Workers MEN/WOMEN (Form No.12)Combined with Muster Roll(Form No.25)Rule(80 & 103)and wages for monthly paid workers for the month of {{f.h.month}} {{f.h.year}}</div>
+            <table class="table-borderless">
+                <tr>
+                    <td class="float-left">Hours of work:<b>8:30am to 5:45pm</b></td>
+                    <td class="text-right">Hours of Rest:<b>10:30am to 10:45am &nbsp;| 12:30pm to 1:15pm &nbsp;| 3:30pm to 3:45pm</b></td>
+                </tr>
+
+                <tr>
+                    <td class="float-left"><b>From:{{f.h.from_date |  date: 'dd-MM-yyyy'}}</b></td>
+                    <td class="float-right">To:<b>{{f.h.to_date | date:'dd-MM-yyyy'}}</b></td>
+                </tr>
+                <tr>
+                    <td class="float-left font-weight-bold">Name of the factory:<b>Tex India Apparels</b></td>
+                    <td class="float-right pl-5 font-weight-bold">Place:<b>Iduvam palayam</b></td>
+                    <td></td>
+                    <td class="float-left pr-5 font-weight-bold">Distict:<b>Tiruppur</b></td>
+                </tr>
+            </table>
+            <table class="table-bordered" style="height: 1200px;">
+                <thead>
+                    <tr>
+                        <th class="text-left rotated">S No</th>
+                        <th class="text-left rotated">Employee Code</th>
+                        <th class="text-left">Name of the Worker</th>
+                        <th class="text-left">Designation</th>
+                        <th class="text-left">DOB</th>
+
+                        <th class="text-left" colspan="31"></th>
+                        <th class="text-left rotated">Present Days</th>
+                        <th class="text-left rotated">Casual Leave</th>
+                        <th class="text-left rotated">Festival Holidays</th>
+                        <th class="text-left rotated">Total Working Days</th>
+                        <th class="text-left">Rate of Wages</th>
+                        <th class="align-left">Wages earned</th>
+                        <th class="align-left">Ot Hours</th>
+                        <th class="align-left">Ot Wages</th>
+                        <th class="align-left">Ot Pay</th>
+                        <th class="align-left">Gross Wages</th>
+                        <th class="text-letf" colspan="3">DEDUCTIONS</th>
+                        <th class=" align-left">Net Amount paid</th>
+                        <th class="align-left" style="min-width: 150px;">Signature worker</th>
+                    </tr>
+                    <tr>
+                        <td colspan="5"></td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>14</td>
+                        <td>15</td>
+                        <td>16</td>
+                        <td>17</td>
+                        <td>18</td>
+                        <td>19</td>
+                        <td>20</td>
+                        <td>21</td>
+                        <td>22</td>
+                        <td>23</td>
+                        <td>24</td>
+                        <td>25</td>
+                        <td>26</td>
+                        <td>27</td>
+                        <td>28</td>
+                        <td>29</td>
+                        <td>30</td>
+                        <td>31</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">Rs</td>
+                        <td class="text-center">Rs</td>
+                        <td></td>
+                        <td class="text-center">Rs</td>
+                        <td class="text-center">Rs</td>
+                        <td class="text-center">Rs</td>
+                        <td class="text-center">ESI</td>
+                        <td class="text-center">PF</td>
+                        <td class="text-center">Total</td>
+                        <td class="text-center">Rs</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let i of f.i;let s=index">
+                        <td><b>{{s+1}}</b></td>
+                        <td><b>{{i.employee_code}}</b></td>
+                        <td><b>{{i.employee}}</b></td>
+                        <td><b>{{i.designation}}</b></td>
+                        <td><b>{{i.dob}}</b></td>
+
+                        <td class="text-center"><b>{{i.day1_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day2_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day3_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day4_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day5_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day6_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day7_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day8_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day9_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day10_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day11_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day12_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day13_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day14_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day15_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day16_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day17_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day18_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day19_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day20_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day21_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day22_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day23_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day24_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day25_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day26_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day27_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day28_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day29_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day30_shift}}</b></td>
+                        <td class="text-center"><b>{{i.day31_shift}}</b></td>
+                        <td class="text-right"><b>{{i.total_shift}}</b></td>
+                        <td class="text-right"><b>{{i.emp_el_count}}</b></td>
+                        <td class="text-right"><b>{{i.holiday}}</b></td>
+
+                        <td class="text-right"><b>{{i.total_workingdays}}</b></td>
+                        <td class="text-right"><b>{{i.basic}}</b></td>
+                        <td class="text-right"><b>{{i.basic_salary}}</b></td>
+                        <td class="text-right"><b>{{i.ot_count}}</b></td>
+                        <td class="text-right"><b>{{i.ot_per_hr}}</b></td>
+                        <td class="text-right"><b>{{i.overall_ot_wages}}</b></td>
+                        <td class="text-right"><b>{{i.gross_salary | number:'1.0-0'}}</b></td>
+
+                        <td class="text-right"><b>{{i.esi | number:'1.0-0'}}</b></td>
+                        <td class="text-right"><b>{{i.pf |number:'1.0-0'}}</b></td>
+                        <td class="text-right"><b>{{i.deduction_total |number:'1.0-0'}}</b></td>
+                        <td class="text-right"><b>{{i.net_pay | number:'1.0-0'}}</b></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-12" *ngIf="formState=='ot'" id="content" #content>
+    <div class="row">
+        <mat-icon color="primary" (click)="print()" class="md-icon-float md-button-right">print</mat-icon>
+
+        <div class="col-md-12 bg-white border-bottom" id="contentToConvert">
+
+            <div class="float-left">
+                <h3 class="pl-2">TEX INDIA APPARELS</h3>
+            </div>
+            <div class="float-right h6 pr-4">for the year of <b>{{f.h.month}} {{f.h.year}}</b></div>
+            <div class="h4 text-center">FORM No 10</div>
+            <div class="h6 text-center">(Prescribed) under rule 78 of the Tamil Nadu Factories Rules 1950</div>
+            <div class="h4 text-center">Overtime Muster-roll for exempted Workers</div>
+
+            <table class="col-md-12 table table-bordered pr-2">
+                <tr>
+                    <th>S No</th>
+                    <th class="text-justify rotated">Number in Register</th>
+                    <th class="text-left">Name of Employee தொழிலாளியின் பெயர் </th>
+                    <th class="text-justify" colspan="31">Dates on which overtime has been worked and extent overtime on each occasion எந்த தேதிகளில் உரிய காலத்திற்கு மேல் வேலை நடந்திருக்கிறதென்பது அப்படி ஒவ்வொரு தடவையும் உரிய காலத்திற்கு மேல் செய்யப்பட்ட வேலையின் கால (மணி) அளவு</th>
+                    <th class="text-left" rowspan="3">Total overtime worker or production incase of piece-workers மிகை நேரத்திற்கு செய்த மொத்த உற்பத்தியின் அளவு </th>
+                    <th class="rotated align-middle" rowspan="3">Normal Hours இயல்பான மணி நேரங்கள் </th>
+                    <th class="text-left" rowspan="3">Normal rate of pay இயல்பான சம்பள விகிதம்</th>
+                    <th class="text-left" rowspan="3">Overtime rate of pay மிகை நேர சம்பள விகிதம் </th>
+                    <th class="rotated text-left" rowspan="3">Normal earning இயல்பான சம்பாத்தியம் </th>
+                    <th class="rotated text-left" rowspan="3">Overtime earning</th>
+                    <th class="text-left" rowspan="3">Cash equilant of advantages of accuring through the concessional sale of foodgrainss and other articles</th>
+                    <th class="rotated text-left" rowspan="3">Total earning மொத்த சம்பாத்தியங்கள் </th>
+                    <th class="rotated text-left" rowspacaln="3">Dates on which overtime மிகை நேரத்திற்காக கொடுக்கப்பட்ட தொகைகள் </th>
+                </tr>
+
+                <tr>
+                    <td colspan="3"></td>
+                    <td colspan="31">Dates &nbsp;தேதிகள்</td>
+                    <td colspan="9"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>21</td>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                    <td>25</td>
+                    <td>26</td>
+                    <td>27</td>
+                    <td>28</td>
+                    <td>29</td>
+                    <td>30</td>
+                    <td>31</td>
+                    <td colspan="9"></td>
+                </tr>
+
+                <tbody>
+                    <tr *ngFor="let t of f.i;let s=index">
+                        <td><b>{{s+1}}</b></td>
+                        <td><b>{{t.employee_code}}</b></td>
+                        <td class="text-left"><b>{{t.employee}}</b></td>
+                        <td><b>{{t.day1_ot>0?t.day1_ot:''}}</b></td>
+                        <td><b>{{t.day2_ot>0?t.day2_ot:''}}</b></td>
+                        <td><b>{{t.day3_ot>0?t.day3_ot:''}}</b></td>
+                        <td><b>{{t.day4_ot>0?t.day4_ot:''}}</b></td>
+                        <td><b>{{t.day5_ot>0?t.day5_ot:''}}</b></td>
+                        <td><b>{{t.day6_ot>0?t.day6_ot:''}}</b></td>
+                        <td><b>{{t.day7_ot>0?t.day7_ot:''}}</b></td>
+                        <td><b>{{t.day8_ot>0?t.day8_ot:''}}</b></td>
+                        <td><b>{{t.day9_ot>0?t.day9_ot:''}}</b></td>
+                        <td><b>{{t.day10_ot>0?t.day10_ot:''}}</b></td>
+                        <td><b>{{t.day11_ot>0?t.day11_ot:''}}</b></td>
+                        <td><b>{{t.day12_ot>0?t.day12_ot:''}}</b></td>
+                        <td><b>{{t.day13_ot>0?t.day13_ot:''}}</b></td>
+                        <td><b>{{t.day14_ot>0?t.day14_ot:''}}</b></td>
+                        <td><b>{{t.day15_ot>0?t.day15_ot:''}}</b></td>
+                        <td><b>{{t.day16_ot>0?t.day16_ot:''}}</b></td>
+                        <td><b>{{t.day17_ot>0?t.day17_ot:''}}</b></td>
+                        <td><b>{{t.day18_ot>0?t.day18_ot:''}}</b></td>
+                        <td><b>{{t.day19_ot>0?t.day19_ot:''}}</b></td>
+                        <td><b>{{t.day20_ot>0?t.day20_ot:''}}</b></td>
+                        <td><b>{{t.day21_ot>0?t.day21_ot:''}}</b></td>
+                        <td><b>{{t.day22_ot>0?t.day22_ot:''}}</b></td>
+                        <td><b>{{t.day23_ot>0?t.day23_ot:''}}</b></td>
+                        <td><b>{{t.day24_ot>0?t.day24_ot:''}}</b></td>
+                        <td><b>{{t.day25_ot>0?t.day25_ot:''}}</b></td>
+                        <td><b>{{t.day26_ot>0?t.day26_ot:''}}</b></td>
+                        <td><b>{{t.day27_ot>0?t.day27_ot:''}}</b></td>
+                        <td><b>{{t.day28_ot>0?t.day28_ot:''}}</b></td>
+                        <td><b>{{t.day29_ot>0?t.day29_ot:''}}</b></td>
+                        <td><b>{{t.day30_ot>0?t.day30_ot:''}}</b></td>
+                        <td><b>{{t.day31_ot>0?t.day31_ot:''}}</b></td>
+
+                        <td></td>
+                        <td><b>{{t.ot_count>0?t.ot_count:''}}</b></td>
+                        <td><b>{{t.ot_per_hr>0?t.ot_per_hr:''}}</b></td>
+                        <td><b>{{t.ot_count>0?t.ot_count:''}}</b></td>
+                        <td><b>{{t.ot_wages>0?t.ot_wages:''}}</b></td>
+                        <td><b>{{t.overall_ot_wages>0?t.overall_ot_wages:''}}</b></td>
+                        <td></td>
+                        <td><b>{{t.overall_ot_wages>0?t.overall_ot_wages:''}}</b></td>
+                        <td><b>{{f.h.vou_date}}</b></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

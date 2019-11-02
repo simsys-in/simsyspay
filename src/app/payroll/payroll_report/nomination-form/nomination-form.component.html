@@ -1,0 +1,106 @@
+<div class="col-md-12 bg-white">
+    <div class="row ">
+        <div class="input-group input-group-sm col-4 offset-2 d-print-none" [formGroup]="headForm">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text ledger-text">Employee</span>
+                    </div>
+                    <input type="text" class="form-control"  formControlName="employee" [matAutocomplete]="employee">
+                    <input type="hidden" formControlName="employee_id" #employee_id>
+                    <mat-autocomplete #employee="matAutocomplete">
+                    <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee.employee" (click)="employeeSelect(employee)">
+                    {{employee.employee}}
+                    </mat-option>
+                    </mat-autocomplete>
+                    
+            </div>
+        
+            <div class="input-group col-4 input-group-sm pl-2 d-print-none">
+                        
+                <button type="button" class="btn btn-outline-success" (click)="simsView(employee_id.value)">View</button>
+                <div class="doNotPrint pl-3">
+                    
+                    <button (click)="onPrint()" class="btn btn-outline-info">Print</button>
+                </div>
+    
+                 </div>
+             
+    </div>
+
+    </div>
+
+<div class="col-md-12 bg-white"  *ngIf="emp_info">
+<div class="row">
+<form class="form " class="form-control">
+<div class="col-md-12 col-12">
+
+<div class="text-center"><h6>The Factories Act 1948 & The Tamilnadu Factories Rules 1950 </h6></div><br><br>
+<div class="text-center"><h6>Form No. 34</h6></div><br><br>
+<div class="text-center"><h6>(Prescribed Under Rule 93)</h6></div><br><br>
+
+<div class="text-center"><h4 class=""><u>NOMINATION</u> / <u>வாரிசு நியமனபடிவம் </u></h4></div>
+</div><br><br>
+<div class="col-md-12 col-12">
+<div class="row">
+<div class="col-md-4"><h6>Worker Name:<b>{{emp_info.employee}}</b></h6></div>
+<div class="col-md-4"><h6>ID No:<b>{{emp_info.employee_code}}</b></h6></div>
+<div class="col-md-4"><h6>Designation:<b>{{emp_info.designation}}</b></h6></div>
+</div>
+<div class="row">
+<div class="col-md-4"><p>தொழிலாளி பெயர்</p></div>
+<div class="col-md-4"><h6>அடையாள எண்</h6></div>
+<div class="col-md-4"><h6>பதவி
+</h6>
+<br>
+<br></div>
+</div>
+</div>
+<br><br>
+<div class="row-md-12 col-12">
+<div class="">
+
+<h6>I hereby declare that the event of my death before resuming work,the balance of my pay due  for the<br><br>
+
+period of leave with period of leave with wages and pending  payment / salaries  not<br><br>
+
+availed of shall be paid to........................who is my...............<br><br>
+
+and resides at................................................................ வேளைக்கு வரும் முன்பே <br><br>
+ 
+மரணம் அடைந்தால், என் கணக்கில் உள்ள  விடுமுறைச்சம்பளம் / கூலிகள் / ஊதியம்,  <br><br>
+ 
+ மற்றவை என்னுடைய .....................................க்கு  ......................... (உறவுமுறை).................................  <br><br>
+ 
+
+...........................................................ல் வசிப்பவர்களுக்கு  அளிக்குமாறு கேட்டு கொள்கிறேன்.<br><br>
+</h6>
+</div>
+</div><br><br>
+<div class="col-md-12">
+<div class="row">
+<h6>Witness(Name / Address / Signature)<br><br>
+சாட்சிதாரர்களின் பெயர்  / முகவரி /  கையொப்பங்கள்</h6><br>
+<br>
+</div>
+</div><br><br>
+<div class="col-md-12">
+<div class="row">
+<h5>1.<br><br>
+2.<br><br><br></h5>
+</div>
+</div><br><br>
+<div class="col-md-12 col-12">
+<div class="row">
+<div class="col-md-4">
+</div>
+<div class="col-md-4">
+</div>
+<div class="col-md-4">
+<h6>Signature of the Worker<br><br>
+தொழிலாளியின் கையொப்பம் </h6></div>
+</div>
+</div>
+<br>
+</form>
+
+</div>
+</div>

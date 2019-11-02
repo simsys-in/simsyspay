@@ -1,0 +1,34 @@
+.example-button-row button,
+.example-button-row a {
+  margin-right: 6px;
+}
+
+.example-icon {
+    padding: 1 10px;
+    
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+    padding: 2 10px;
+  }
+  
+  .mat-toolbar-row, .mat-toolbar-single-row {
+    height: 30px;
+    padding-top:3px;
+}
+.mat-toolbar-multiple-rows {
+    min-height: 35px;
+}
+.mat-card {
+    border-radius: 0px;
+}
+
+
+ 
+.even { background-color:white}
+.odd { background-color: green; }
+ 
+.red { color: blue;; }
+.size20 { font-size: 30px; }
+ 

@@ -1,0 +1,11 @@
+{
+    "/api/*":{
+        "target":"http://erp4.simsys.org/",
+        "secure":false,
+        "loglevel":"debug",
+        "changeOrigin":true,
+        "pathRewrite":{
+            "^/api":""
+        }
+    }
+}
