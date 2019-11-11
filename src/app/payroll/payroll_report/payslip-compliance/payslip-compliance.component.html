@@ -1,148 +1,126 @@
+
 <main *ngIf="formState=='test'">
 
-    <button mat-icon-button color="primary" class="d-print-none">    
+<button mat-icon-button color="primary" class="d-print-none">    
         <mat-icon class="material-icons" (click)="simsPrint()">print</mat-icon>
       </button>
+    
+<div class="col-md-12 bg-white">
 
-    <div class="col-md-12 bg-white">
+<div class="col-md-12 border bg-white" >
+<div class="col-md-12">
+<div class=" row ">
+<div class="col-md-12 col-12">
+<div class="row">
+<div class="col-12 col-md-12 border-bottom pl-1 text-center align-middle align-text-middle">
+<br>
+<h4 class="bg-heading">TEX INDIA APPARELS</h4>
+</div>
+<br>
+<div class="col-12 col-md-12 border-bottom border-center">
+<div class="">
+<div class="font-weight-bold h6"></div>
+GSTIN :<b>33AACFT0770E1ZL</b>
+</div>
+<div class="float-right pr-3">Month For:&nbsp;<b>{{s.month}}</b></div>
+</div>
 
-        <div class="col-md-12 border bg-white">
-            <div class="col-md-12">
-                <div class=" row ">
-                    <div class="col-md-12 col-12">
-                        <div class="row">
-                            <div class="col-12 col-md-12 border-bottom pl-1 text-center align-middle align-text-middle">
-                                <br>
-                                <h4 class="bg-heading">TEX INDIA APPARELS</h4>
-                            </div>
-                            <br>
-                            <div class="col-12 col-md-12 border-bottom border-center">
-                                <div class="">
-                                    <div class="font-weight-bold h6"></div>
-                                    GSTIN :<b>33AACFT0770E1ZL</b>
-                                </div>
-                                <div class="float-right pr-3">Month For:&nbsp;<b>{{s.month}}</b></div>
-                            </div>
+</div>
+</div>
+<div class="col-md-12 col-12">
+<div class="col-12 col-md-12 bg-heading text-center font-weight-bold h5">Wages Slip</div>
+<table class="table table-sm table-border" style="width:100%">
+<tr class="border-bottom">
+<td style="width:100px"><i>Date of Payment</i></td>
+<td class="border-right text-left border-left" style="width:100px"><b class="pl-1">{{s.vou_date | date:'dd-MM-yyyy'}}</b></td>
+<td style="width:100px"><i>Date of Join</i></td>
+<td class="text-left border-left" style="width:100px"><b class="pl-1">{{s.joined | date:'dd-MM-yyyy'}}</b></td>
+</tr>
+<tr class="border-bottom"><td><i>ESI No</i></td><td class="border-right text-left border-left"><b class="pl-1">{{s.esi}}</b></td><td><i>PF No</i></td><td class="text-left border-left"><b class="pl-1">{{s.pf}}</b></td></tr>
+<tr class="border-bottom"><td><i>Emp Name</i></td><td class="border-right text-left border-left"><b class="pl-1">{{s.employee}}</b></td><td><i>EMP Code </i></td><td class="border-left"><b class="pl-1 ">{{s.employee_code}}</b></td></tr>
+<tr class="border-bottom"><td><i>Designation</i></td><td class="border-right text-left border-left"><b class="pl-1 ">{{s.designation}}</b></td><td><i>UAN</i></td><td class="border-left"><b class="pl-1 ">{{s.uno_code}}</b></td></tr>
+<tr class="border-bottom"><td><i>Per Day Wages</i></td><td class="border-right text-left border-left"><b class="pl-1 ">{{s.basic}}</b></td><td><i>Worked Days</i></td><td class="border-left"><b class="pl-1 ">{{s.shift_count}}</b></td></tr>
+<tr class="border-bottom"><td><i>Employee Status</i></td><td class="border-left"><b class="pl-1">{{s.emp_status}}</b></td><td><i>Casual Leave</i></td><td class="border-left"><b class="pl-1">{{s.emp_el_count}}</b></td></tr>
+</table>
+<div class="row">
+</div>
+</div>
+</div>
 
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-12">
-                        <div class="col-12 col-md-12 bg-heading text-center font-weight-bold h5">Wages Slip</div>
-                        <table class="table table-sm table-border" style="width:100%">
-                            <tr class="border-bottom">
-                                <td style="width:100px"><i>Date of Payment</i></td>
-                                <td class="border-right text-left border-left" style="width:100px"><b class="pl-1">{{s.vou_date | date:'dd-MM-yyyy'}}</b></td>
-                                <td style="width:100px"><i>Date of Join</i></td>
-                                <td class="text-left border-left" style="width:100px"><b class="pl-1">{{s.joined | date:'dd-MM-yyyy'}}</b></td>
-                            </tr>
-                            <tr class="border-bottom">
-                                <td><i>ESI No</i></td>
-                                <td class="border-right text-left border-left"><b class="pl-1">{{s.esino}}</b></td>
-                                <td><i>PF No</i></td>
-                                <td class="text-left border-left"><b class="pl-1">{{s.pfno}}</b></td>
-                            </tr>
-                            <tr class="border-bottom">
-                                <td><i>Emp Name</i></td>
-                                <td class="border-right text-left border-left"><b class="pl-1">{{s.employee}}</b></td>
-                                <td><i>EMP Code </i></td>
-                                <td class="border-left"><b class="pl-1 ">{{s.employee_code}}</b></td>
-                            </tr>
-                            <tr class="border-bottom">
-                                <td><i>Designation</i></td>
-                                <td class="border-right text-left border-left"><b class="pl-1 ">{{s.designation}}</b></td>
-                                <td><i>UAN</i></td>
-                                <td class="border-left"><b class="pl-1 ">{{s.uno_code}}</b></td>
-                            </tr>
-                            <tr class="border-bottom">
-                                <td><i>Per Day Wages</i></td>
-                                <td class="border-right text-left border-left"><b class="pl-1 ">{{s.basic}}</b></td>
-                                <td><i>Worked Days</i></td>
-                                <td class="border-left"><b class="pl-1 ">{{s.shift_count}}</b></td>
-                            </tr>
-                            <tr class="border-bottom">
-                                <td><i>Employee Status</i></td>
-                                <td class="border-left"><b class="pl-1">{{s.emp_status}}</b></td>
-                                <td><i>Casual Leave</i></td>
-                                <td class="border-left"><b class="pl-1">{{s.emp_el_count}}</b></td>
-                            </tr>
-                        </table>
-                        <div class="row">
-                        </div>
-                    </div>
-                </div>
+	
 
+<div class="col-12 col-md-12">
+<table id="" class="table table-sm  table-borderless" >
+<tr class="bg-light text-center align-middle border-bottom">
+<td class="border-right" style="width:100px">S No</td>
+<td class="border-right" style="width:100px">Amount</td>
 
+<td class="border-right" style="width:100px">Ot per</td>
+<td class="border-right" style="width:100px">OT Count</td>
+<td class="border-right" style="width:100px">OT Wages</td>
+<td class="border-right" style="width:100px">Deductions</td>
 
-                <div class="col-12 col-md-12">
-                    <table id="" class="table table-sm  table-borderless">
-                        <tr class="bg-light text-center align-middle border-bottom">
-                            <td class="border-right" style="width:100px">S No</td>
-                            <td class="border-right" style="width:100px">Amount</td>
+<td class="border-right" style="width:100px">ESI</td>
+<td class="border-right" style="width:100px">PF</td>
+<td class="border-right" style="width:100px">Gross Salary</td>
+<td class="" style="width:100px">Amount</td>
+</tr>
+<tbody class="">
+<tr>
+<td class="text-left border-right" >1</td>
+<td class="text-center border-right"><b>{{s.basic_salary}}</b></td>
 
-                            <td class="border-right" style="width:100px">Ot per</td>
-                            <td class="border-right" style="width:100px">OT Count</td>
-                            <td class="border-right" style="width:100px">OT Wages</td>
-                            <td class="border-right" style="width:100px">Deductions</td>
+<td class="text-center border-right"><b>{{s.ot | number:'1.0-0'}}</b></td>
+<td class="text-center border-right"><b>{{s.ot_count}}</b></td>
+<td class="text-center border-right"><b>{{s.overall_ot_wages}}</b></td>
 
-                            <td class="border-right" style="width:100px">ESI</td>
-                            <td class="border-right" style="width:100px">PF</td>
-                            <td class="border-right" style="width:100px">Gross Salary</td>
-                            <td class="" style="width:100px">Amount</td>
-                        </tr>
-                        <tbody class="">
-                            <tr>
-                                <td class="text-left border-right">1</td>
-                                <td class="text-center border-right"><b>{{s.basic_salary}}</b></td>
+<td class="text-center border-right"><b>{{s.deduction_total}}</b></td>
 
-                                <td class="text-center border-right"><b>{{s.ot | number:'1.0-0'}}</b></td>
-                                <td class="text-center border-right"><b>{{s.ot_count}}</b></td>
-                                <td class="text-center border-right"><b>{{s.overall_ot_wages}}</b></td>
+<td class="text-center border-right"><b>{{s.esi}}</b></td>
+<td class="text-center border-right"><b>{{s.pf}}</b></td>
+<td class="text-center border-right"><b>{{s.gross_salary}}</b></td>
+<td class="text-center border-right"><b>{{s.net_pay}}</b></td>
+</tr>
+</tbody>
+<tfoot >
+<tr class="bg-light border-top">
+<td class="border-right">Total Gross Salary</td>
+<td class="border-right text-right"><b>{{s.gross_salary}}</b></td>
 
-                                <td class="text-center border-right"><b>{{s.deduction_total}}</b></td>
-
-                                <td class="text-center border-right"><b>{{s.esi}}</b></td>
-                                <td class="text-center border-right"><b>{{s.pf}}</b></td>
-                                <td class="text-center border-right"><b>{{s.gross_salary}}</b></td>
-                                <td class="text-center border-right"><b>{{s.net_pay}}</b></td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr class="bg-light border-top">
-                                <td class="border-right">Total Gross Salary</td>
-                                <td class="border-right text-right"><b>{{s.gross_salary}}</b></td>
-
-                                <td class="text-right border-right border-top"><b></b></td>
-                                <td class="text-right border-right border-top"><b></b></td>
-                                <td class="text-right border-right border-top"><b></b></td>
-                                <td class="text-right border-right border-top"><b></b></td>
-                                <td class="text-right border-right border-top"><b></b></td>
-                                <td class="text-right border-right border-top"><b></b></td>
-                                <td class="text-right border-right border-top"><b></b></td>
-                                <td class="text-right border-right border-top"><b></b></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="col-12 col-md-12">
-                    <div class="row">
-                        <div class="col-md-6 col-6 border-top border-bottom">
-                            <p>Net Salary : <b>{{s.net_pay}}</b></p>
-                        </div>
-                        <div class="col-md-3 border align-bottom text-center">
-                            <br><br> Employee Signature
-                        </div>
-                        <div class="col-md-3 text-right pr-3 align-middle border-top border-bottom">
-                            For <b> Authorised Signature</b>
-                            <br><br>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center bg-warning font-weight-bold pr-1 text-danger"></div>
+<td class="text-right border-right border-top"><b></b></td>
+<td class="text-right border-right border-top"><b></b></td>
+<td class="text-right border-right border-top"><b></b></td>
+<td class="text-right border-right border-top"><b></b></td>
+<td class="text-right border-right border-top"><b></b></td>
+<td class="text-right border-right border-top"><b></b></td>
+<td class="text-right border-right border-top"><b></b></td>
+<td class="text-right border-right border-top"><b></b></td>
+</tr>
+</tfoot>
+</table>
+</div>	
+<div  class="col-12 col-md-12" >
+<div class="row">
+<div class="col-md-6 col-6 border-top border-bottom">
+<p>Net Salary : <b>{{s.net_pay}}</b></p>
+</div>	
+<div class="col-md-3 border align-bottom text-center">
+<br><br>
+Employee Signature
+</div>
+<div class="col-md-3 text-right pr-3 align-middle border-top border-bottom">
+For <b> Authorised Signature</b>
+<br><br>
+</div>
+</div>
+</div>	
+<div class="text-center bg-warning font-weight-bold pr-1 text-danger"></div>
 
 
 
-            </div>
-        </div>
+</div>	
+</div>
 
-    </div>
+</div>
 </main>
+

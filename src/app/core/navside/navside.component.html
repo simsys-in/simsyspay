@@ -1,10 +1,10 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="example-toolbar bg-dark text-light d-print-none" *ngIf="currentUser">
-    <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>list</mat-icon></button>
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>list</mat-icon></button>
     <h1 class="example-app-name">CloudERP<small class="text-danger pl-2">v4</small></h1>
   </mat-toolbar>
   <mat-sidenav-container class="example-sidenav-container example-sidenav bg-white">
-    <mat-sidenav class="text-light d-print-none" #sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-sidenav class="text-light d-print-none" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list class="text-dark bg-white d-print-none" *ngIf="currentUser">
         <!--<a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>-->
         <a mat-list-item routerLink=".">Dashboard</a>
@@ -18,19 +18,17 @@
         <a mat-list-item routerLink="payroll/designation">Designation</a>
         <a mat-list-item routerLink="payroll/bank">Bank</a>
          <a mat-list-item routerLink="payroll/branch">Branch</a>
-         <a mat-list-item routerLink="payroll/leave_type">Leave Type</a>
-                 
+         
                                         
         <span mat-list-item  class="text-info pl-2 font-weight-bold">Entry</span>
         <a mat-list-item routerLink="payroll/">Attanance</a>
         <a mat-list-item routerLink="payroll/">Time Log</a>
-         <a mat-list-item routerLink="payroll/time_punch">Time Punch</a>
-         <a mat-list-item routerLink="payroll/holidays">Holidays</a>
-         <a mat-list-item routerLink="payroll/salary_compliance">Salary Compliance</a>
-        <a mat-list-item routerLink="payroll/employee_leave">Employee Leave</a>
+        <a mat-list-item routerLink="payroll/">Leave</a>
+        <a mat-list-item routerLink="payroll/">Holiday</a>
+        <a mat-list-item routerLink="payroll/time_punch">Time Punch</a>
+        <a mat-list-item routerLink="payroll/salary_compliance">Salary Compliance</a>
 
         <span mat-list-item  class="text-info pl-2 font-weight-bold">Report</span>
-        <a mat-list-item routerLink="payroll/payroll_report/weekly_salary_report">Weekly Salary Report</a>
         <a mat-list-item routerLink="payroll/">Attendance</a>
         <a mat-list-item routerLink="payroll/attendance_register">Register</a>
         <a mat-list-item routerLink="payroll/">Bonus</a>
@@ -39,8 +37,8 @@
 
         <span mat-list-item  class="text-info pl-2 font-weight-bold">Compliance Report</span>
         <a mat-list-item routerLink="payroll/payroll_report/timecard_compliance">Timcard</a>
-        <!-- <a mat-list-item routerLink="payroll/payroll_report/overtime_compliance">Overtime</a>
-        <a mat-list-item routerLink="payroll/payroll_report/attendance_compliance">Attendance</a> -->
+        <a mat-list-item routerLink="payroll/payroll_report/overtime_compliance">Overtime</a>
+        <a mat-list-item routerLink="payroll/payroll_report/attendance_compliance">Attendance</a>
         <a mat-list-item routerLink="payroll/payroll_report/appointment_order">Appointment Order</a>
         <a mat-list-item routerLink="payroll/payroll_report/device_logs">Device Logs</a>
          <a mat-list-item routerLink="payroll/payroll_report/bio_data">Bio Data</a>
@@ -56,8 +54,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-   <router-outlet></router-outlet>  
+        <router-outlet></router-outlet>
     </mat-sidenav-content>
-</mat-sidenav-container>
+  </mat-sidenav-container>
 </div>
-

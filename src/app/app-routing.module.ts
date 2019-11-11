@@ -36,7 +36,6 @@ import { EmployeeLeaveComponent } from './payroll/employee-leave/employee-leave.
 import { HolidaysComponent } from './payroll/holidays/holidays.component';
 import { LeaveTypeComponent } from './payroll/leave-type/leave-type.component';
 import { WeeklySalaryReport } from './payroll/payroll_report/weekly-salary-report/weekly-salary-report.component';
-import { Employee1Component } from './employee1/employee1.component';
 
 
 
@@ -46,7 +45,6 @@ const routes: Routes = [
 { path: 'payroll/employee', component: EmployeeComponent,canActivate: [AuthGuard] },
 { path: 'payroll/department', component: DepartmentComponent,canActivate: [AuthGuard] },
 { path: 'payroll/branch', component: BranchComponent,canActivate: [AuthGuard] },
-{ path: 'employee1', component: Employee1Component,canActivate: [AuthGuard] },
 
 
 

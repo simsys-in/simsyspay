@@ -7,7 +7,6 @@ import { startWith, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { NavService } from 'src/app/service/nav.service';
 
 @Component({
 selector: 'app-employee-leave',
@@ -57,7 +56,6 @@ formState: string;
 constructor(
 fb: FormBuilder,
 private http:HttpClient,
-private nav:NavService,
 private routes:Router,
 private snackBar: MatSnackBar,
 
@@ -113,9 +111,7 @@ employeeFilter(typing){
   this.f.h.employee=row.employee;
   }
 
-toggle(){
-  this.nav.toggle();
-}
+
 
 simsPreview(){
 this.formState='preview';

@@ -6,7 +6,6 @@ import { config } from 'src/app/config';
 import { startWith, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { NavService } from 'src/app/service/nav.service';
 
 
 @Component({
@@ -49,7 +48,6 @@ lists:any;
       fb: FormBuilder,
       private http:HttpClient,
       private routes:Router,
-      private nav:NavService,
       
     ) {
     this.options = fb.group({
@@ -142,8 +140,6 @@ simsDelete(id){
   });
 }
 
-toggle(){
-  this.nav.toggle();
-}
+
 
 }

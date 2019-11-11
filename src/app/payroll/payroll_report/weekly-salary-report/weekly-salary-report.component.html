@@ -1,43 +1,41 @@
 <!-- <img alt="My image name" src="./assets/bmw.jpg"> -->
 <div class="col-md-12 p-2 div">
-    <mat-card>
+<mat-card>
 
-        <mat-toolbar class="bg-light">
+<mat-toolbar class="bg-light">
+<mat-toolbar-row>
+<span class="pl-2 text-primary"> Weekly Salary Report</span>
+<span class="example-spacer"></span>
 
-            <mat-toolbar-row><button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
-                <span class="pl-2 text-primary"> Weekly Salary Report</span>
-                <span class="example-spacer"></span>
+</mat-toolbar-row>
+</mat-toolbar>
+<mat-card-content  *ngIf="formState=='form'">
 
-            </mat-toolbar-row>
-        </mat-toolbar>
-        <mat-card-content *ngIf="formState=='form'">
+<mat-form-field class="col-md-3 p-2">
+<input matInput [matDatepicker]="from_date" placeholder="From Date" [(ngModel)]="f.h.from_date">
+<mat-datepicker-toggle matSuffix [for]="from_date"></mat-datepicker-toggle>
+<mat-datepicker #from_date></mat-datepicker>
+</mat-form-field>
 
-            <mat-form-field class="col-md-3 p-2">
-                <input matInput [matDatepicker]="from_date" placeholder="From Date" [(ngModel)]="f.h.from_date">
-                <mat-datepicker-toggle matSuffix [for]="from_date"></mat-datepicker-toggle>
-                <mat-datepicker #from_date></mat-datepicker>
-            </mat-form-field>
+<mat-form-field class="col-md-3 p-2">
+<input matInput [matDatepicker]="to_date" placeholder="To Date" [(ngModel)]="f.h.to_date">
+<mat-datepicker-toggle matSuffix [for]="to_date"></mat-datepicker-toggle>
+<mat-datepicker #to_date></mat-datepicker>
+</mat-form-field>
 
-            <mat-form-field class="col-md-3 p-2">
-                <input matInput [matDatepicker]="to_date" placeholder="To Date" [(ngModel)]="f.h.to_date">
-                <mat-datepicker-toggle matSuffix [for]="to_date"></mat-datepicker-toggle>
-                <mat-datepicker #to_date></mat-datepicker>
-            </mat-form-field>
+<mat-form-field class="col-md-3 p-2">
+<input type="hidden"  [(ngModel)]="f.h.employee_category_id">
+<mat-label><mat-icon>people</mat-icon> <i>Employee  Category</i></mat-label>
+<input matInput type="text" [(ngModel)]="f.h.employee_category" placeholder="Select Employee Category"   (ngModelChange) ="employee_categoryFilter($event);" [matAutocomplete]="employee_categories" class="font-weight-bold" >
 
-            <mat-form-field class="col-md-3 p-2">
-                <input type="hidden" [(ngModel)]="f.h.employee_category_id">
-                <mat-label>
-                    <mat-icon>people</mat-icon> <i>Employee  Category</i></mat-label>
-                <input matInput type="text" [(ngModel)]="f.h.employee_category" placeholder="Select Employee Category" (ngModelChange)="employee_categoryFilter($event);" [matAutocomplete]="employee_categories" class="font-weight-bold">
+<mat-autocomplete #employee_categories="matAutocomplete" autoActiveFirstOption (optionSelected)="employee_categorySelect($event)">
+<mat-option *ngFor="let emp of filteredEmployee_categories" [value]="emp">
+{{emp.employee_category}}
+</mat-option>
+</mat-autocomplete>          
+</mat-form-field>
 
-                <mat-autocomplete #employee_categories="matAutocomplete" autoActiveFirstOption (optionSelected)="employee_categorySelect($event)">
-                    <mat-option *ngFor="let emp of filteredEmployee_categories" [value]="emp">
-                        {{emp.employee_category}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <!-- <mat-form-field class="col-md-3 p-2">
+<!-- <mat-form-field class="col-md-3 p-2">
 <input type="hidden"  [(ngModel)]="f.h.employee_code">
 <mat-label><mat-icon>people</mat-icon> <b> Party</b> <i> Employee</i></mat-label>
 <input matInput type="text" [(ngModel)]="f.h.employee" placeholder="Select Employee"   (ngModelChange) ="employeeFilter($event);" [matAutocomplete]="employees" class="font-weight-bold" >
@@ -49,222 +47,222 @@
 
 </mat-autocomplete>          
 </mat-form-field> -->
-            <button><mat-icon (click)="simsSave()" color='accent'>print</mat-icon></button>
+<button><mat-icon (click)="simsSave()" color='accent'>print</mat-icon></button>
 
-        </mat-card-content>
+</mat-card-content>
 
 
-    </mat-card>
+</mat-card>
 
 </div>
 <div>
-    <mat-card>
-        <mat-card-content *ngIf="formState=='list'">
-            <div class="p-2 col-md-12">
-                <div class="border bg-warning float-right"><label for="from date" class="h5">From date:{{f.h.from_date | date :'dd-MMM-yy'}}</label>&nbsp;&nbsp;
-                    <label for="to date" class="h5">To Date:{{f.h.to_date | date:'dd-MMM-yy' }}</label>
-                </div>
+<mat-card>
+<mat-card-content *ngIf="formState=='list'">
+<div class="p-2 col-md-12">
+<div class="border bg-warning float-right"><label for="from date" class="h5">From date:{{f.h.from_date | date :'dd-MMM-yy'}}</label>&nbsp;&nbsp;
+<label for="to date" class="h5">To Date:{{f.h.to_date | date:'dd-MMM-yy' }}</label>
+</div>
 
-                <table mat-table [dataSource]="t" class="col-md-12 table-bordered">
+<table mat-table [dataSource]="t" class="col-md-12 table-bordered">
 
-                    <ng-container matColumnDef="i">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">S No </th>
-                        <td mat-cell *matCellDef="let row;let i=index" class="text-center">{{i+1}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
+<ng-container matColumnDef="i">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">S No </th>
+<td mat-cell *matCellDef="let row;let i=index" class="text-center">{{i+1}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>   
 
-                    <ng-container matColumnDef="employee">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Employee</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.employee}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="employee_code">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Employee Code</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.employee_code?row.employee_code:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
+<ng-container matColumnDef="employee">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Employee</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.employee}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="employee_code">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Employee Code</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.employee_code?row.employee_code:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
 
-                    <ng-container matColumnDef="day1_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day1</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day1_shift?row.day1_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
+<ng-container matColumnDef="day1_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day1</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day1_shift?row.day1_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
 
-                    <ng-container matColumnDef="day2_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day2</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day2_shift?row.day2_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day3_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day3</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day3_shift?row.day3_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day4_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day4</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day4_shift?row.day4_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day5_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day5 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day5_shift?row.day5_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day6_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day6 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day6_shift?row.day6_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day7_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day7 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day7_shift?row.day7_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day8_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day8 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day8_shift?row.day8_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day9_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day9 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day9_shift?row.day9_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day10_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day10 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day10_shift?row.day10_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day11_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day11 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day11_shift?row.day11_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day12_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day12 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day12_shift?row.day12_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day13_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day13 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day13_shift?row.day13_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day14_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day14</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day14_shift?row.day14_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day15_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day15 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day15_shift?row.day15_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
+<ng-container matColumnDef="day2_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day2</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day2_shift?row.day2_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day3_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day3</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day3_shift?row.day3_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day4_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day4</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day4_shift?row.day4_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day5_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day5 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day5_shift?row.day5_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day6_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day6 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day6_shift?row.day6_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day7_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day7 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day7_shift?row.day7_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day8_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day8 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day8_shift?row.day8_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day9_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day9 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day9_shift?row.day9_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day10_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day10 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day10_shift?row.day10_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day11_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day11 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day11_shift?row.day11_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day12_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day12 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day12_shift?row.day12_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day13_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day13 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day13_shift?row.day13_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day14_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day14</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day14_shift?row.day14_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day15_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day15 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day15_shift?row.day15_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
 
-                    <ng-container matColumnDef="day16_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day16 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day16_shift?row.day16_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day17_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day17 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day17_shift?row.day17_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day18_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day18 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day18_shift?row.day18_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
+<ng-container matColumnDef="day16_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day16 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day16_shift?row.day16_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day17_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day17 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day17_shift?row.day17_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day18_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day18 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day18_shift?row.day18_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
 
-                    <ng-container matColumnDef="day19_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day19 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day19_shift?row.day19_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day20_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day20 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day20_shift?row.day20_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day21_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day21 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day21_shift?row.day21_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day22_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day22 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day22_shift?row.day22_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day23_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day23 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day23_shift?row.day23_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day24_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day24 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day24_shift?row.day24_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day25_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day25 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day25_shift?row.day25_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day26_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day26 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day26_shift?row.day26_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day27_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day27 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day27_shift?row.day27_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day28_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day28 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day28_shift?row.day28_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day29_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day29 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day29_shift?row.day29_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day30_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day30 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day30_shift?row.day30_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="day31_shift">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day31 </th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.day31_shift?row.day31_shift:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="shift_count">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Shift Count</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.shift_count?row.shift_count:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="salary">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Salary</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.salary?row.salary:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef>Total </td>
-                    </ng-container>
+<ng-container matColumnDef="day19_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day19 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day19_shift?row.day19_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day20_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day20 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day20_shift?row.day20_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day21_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day21 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day21_shift?row.day21_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day22_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day22 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day22_shift?row.day22_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day23_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day23 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day23_shift?row.day23_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day24_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day24 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day24_shift?row.day24_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day25_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day25 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day25_shift?row.day25_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day26_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day26 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day26_shift?row.day26_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day27_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day27 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day27_shift?row.day27_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day28_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day28 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day28_shift?row.day28_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day29_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day29 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day29_shift?row.day29_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day30_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day30 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day30_shift?row.day30_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>
+</ng-container>
+<ng-container matColumnDef="day31_shift">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Day31 </th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.day31_shift?row.day31_shift:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>   
+</ng-container>
+<ng-container matColumnDef="shift_count">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Shift Count</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.shift_count?row.shift_count:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>  
+</ng-container>
+<ng-container matColumnDef="salary">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Salary</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.salary?row.salary:''}}</td>
+<td mat-footer-cell *matFooterCellDef>Total  </td>    
+</ng-container>
 
-                    <ng-container matColumnDef="total">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Total</th>
-                        <td mat-cell *matCellDef="let row" class="text-center">{{row.total?row.total:''}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                    </ng-container>
-                    <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
-                    <tr mat-header-row *matHeaderRowDef="listColumns; sticky:true" class="text bg-light example-element-row" (click)="selection.toggle(row)"></tr>
-                    <tr mat-row *matRowDef="let row; columns: listColumns;" [ngClass]="{hovered: row.hovered, highlighted: row.highlighted}" (click)="row.highlighted = !row.highlighted" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
-                    <tr mat-footer-row *matFooterRowDef="listColumns"></tr>
-                </table>
-            </div>
-        </mat-card-content>
-    </mat-card>
+<ng-container matColumnDef="total">
+<th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px">Total</th>
+<td mat-cell *matCellDef="let row" class="text-center">{{row.total?row.total:''}}</td>
+<td mat-footer-cell *matFooterCellDef>  </td>    
+</ng-container>
+<!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+<tr mat-header-row *matHeaderRowDef="listColumns; sticky:true" class="text bg-light example-element-row"  (click)="selection.toggle(row)"></tr>
+<tr mat-row *matRowDef="let row; columns: listColumns;" [ngClass]="{hovered: row.hovered, highlighted: row.highlighted}" (click)="row.highlighted = !row.highlighted" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+<tr mat-footer-row *matFooterRowDef="listColumns"></tr>
+</table>
+</div> 
+</mat-card-content>
+</mat-card>
 </div>

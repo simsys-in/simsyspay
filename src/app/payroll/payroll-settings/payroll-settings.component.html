@@ -1,36 +1,32 @@
 <div class="col-md-12 p-2">
     <mat-card>
-        <mat-toolbar class="bg-light">
-            <mat-toolbar-row>
-                <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
-                <span class="pl-2 text-primary">Payroll Settings</span>
-                <span class="example-spacer"></span>
-                <button mat-icon-button (click)="simsSave()" *ngIf="formState=='form'" matTooltip="Save"><mat-icon>save</mat-icon></button>
-                <button mat-icon-button (click)="simsUpdate(f.h.id)" *ngIf="formState=='form' && f.h.id>0"><mat-icon>save_alt</mat-icon></button>
+    <mat-toolbar class="bg-light">
+    <mat-toolbar-row>
+   <span class="pl-2 text-primary">Payroll Settings</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button (click)="simsSave()" *ngIf="formState=='form'"  matTooltip="Save"><mat-icon>save</mat-icon></button>
+    <button mat-icon-button (click)="simsUpdate(f.h.id)" *ngIf="formState=='form' && f.h.id>0"><mat-icon>save_alt</mat-icon></button>
+    
 
+    </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-card-content  *ngIf="formState=='form'">
+    
+    <mat-form-field class="col-md-3 p-2">
+    <input matInput placeholder="Month Start" class="font-weight-bold" type="number" required [(ngModel)]="f.h.month_start">
+    <input type="hidden" [(ngModel)]="f.h.id">      
+    </mat-form-field>
 
-            </mat-toolbar-row>
-        </mat-toolbar>
-        <mat-card-content *ngIf="formState=='form'">
-            <div class="col-md-6  offset-md-4">
-                <div class="col-md-12 p-2 bg-heading font-weight-bold">Payroll Settings</div>
-                <mat-form-field class="col-md-6" appearance="outline">
-                    <mat-label>Month Start</mat-label>
-                    <input matInput placeholder="Month Start" class="font-weight-bold" type="number" required [(ngModel)]="f.h.month_start">
-                    <input type="hidden" [(ngModel)]="f.h.id">
-                </mat-form-field>
+    <mat-form-field class="col-md-3 p-2">
+        <input matInput placeholder="Week Start" class="font-weight-bold" required [(ngModel)]="f.h.week_start">
+          
+        </mat-form-field>
+    
+    </mat-card-content>
 
-                <mat-form-field class="col-md-6 pl-1" appearance="outline">
-                    <mat-label>Week Start</mat-label>
-                    <input matInput placeholder="Week Start" class="font-weight-bold" required [(ngModel)]="f.h.week_start">
-
-                </mat-form-field>
-            </div>
-        </mat-card-content>
-
-
-
-
+    
     </mat-card>
-
-</div>
+    
+    </div>
+    
+    

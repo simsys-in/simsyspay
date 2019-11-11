@@ -4,7 +4,6 @@ import { config } from 'src/app/config';
 import { FormGroup, FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { identifierModuleUrl, analyzeAndValidateNgModules } from '@angular/compiler';
-import { NavService } from 'src/app/service/nav.service';
 
 class Employees{
 public employee : string;
@@ -42,9 +41,7 @@ httpOptions = {
   'Authorization': localStorage.token,
   })
   }
-  constructor(private http:HttpClient,
-    private nav:NavService
-    ) {
+  constructor(private http:HttpClient) {
     this.http.get<any>(config.apiUrl+'payroll/employee',this.httpOptions).subscribe(res =>{
       //if (res.status =='token_expired') return this.routes.navigate(['logout']);
       this.employees = res;
@@ -88,9 +85,6 @@ httpOptions = {
 
   print(){
     window.print();
-}
-toggle(){
-  this.nav.toggle();
 }
 
 }

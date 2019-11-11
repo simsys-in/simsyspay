@@ -8,7 +8,6 @@ import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { SelectionModel } from '@angular/cdk/collections';
-import { NavService } from 'src/app/service/nav.service';
 
 @Component({
 selector: 'app-weekly-salary-report',
@@ -67,7 +66,6 @@ constructor(
 fb: FormBuilder,
 private http:HttpClient,
 private routes:Router,
-private nav:NavService,
 private snackBar: MatSnackBar,
 
 ) {
@@ -110,9 +108,7 @@ this.simsNew();
 }
 
 
-toggle(){
-  this.nav.toggle();
-}
+
 
 simsSave(){
   this.formState='list';

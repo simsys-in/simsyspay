@@ -71,7 +71,6 @@ export class LoginComponent implements OnInit {
   get f() { return this.headForm.controls; }
 
 simsSave(){
-
   let  request=this.headForm.value;
   this.isLoading=true;
   this.error='';
@@ -85,10 +84,9 @@ let httpOptions = {
   )
   .subscribe(
       data => {
-        console.table(data);
-          console.log(localStorage.setItem('currentUser', JSON.stringify(data)));
+          localStorage.setItem('currentUser', JSON.stringify(data));
           //this.routes.navigate([this.returnUrl]);
-          (this.routes.navigate([this.returnUrl]));
+          this.routes.navigate([this.returnUrl]);
           //location.reload(true);
           this.isLoading=false;
       },

@@ -6,7 +6,6 @@ import { config } from 'src/app/config';
 import { startWith, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { NavService } from 'src/app/service/nav.service';
 
 
 @Component({
@@ -48,7 +47,6 @@ formState: string;
 constructor(
 fb: FormBuilder,
 private http:HttpClient,
-private nav:NavService,
 private routes:Router,
 private snackBar: MatSnackBar,
 
@@ -142,9 +140,6 @@ this.snackBar.open(JSON.stringify(error),"Error",);
 });
 }
 
-toggle(){
-  this.nav.toggle();
-  
-}
+
 
 }

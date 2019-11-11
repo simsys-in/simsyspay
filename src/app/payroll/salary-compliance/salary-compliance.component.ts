@@ -10,7 +10,6 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas'; 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { NavService } from 'src/app/service/nav.service';
 @Component({
 selector: 'app-salary-compliance',
 templateUrl: './salary-compliance.component.html',
@@ -19,7 +18,7 @@ styleUrls:['./salary-compliance.component.scss']
 
 export class SalaryComplianceComponent implements OnInit {
 options: FormGroup;
-displayedColumns: any[] = ['action','action2','employee','employee_code','designation','dob','day1','day2','day3','day4','day5','day6','day7','day8','day9','day10','day11', 'day12','day13','day14','day15','day16','day17','day18','day19','day20','day21','day22','day23','day24','day25','day26','day27','day28','day29','day30','day31','year','emp_sl_count','total_shift','holiday','emp_el_count','total_workingdays','ot_count','ot_wages','basic','basic_salary','gross_salary','deduction_total','ot_per_hr','overall_ot_wages','esi','pf','net_pay'];
+displayedColumns: any[] = ['action','action2','employee','employee_code','day1','day2','day3','day4','day5','day6','day7','day8','day9','day10','day11', 'day12','day13','day14','day15','day16','day17','day18','day19','day20','day21','day22','day23','day24','day25','day26','day27','day28','day29','day30','day31','year','emp_sl_count','total_shift','holiday','emp_el_count','total_workingdays','ot_count','ot_wages','basic','basic_salary','gross_salary','deduction_total','ot_per_hr','overall_ot_wages','esi','pf','net_pay'];
 a:any;
 
 listColumns: any[]=['id','month','action'];
@@ -79,7 +78,6 @@ constructor(
 fb: FormBuilder,
 private http:HttpClient,
 private routes:Router,
-private nav:NavService,
 private snackBar: MatSnackBar,
 
 ) {
@@ -94,12 +92,7 @@ floatLabel: 'auto',
 
 }
   
-toggle(){
-    this.nav.toggle();
-}
-
 ngOnInit() {
-    
   
 this.simsNew();
 }
@@ -119,7 +112,7 @@ public print()
        let pdf = new jspdf('l', 'mm', 'a3'); // A4 size page of PDF  
       var position=0;
           pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
-       pdf.save('salaryCompliance.pdf'); // Generated PDF   
+       pdf.save('MYPdf.pdf'); // Generated PDF   
      }); 
 
 } 
@@ -349,8 +342,6 @@ otForm(){
 }
 
 }
-
-
 
 export const APP_DATE_FORMATS =
 {

@@ -6,7 +6,6 @@ import { config } from 'src/app/config';
 
 
 import * as moment from 'moment';
-import { NavService } from 'src/app/service/nav.service';
 @Component({
 selector: 'app-punch-log-betweendate',
 templateUrl: './punch-log-betweendate.component.html',
@@ -57,7 +56,6 @@ y:{
 
 constructor(
 private router:Router,
-private nav:NavService,
 private http: HttpClient,
 private routes:Router,
 private fb:FormBuilder
@@ -105,16 +103,12 @@ getKeys(obj){
   }
 
 load(id){
-    let data:any=id.employee_id;
+    let data:any=id.employee_code;
  this.routes.navigate(['/payroll/employee'],
   {
     queryParams:{data:JSON.stringify(data)}
     })
 }
-toggle(){
-  this.nav.toggle();
-}
-
 }
 
 

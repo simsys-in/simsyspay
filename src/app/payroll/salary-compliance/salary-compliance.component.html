@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <mat-card>
         <mat-toolbar class="bg-light">
-            <mat-toolbar-row><button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+            <mat-toolbar-row>
                 <button mat-mini-fab>{{f.h.id}}</button> <span><mat-icon (click)="back()">arrow_back</mat-icon></span><span class="pl-2 text-primary">Salary Compliance</span>
                 <span class="example-spacer"></span>
 
@@ -122,24 +122,6 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">Emp Code</th>
                         <td mat-cell *matCellDef="let inventory;let i=index">
                             <mat-form-field class="" style="width:40px"><input matInput [(ngModel)]="f.i[i].employee_code"></mat-form-field>
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
-                    </ng-container>
-                    <ng-container matColumnDef="designation">
-                        <th mat-header-cell *matHeaderCellDef>Designation</th>
-                        <td mat-cell *matCellDef="let inventory;let i=index">
-                            <mat-form-field style="width: 70px">
-                                <input type="text" matInput [(ngModel)]="f.i[i].designation">
-                            </mat-form-field>
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
-                    </ng-container>
-                    <ng-container matColumnDef="dob">
-                        <th mat-header-cell *matHeaderCellDef>DOB</th>
-                        <td mat-cell *matCellDef="let inventory;let i=index">
-                            <mat-form-field style="width:50px">
-                                <input matInput type="text" [(ngModel)]="f.i[i].dob">
-                            </mat-form-field>
                         </td>
                         <td mat-footer-cell *matFooterCellDef></td>
                     </ng-container>
@@ -600,8 +582,6 @@
                         <th class="text-left rotated">S No</th>
                         <th class="text-left rotated">Employee Code</th>
                         <th class="text-left">Name of the Worker</th>
-                        <th class="text-left">Designation</th>
-                        <th class="text-left">DOB</th>
 
                         <th class="text-left" colspan="31"></th>
                         <th class="text-left rotated">Present Days</th>
@@ -619,7 +599,7 @@
                         <th class="align-left" style="min-width: 150px;">Signature worker</th>
                     </tr>
                     <tr>
-                        <td colspan="5"></td>
+                        <td colspan="3"></td>
                         <td>1</td>
                         <td>2</td>
                         <td>3</td>
@@ -673,8 +653,6 @@
                         <td><b>{{s+1}}</b></td>
                         <td><b>{{i.employee_code}}</b></td>
                         <td><b>{{i.employee}}</b></td>
-                        <td><b>{{i.designation}}</b></td>
-                        <td><b>{{i.dob}}</b></td>
 
                         <td class="text-center"><b>{{i.day1_shift}}</b></td>
                         <td class="text-center"><b>{{i.day2_shift}}</b></td>
@@ -744,116 +722,116 @@
             <div class="h4 text-center">FORM No 10</div>
             <div class="h6 text-center">(Prescribed) under rule 78 of the Tamil Nadu Factories Rules 1950</div>
             <div class="h4 text-center">Overtime Muster-roll for exempted Workers</div>
-
-            <table class="col-md-12 table table-bordered pr-2">
-                <tr>
-                    <th>S No</th>
-                    <th class="text-justify rotated">Number in Register</th>
-                    <th class="text-left">Name of Employee தொழிலாளியின் பெயர் </th>
-                    <th class="text-justify" colspan="31">Dates on which overtime has been worked and extent overtime on each occasion எந்த தேதிகளில் உரிய காலத்திற்கு மேல் வேலை நடந்திருக்கிறதென்பது அப்படி ஒவ்வொரு தடவையும் உரிய காலத்திற்கு மேல் செய்யப்பட்ட வேலையின் கால (மணி) அளவு</th>
-                    <th class="text-left" rowspan="3">Total overtime worker or production incase of piece-workers மிகை நேரத்திற்கு செய்த மொத்த உற்பத்தியின் அளவு </th>
-                    <th class="rotated align-middle" rowspan="3">Normal Hours இயல்பான மணி நேரங்கள் </th>
-                    <th class="text-left" rowspan="3">Normal rate of pay இயல்பான சம்பள விகிதம்</th>
-                    <th class="text-left" rowspan="3">Overtime rate of pay மிகை நேர சம்பள விகிதம் </th>
-                    <th class="rotated text-left" rowspan="3">Normal earning இயல்பான சம்பாத்தியம் </th>
-                    <th class="rotated text-left" rowspan="3">Overtime earning</th>
-                    <th class="text-left" rowspan="3">Cash equilant of advantages of accuring through the concessional sale of foodgrainss and other articles</th>
-                    <th class="rotated text-left" rowspan="3">Total earning மொத்த சம்பாத்தியங்கள் </th>
-                    <th class="rotated text-left" rowspacaln="3">Dates on which overtime மிகை நேரத்திற்காக கொடுக்கப்பட்ட தொகைகள் </th>
-                </tr>
-
-                <tr>
-                    <td colspan="3"></td>
-                    <td colspan="31">Dates &nbsp;தேதிகள்</td>
-                    <td colspan="9"></td>
-                </tr>
-                <tr>
-                    <td colspan="3"></td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td>7</td>
-                    <td>8</td>
-                    <td>9</td>
-                    <td>10</td>
-                    <td>11</td>
-                    <td>12</td>
-                    <td>13</td>
-                    <td>14</td>
-                    <td>15</td>
-                    <td>16</td>
-                    <td>17</td>
-                    <td>18</td>
-                    <td>19</td>
-                    <td>20</td>
-                    <td>21</td>
-                    <td>22</td>
-                    <td>23</td>
-                    <td>24</td>
-                    <td>25</td>
-                    <td>26</td>
-                    <td>27</td>
-                    <td>28</td>
-                    <td>29</td>
-                    <td>30</td>
-                    <td>31</td>
-                    <td colspan="9"></td>
-                </tr>
-
-                <tbody>
-                    <tr *ngFor="let t of f.i;let s=index">
-                        <td><b>{{s+1}}</b></td>
-                        <td><b>{{t.employee_code}}</b></td>
-                        <td class="text-left"><b>{{t.employee}}</b></td>
-                        <td><b>{{t.day1_ot>0?t.day1_ot:''}}</b></td>
-                        <td><b>{{t.day2_ot>0?t.day2_ot:''}}</b></td>
-                        <td><b>{{t.day3_ot>0?t.day3_ot:''}}</b></td>
-                        <td><b>{{t.day4_ot>0?t.day4_ot:''}}</b></td>
-                        <td><b>{{t.day5_ot>0?t.day5_ot:''}}</b></td>
-                        <td><b>{{t.day6_ot>0?t.day6_ot:''}}</b></td>
-                        <td><b>{{t.day7_ot>0?t.day7_ot:''}}</b></td>
-                        <td><b>{{t.day8_ot>0?t.day8_ot:''}}</b></td>
-                        <td><b>{{t.day9_ot>0?t.day9_ot:''}}</b></td>
-                        <td><b>{{t.day10_ot>0?t.day10_ot:''}}</b></td>
-                        <td><b>{{t.day11_ot>0?t.day11_ot:''}}</b></td>
-                        <td><b>{{t.day12_ot>0?t.day12_ot:''}}</b></td>
-                        <td><b>{{t.day13_ot>0?t.day13_ot:''}}</b></td>
-                        <td><b>{{t.day14_ot>0?t.day14_ot:''}}</b></td>
-                        <td><b>{{t.day15_ot>0?t.day15_ot:''}}</b></td>
-                        <td><b>{{t.day16_ot>0?t.day16_ot:''}}</b></td>
-                        <td><b>{{t.day17_ot>0?t.day17_ot:''}}</b></td>
-                        <td><b>{{t.day18_ot>0?t.day18_ot:''}}</b></td>
-                        <td><b>{{t.day19_ot>0?t.day19_ot:''}}</b></td>
-                        <td><b>{{t.day20_ot>0?t.day20_ot:''}}</b></td>
-                        <td><b>{{t.day21_ot>0?t.day21_ot:''}}</b></td>
-                        <td><b>{{t.day22_ot>0?t.day22_ot:''}}</b></td>
-                        <td><b>{{t.day23_ot>0?t.day23_ot:''}}</b></td>
-                        <td><b>{{t.day24_ot>0?t.day24_ot:''}}</b></td>
-                        <td><b>{{t.day25_ot>0?t.day25_ot:''}}</b></td>
-                        <td><b>{{t.day26_ot>0?t.day26_ot:''}}</b></td>
-                        <td><b>{{t.day27_ot>0?t.day27_ot:''}}</b></td>
-                        <td><b>{{t.day28_ot>0?t.day28_ot:''}}</b></td>
-                        <td><b>{{t.day29_ot>0?t.day29_ot:''}}</b></td>
-                        <td><b>{{t.day30_ot>0?t.day30_ot:''}}</b></td>
-                        <td><b>{{t.day31_ot>0?t.day31_ot:''}}</b></td>
-
-                        <td></td>
-                        <td><b>{{t.ot_count>0?t.ot_count:''}}</b></td>
-                        <td><b>{{t.ot_per_hr>0?t.ot_per_hr:''}}</b></td>
-                        <td><b>{{t.ot_count>0?t.ot_count:''}}</b></td>
-                        <td><b>{{t.ot_wages>0?t.ot_wages:''}}</b></td>
-                        <td><b>{{t.overall_ot_wages>0?t.overall_ot_wages:''}}</b></td>
-                        <td></td>
-                        <td><b>{{t.overall_ot_wages>0?t.overall_ot_wages:''}}</b></td>
-                        <td><b>{{f.h.vou_date}}</b></td>
-                    </tr>
-
-
-                </tbody>
-            </table>
         </div>
+        <table class="col-md-12 table table-bordered">
+            <tr>
+                <th>S No</th>
+                <th class="text-justify rotated">Number in Register</th>
+                <th class="text-left">Name of Employee தொழிலாளியின் பெயர் </th>
+                <th class="text-justify" colspan="31">Dates on which overtime has been worked and extent overtime on each occasion எந்த தேதிகளில் உரிய காலத்திற்கு மேல் வேலை நடந்திருக்கிறதென்பது அப்படி ஒவ்வொரு தடவையும் உரிய காலத்திற்கு மேல் செய்யப்பட்ட வேலையின் கால (மணி) அளவு</th>
+                <th class="text-left" rowspan="3">Total overtime worker or production incase of piece-workers மிகை நேரத்திற்கு செய்த மொத்த உற்பத்தியின் அளவு </th>
+                <th class="rotated align-middle" rowspan="3">Normal Hours இயல்பான மணி நேரங்கள் </th>
+                <th class="text-left" rowspan="3">Normal rate of pay இயல்பான சம்பள விகிதம்</th>
+                <th class="text-left" rowspan="3">Overtime rate of pay மிகை நேர சம்பள விகிதம் </th>
+                <th class="rotated text-left" rowspan="3">Normal earning இயல்பான சம்பாத்தியம் </th>
+                <th class="rotated text-left" rowspan="3">Overtime earning</th>
+                <th class="text-left" rowspan="3">Cash equilant of advantages of accuring through the concessional sale of foodgrainss and other articles</th>
+                <th class="rotated text-left" rowspan="3">Total earning மொத்த சம்பாத்தியங்கள் </th>
+                <th class="rotated text-left" rowspacaln="3">Dates on which overtime மிகை நேரத்திற்காக கொடுக்கப்பட்ட தொகைகள் </th>
+            </tr>
+
+            <tr>
+                <td colspan="3"></td>
+                <td colspan="31">Dates &nbsp;தேதிகள்</td>
+                <td colspan="9"></td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+                <td>11</td>
+                <td>12</td>
+                <td>13</td>
+                <td>14</td>
+                <td>15</td>
+                <td>16</td>
+                <td>17</td>
+                <td>18</td>
+                <td>19</td>
+                <td>20</td>
+                <td>21</td>
+                <td>22</td>
+                <td>23</td>
+                <td>24</td>
+                <td>25</td>
+                <td>26</td>
+                <td>27</td>
+                <td>28</td>
+                <td>29</td>
+                <td>30</td>
+                <td>31</td>
+                <td colspan="9"></td>
+            </tr>
+
+            <tbody>
+                <tr *ngFor="let t of f.i;let s=index">
+                    <td><b>{{s+1}}</b></td>
+                    <td><b>{{t.employee_code}}</b></td>
+                    <td class="text-left"><b>{{t.employee}}</b></td>
+                    <td><b>{{t.day1_ot>0?t.day1_ot:''}}</b></td>
+                    <td><b>{{t.day2_ot>0?t.day2_ot:''}}</b></td>
+                    <td><b>{{t.day3_ot>0?t.day3_ot:''}}</b></td>
+                    <td><b>{{t.day4_ot>0?t.day4_ot:''}}</b></td>
+                    <td><b>{{t.day5_ot>0?t.day5_ot:''}}</b></td>
+                    <td><b>{{t.day6_ot>0?t.day6_ot:''}}</b></td>
+                    <td><b>{{t.day7_ot>0?t.day7_ot:''}}</b></td>
+                    <td><b>{{t.day8_ot>0?t.day8_ot:''}}</b></td>
+                    <td><b>{{t.day9_ot>0?t.day9_ot:''}}</b></td>
+                    <td><b>{{t.day10_ot>0?t.day10_ot:''}}</b></td>
+                    <td><b>{{t.day11_ot>0?t.day11_ot:''}}</b></td>
+                    <td><b>{{t.day12_ot>0?t.day12_ot:''}}</b></td>
+                    <td><b>{{t.day13_ot>0?t.day13_ot:''}}</b></td>
+                    <td><b>{{t.day14_ot>0?t.day14_ot:''}}</b></td>
+                    <td><b>{{t.day15_ot>0?t.day15_ot:''}}</b></td>
+                    <td><b>{{t.day16_ot>0?t.day16_ot:''}}</b></td>
+                    <td><b>{{t.day17_ot>0?t.day17_ot:''}}</b></td>
+                    <td><b>{{t.day18_ot>0?t.day18_ot:''}}</b></td>
+                    <td><b>{{t.day19_ot>0?t.day19_ot:''}}</b></td>
+                    <td><b>{{t.day20_ot>0?t.day20_ot:''}}</b></td>
+                    <td><b>{{t.day21_ot>0?t.day21_ot:''}}</b></td>
+                    <td><b>{{t.day22_ot>0?t.day22_ot:''}}</b></td>
+                    <td><b>{{t.day23_ot>0?t.day23_ot:''}}</b></td>
+                    <td><b>{{t.day24_ot>0?t.day24_ot:''}}</b></td>
+                    <td><b>{{t.day25_ot>0?t.day25_ot:''}}</b></td>
+                    <td><b>{{t.day26_ot>0?t.day26_ot:''}}</b></td>
+                    <td><b>{{t.day27_ot>0?t.day27_ot:''}}</b></td>
+                    <td><b>{{t.day28_ot>0?t.day28_ot:''}}</b></td>
+                    <td><b>{{t.day29_ot>0?t.day29_ot:''}}</b></td>
+                    <td><b>{{t.day30_ot>0?t.day30_ot:''}}</b></td>
+                    <td><b>{{t.day31_ot>0?t.day31_ot:''}}</b></td>
+
+                    <td></td>
+                    <td><b>{{t.ot_count>0?t.ot_count:''}}</b></td>
+                    <td><b>{{t.ot_per_hr>0?t.ot_per_hr:''}}</b></td>
+                    <td><b>{{t.ot_count>0?t.ot_count:''}}</b></td>
+                    <td><b>{{t.ot_wages>0?t.ot_wages:''}}</b></td>
+                    <td><b>{{t.overall_ot_wages>0?t.overall_ot_wages:''}}</b></td>
+                    <td></td>
+                    <td><b>{{t.overall_ot_wages>0?t.overall_ot_wages:''}}</b></td>
+                    <td><b>{{f.h.vou_date}}</b></td>
+                </tr>
+
+
+            </tbody>
+        </table>
+
     </div>
 </div>

@@ -3,7 +3,6 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { config } from 'src/app/config';
 import { FormGroup, FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
-import { NavService } from 'src/app/service/nav.service';
 
 class Employees{
 public employee : string;
@@ -27,9 +26,7 @@ httpOptions = {
   'Authorization': localStorage.token,
   })
   }
-  constructor(private http:HttpClient,
-    private nav:NavService,
-    ) {
+  constructor(private http:HttpClient) {
    }
 
   ngOnInit() {
@@ -68,7 +65,4 @@ httpOptions = {
     window.print();
 }
 
-toggle(){
-  this.nav.toggle();
-}
 }

@@ -8,7 +8,6 @@ import { hasLifecycleHook } from '@angular/compiler/src/lifecycle_reflector';
 import { CloseScrollStrategy } from '@angular/cdk/overlay';
 
 import * as moment from 'moment';
-import { NavService } from 'src/app/service/nav.service';
 
 @Component({
 selector: 'app-device-logs',
@@ -52,7 +51,7 @@ constructor(
 private http: HttpClient,
 private routes:ActivatedRoute,
 private fb: FormBuilder,
-private nav:NavService,
+
 
 
 ) { this.options = fb.group({
@@ -102,9 +101,6 @@ console.log(error);
 );
 
 } 
-toggle(){
-    this.nav.toggle();
-}
 
 }
 

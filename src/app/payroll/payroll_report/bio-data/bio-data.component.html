@@ -1,345 +1,149 @@
 <div class="d-print-none">
-    <mat-toolbar class="bg-light">
-        <mat-toolbar-row>
-            <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
-            <span class="pl-2 text-primary">Bio Data</span>
-            <span class="example-spacer"></span>
+  <mat-form-field class="col-md-3 p-2">
+      <input type="hidden"  [(ngModel)]="s.h.employee_code">
+      <mat-label><mat-icon>people</mat-icon> <b> Party</b> <i> Employee</i></mat-label>
+      <input matInput type="text" [(ngModel)]="s.h.employee" placeholder="Select Employee"   (ngModelChange) ="employeeFilter($event);" [matAutocomplete]="employees" class="font-weight-bold" >
+      
+      <mat-autocomplete #employees="matAutocomplete" autoActiveFirstOption (optionSelected)="employeeSelect($event)">
+      <mat-option *ngFor="let t of filteredEmployees" [value]="t">
+     <option (click)=simsView(t.id)>{{t.employee}}</option>
+      </mat-option>
+   
+      </mat-autocomplete>          
+      </mat-form-field>
+      <mat-icon (click)="print()">print</mat-icon> 
+  </div>
+  
 
-        </mat-toolbar-row>
-    </mat-toolbar>
-    <mat-form-field class="col-md-3 p-2">
-        <input type="hidden" [(ngModel)]="s.h.employee_code">
-        <mat-label>
-            <mat-icon>people</mat-icon> <b> Party</b> <i> Employee</i></mat-label>
-        <input matInput type="text" [(ngModel)]="s.h.employee" placeholder="Select Employee" (ngModelChange)="employeeFilter($event);" [matAutocomplete]="employees" class="font-weight-bold">
-
-        <mat-autocomplete #employees="matAutocomplete" autoActiveFirstOption (optionSelected)="employeeSelect($event)">
-            <mat-option *ngFor="let t of filteredEmployees" [value]="t">
-                <option (click)=simsView(t.id)>{{t.employee}}</option>
-            </mat-option>
-
-        </mat-autocomplete>
-    </mat-form-field>
-    <mat-icon (click)="print()">print</mat-icon>
-</div>
-
-
-<div class="col-md-12" *ngIf="formState=='form'">
+<div class="col-md-12"  *ngIf="formState=='form'">
     <div class="row text" style="height:1600px !important">
-
+  
         <div class="col-md-5">
-            <h3 class="">TEX INDIA APPARELS</h3>
-            <h6>SF No 135/5,Jeeva Nagar,Murugam Palayam Road,Iduvam Palayam,Trippur-641 687.</h6>
-
+        <h3 class="">TEX INDIA APPARELS</h3>
+        <h6>SF No 135/5,Jeeva Nagar,Murugam Palayam Road,Iduvam Palayam,Trippur-641 687.</h6>
+        
         </div>
         <div class="col-md-2">
         </div>
-        <div class="col-md-5">
-            <h3 class="">டெக்ஸ் இந்தியா அப்ரேல்ஸ் </h3>
-            <h6>எஸ் எப் 135/5, ஜீவா நகர் ,முருகம்பாளையம் ரோடு ,இடுவம் பாளையம் ,திருப்பூர் -641 687.
-            </h6>
+        <div class="col-md-5">  
+        <h3 class="">டெக்ஸ் இந்தியா அப்ரேல்ஸ் </h3>
+        <h6>எஸ் எப் 135/5,
+        ஜீவா நகர் ,முருகம்பாளையம் ரோடு ,இடுவம் பாளையம் ,திருப்பூர் -641 687.
+        </h6>
         </div>
+       
+    <div class="col-md-12">
+    <div class="bg-header text-center h3">EMPLOYEE BIO - DATA</div>
 
-        <div class="col-md-12">
-            <div class="bg-header text-center h3">EMPLOYEE BIO - DATA</div>
-
-            <table class="border-collapse">
-                <thead>
-                    <tr>
-                        <th>APPLICANT FOR THE POST OF <br>வேலை செய்ய விரும்பும் பதவி </th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.department}}</b></th>
-                    </tr><br><br>
-                    <tr>
-                        <th>NAME <br> பெயர் </th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.employee}}</b></th>
-                    </tr><br><br><br>
-                    <tr>
-                        <th>FATHERS / HUSBANDS NAME AND OCCUPATION <br>தந்தை அல்லது கணவரின் பெயரும்,தொழிலும் </th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.father_name}}</b></th>
-                    </tr><br><br>
-                    <tr>
-                        <th>DATE OF BIRTH AND AGE</th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.dob}}</b></th>
-                    </tr><br><br><br>
-                    <tr>
-                        <th>SEX <br> பாலினம் </th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.gender}}</b></th>
-                    </tr><br><br><br>
-                    <tr>
-                        <th>PRESENT ADDRESS(Capital Letters) <br> தற்போதைய முகவரி (முழுமையாக இருக்க வேண்டும்) </th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.present_address}}</b></th>
-                    </tr><br><br>
-                    <tr>
-                        <th>PERMANENT ADDRESS(Capital Letters) <br> நிரந்தர முகவரி (முழுமையாக இருக்க வேண்டும்) </th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.permanent_address}}</b></th>
-                    </tr><br><br>
-                    <tr>
-                        <th>PHONE No <br> தொலைபேசி எண் </th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.mobile}}</b></th>
-                    </tr><br><br>
-                    <tr>
-                        <th>MARITAL STATUS? <br> திருமணமானவரா ? </th>
-                        <th class="text-center">:</th>
-                        <th><b>{{s.info.marital_status}}</b></th>
-                    </tr><br><br>
-                </thead>
-            </table>
-        </div>
-        <div>FAMILY PARTICULARS <br> குடும்பத்தில் உள்ள நபர்கள் பற்றிய விபரம்</div>
-        <table class="table-bordered" style="width:100%;height:100px;">
-            <thead class="text-center">
-                <tr>
-                    <th>S.No <br> வ.எண் </th>
-                    <th>NAME <br>பெயர் </th>
-                    <th>RELATIONSHIP <br>உறவு </th>
-                    <th>OCCUPATION <br>தொழில் </th>
-                    <th>AGE<br>வயது </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td><b>{{s.info.person_name}}</b></td>
-                    <td><b>{{s.info.relationship}}</b></td>
-                    <td><b>{{s.info.occupation}}</b></td>
-                    <td><b>{{s.info.age}}</b></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                    <td><b></b></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <br>
-        <br>
+    <table class="border-collapse">
+    <thead>
+    <tr><th >APPLICANT FOR THE POST OF <br>வேலை செய்ய விரும்பும் பதவி  </th><th class="text-center" >:</th><th><b>{{s.info.department}}</b></th></tr><br><br>
+    <tr><th>NAME <br> பெயர் </th><th class="text-center" >:</th><th ><b>{{s.info.employee}}</b></th></tr><br><br><br>
+    <tr><th>FATHERS / HUSBANDS NAME AND OCCUPATION <br>தந்தை அல்லது  கணவரின் பெயரும்,தொழிலும் </th><th class="text-center">:</th><th><b>{{s.info.father_name}}</b></th></tr><br><br>
+    <tr><th>DATE OF BIRTH AND AGE</th><th class="text-center">:</th><th><b>{{s.info.dob}}</b></th></tr><br><br><br>
+    <tr><th>SEX <br> பாலினம் </th><th class="text-center" >:</th><th ><b>{{s.info.gender}}</b></th></tr><br><br><br>
+    <tr><th>PRESENT ADDRESS(Capital Letters) <br> தற்போதைய  முகவரி (முழுமையாக இருக்க வேண்டும்) </th><th class="text-center" >:</th><th><b>{{s.info.present_address}}</b></th></tr><br><br>
+    <tr><th>PERMANENT ADDRESS(Capital Letters) <br> நிரந்தர முகவரி (முழுமையாக இருக்க வேண்டும்) </th><th class="text-center" >:</th><th ><b>{{s.info.permanent_address}}</b></th></tr><br><br>
+    <tr><th>PHONE No <br> தொலைபேசி எண் </th><th class="text-center" >:</th><th ><b>{{s.info.mobile}}</b></th></tr><br><br>
+    <tr><th>MARITAL STATUS? <br> திருமணமானவரா ? </th><th class="text-center" >:</th><th><b>{{s.info.marital_status}}</b></th></tr><br><br>
+     </thead>
+    </table>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="h6">QUALIFICATION <br>கல்வி தகுதி </div>
-            <table class="table-bordered" style="width:100%;height:300px;">
-                <thead class="text-center">
-                    <tr>
-                        <th>S.No <br> வ எண் </th>
-                        <th>COURSES <br>படிப்பு
-                        </th>
-                        <th>SCHOOL/UNIVERSITY <br>பள்ளி/கல்லூரி
-                        </th>
-                        <th>YEARS OF PASSING<br>தேர்ச்சி பெற்ற வருடம் </th>
-                        <th>CLASS<br>தேர்ச்சி பெற்ற வகுப்பு
-                        </th>
-                        <th>CITY<br>நகரம் </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>{{s.info.course}}</td>
-                        <td><b>{{s.info.college}}</b></td>
-                        <td><b>{{s.info.passout}}</b></td>
-                        <td><b>{{s.info.class}}</b></td>
-                        <td><b>{{s.info.city}}</b></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                    </tr>
-                </tbody>
-            </table>
+     <div>FAMILY PARTICULARS <br> குடும்பத்தில் உள்ள நபர்கள் பற்றிய விபரம்</div>
+    <table class="table-bordered" style="width:100%;height:100px;">
+    <thead class="text-center">
+    <tr><th>S.No <br> வ.எண் </th><th>NAME <br>பெயர் </th><th>RELATIONSHIP <br>உறவு </th><th>OCCUPATION <br>தொழில் </th><th>AGE<br>வயது </th></tr>
+    </thead>
+    <tbody>
+    <tr><td>1</td><td><b>{{s.info.person_name}}</b></td><td><b>{{s.info.relationship}}</b></td><td><b>{{s.info.occupation}}</b></td><td><b>{{s.info.age}}</b></td></tr>
+    <tr><td>2</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+    <tr><td>3</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+    <tr><td>4</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+    <tr><td>5</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+    </tbody>
+    </table> 
 
-            <div class="h6">PREVIOUS EXPERIENCES <br>முன்பு வேலை செய்த இடங்கள் பற்றிய விபரங்கள் </div>
-            <table class="table-bordered" style="width:100%;height:300px;">
-                <thead class="text-center">
-                    <tr>
-                        <th rowspan="2">S.No <br> வ எண் </th>
-                        <th rowspan="2">NAME OF THE ORGANAISATION<br>பணிபுரிந்த நிறுவனத்தின் பெயர்
-                        </th>
-                        <th rowspan="2">NATURE OF WORK<br>வேலையின் தன்மை
-                        </th>
-                        <th colspan="2">PERIOD<br>வேலை செய்த காலம்
-                        </th>
-                        <th rowspan="2">SALARY<br>சம்பளம்
-                        </th>
-                        <th>EXPERIENCE <br>அனுபவம் </th>
-                    </tr>
-                    <tr>
-                        <td>From /முதல் </td>
-                        <td>To /வரை </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><b>{{s.info.organization}}</b></td>
-                        <td><b>{{s.info.designation}}</b></td>
-                        <td><b>{{s.info.date_from}}</b></td>
-                        <td>{{s.info.date_to}}</td>
-                        <td><b>{{s.info.salary}}</b></td>
-                        <td><b>{{s.info.experience}}</b></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
+<br>
+<br>
+  </div>
+  <div class="row">
+<div class="col-md-12">
+<div class="h6">QUALIFICATION <br>கல்வி தகுதி </div>
+<table class="table-bordered" style="width:100%;height:300px;">
+<thead class="text-center">
+<tr><th>S.No <br> வ எண் </th><th>COURSES <br>படிப்பு 
+ </th><th>SCHOOL/UNIVERSITY <br>பள்ளி/கல்லூரி 
+  </th><th>YEARS OF PASSING<br>தேர்ச்சி பெற்ற வருடம்  </th><th>CLASS<br>தேர்ச்சி பெற்ற வகுப்பு
+</th><th>CITY<br>நகரம் </th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>{{s.info.course}}</td><td><b>{{s.info.college}}</b></td><td><b>{{s.info.passout}}</b></td><td><b>{{s.info.class}}</b></td><td><b>{{s.info.city}}</b></td></tr>
+<tr><td>2</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+<tr><td>3</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+<tr><td>4</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+<tr><td>5</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+</tbody>
+</table>
 
-            <table class="borderless" style="width:30%;">
-                <thead>
-                    <tr>
-                        <th>HAVING OWN VEHICLE <br>சொந்தமாக வாகனம் உள்ளதா</th>
-                        <th class="text-center">:</th>
-                        <th>{{s.info.have_vehicle}}
-                            <th>
-                    </tr>
-                    <tr>
-                        <th>HAVING DRIVING LICENCE <br>வாகனம் ஓட்டுநர் உரிமம் உள்ளதா ?</th>
-                        <th class="text-center">:</th>
-                        <th>{{s.info.driving_license_no}}</th>
-                    </tr>
-                    <tr>
-                        <th>EXPECTED SALARY <br>எதிர்பார்க்கும் சம்பளம் </th>
-                        <th class="text-center">:</th>
-                        <th>{{s.info.expected_salary}}</th>
-                    </tr>
-                </thead>
-            </table>
-            <div class="h6 strong col-12"><u>DECLARATION</u></div>
-            <div class="col-12"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I HEREBY DECLARE THAT THE PARTICULARS FURNISHED ABOVE ARE CORRECT TO THE BEST OF MY KNOWLEDGE AND IF ANY FOUND WRONG IN FUTURE I WILL OBEY THE DECISION TAKEN BY THE MANAGEMENT. I HERE BY AUTHORISE YOU TO DEDUCT
-                E.S.I.,P.F. ETC,AS PER ACTS
-            </div>
-            <div class="col-12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; மேற்கண்ட விபரங்கள் அனைத்தும் உண்மையானவை என உறுதியளிக்கிறேன்.ஏதேனும் தவறாக இருக்கும்பட்சத்தில் நிர்வாகம் எடுக்கும் நடவடிக்கைகளுக்கு ஒத்து கொள்வேன் எனவும் உறுதியளிக்கிறேன்.சட்டப்படியான பிடித்தங்கள்
-                செய்யவும் ஒத்து கொள்கிறேன்.(ஈ.எஸ்.ஐ/பி.எப்/மற்றவை சட்டப்படி)
-            </div><br>
-            <table class="bordreless" style="width:100%">
-                <tr>
-                    <th>PLACE :<br>இடம்</th>
-                    <th colspan="2"></th>
-                </tr>
-                <tr>
-                    <th class="bold ">DATE :<br>தேதி</th>
-                    <th class="text-right ">SIGNATURE OF THE APPLICANT :<br>விண்ணப்பதாரரின் கையொப்பம் </th>
-                </tr>
-            </table>
-            <div>
-                <table class="borderless" style="width:100%">
-                    <tr>
-                        <th colsapn="2" class="text-center pl-5">FOR OFFICE USE ONLY<br>அலுவலக உபயோகத்திற்கு மட்டும்</th>
-                    </tr>
-                    <tr>
-                        <th colspan="2"></th>
-                    </tr>
-                    <tr>
-                        <th class="text-left" colspan="2">AGE PROOF CERTIFICATE SUBMITTED :.........................................................</th>
-                    </tr>
-                    <tr>
-                        <th>DATE OF JOINED :<br>பணியில் சேர்ந்த தேதி : <b>{{s.info.joined}}</b></th>
-                        <th>APPOINTED BY :<br>நியமித்தவர் :<b>{{s.info.appointed_id}}</b></th>
-                    </tr>
-                    <tr>
-                        <th>FIXED SALARY Rs :<br>நிர்ணயித்த சம்பளம்<b> ரூ   {{s.info.salary}}</b></th>
-                        <th>DESIGNATION :<br>தொழிலின் தன்மை :<b>{{s.info.designation}}</b></th>
-                    </tr>
-                    <tr>
-                        <th>DEPARTMENT :<br>பணிபுரியும் பிரிவு :<b>{{s.info.department}}</b></th>
-                        <th>AUTHORISED BY :<br>உறுதியளித்தவர் {{s.info.authorized_id}}</th>
-                    </tr>
+<div class="h6">PREVIOUS EXPERIENCES <br>முன்பு வேலை செய்த இடங்கள் பற்றிய விபரங்கள் </div>
+<table class="table-bordered" style="width:100%;height:300px;">
+<thead class="text-center">
+<tr><th rowspan="2">S.No <br> வ எண் </th><th rowspan="2">NAME OF THE ORGANAISATION<br>பணிபுரிந்த நிறுவனத்தின் பெயர்  
+ </th><th rowspan="2">NATURE OF WORK<br>வேலையின் தன்மை 
+  </th><th colspan="2" >PERIOD<br>வேலை செய்த காலம் 
+  </th><th rowspan="2">SALARY<br>சம்பளம் 
+</th><th>EXPERIENCE <br>அனுபவம் </th>
+</tr>
+<tr><td>From /முதல் </td><td>To /வரை </td></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><b>{{s.info.organization}}</b></td><td><b>{{s.info.designation}}</b></td><td><b>{{s.info.date_from}}</b></td><td>{{s.info.date_to}}</td><td><b>{{s.info.salary}}</b></td><td><b>{{s.info.experience}}</b></td></tr>
+<tr><td>2</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+<tr><td>3</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+<tr><td>4</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+<tr><td>5</td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td><td><b></b></td></tr>
+</tbody>
+</table>
+<br>
 
-                </table>
-            </div>
-        </div>
-    </div>
+<table class="borderless" style="width:30%;">
+<thead>
+<tr><th >HAVING OWN VEHICLE <br>சொந்தமாக வாகனம் உள்ளதா</th><th class="text-center" >:</th><th>{{s.info.have_vehicle}}<th></tr>
+<tr><th >HAVING DRIVING LICENCE <br>வாகனம் ஓட்டுநர் உரிமம் உள்ளதா ?</th><th class="text-center" >:</th><th>{{s.info.driving_license_no}}</th></tr>
+<tr><th >EXPECTED SALARY <br>எதிர்பார்க்கும் சம்பளம்  </th><th class="text-center" >:</th><th>{{s.info.expected_salary}}</th></tr>
+</thead>
+</table>
+<div class="h6 strong col-12"><u>DECLARATION</u></div>
+<div class="col-12">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I HEREBY DECLARE THAT THE PARTICULARS FURNISHED ABOVE ARE CORRECT TO THE BEST OF MY KNOWLEDGE AND IF ANY FOUND WRONG IN FUTURE I WILL OBEY THE DECISION TAKEN BY THE MANAGEMENT.
+I HERE BY AUTHORISE YOU TO DEDUCT E.S.I.,P.F. ETC,AS PER ACTS
 </div>
+<div class="col-12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+மேற்கண்ட  விபரங்கள் அனைத்தும் உண்மையானவை என உறுதியளிக்கிறேன்.ஏதேனும் தவறாக இருக்கும்பட்சத்தில் நிர்வாகம் எடுக்கும் நடவடிக்கைகளுக்கு ஒத்து கொள்வேன் எனவும் உறுதியளிக்கிறேன்.சட்டப்படியான பிடித்தங்கள் செய்யவும் ஒத்து கொள்கிறேன்.(ஈ.எஸ்.ஐ/பி.எப்/மற்றவை சட்டப்படி)
+</div><br>
+<table class="bordreless" style="width:100%">
+<tr>
+<th>PLACE :<br>இடம்</th>
+<th colspan="2"></th>
+</tr>
+<tr>
+<th class="bold ">DATE :<br>தேதி</th>
+<th class="text-right ">SIGNATURE OF THE APPLICANT :<br>விண்ணப்பதாரரின் கையொப்பம் </th>
+</tr>
+</table>
+<div>
+<table class="borderless" style="width:100%">
+<tr>
+<th colsapn="2" class="text-center pl-5">FOR OFFICE USE ONLY<br>அலுவலக உபயோகத்திற்கு மட்டும்</th>
+</tr>
+<tr><th colspan="2"></th></tr>
+<tr><th class="text-left" colspan="2">AGE PROOF CERTIFICATE SUBMITTED :.........................................................</th></tr>
+<tr><th>DATE OF JOINED :<br>பணியில் சேர்ந்த தேதி : <b>{{s.info.joined}}</b></th><th>APPOINTED BY :<br>நியமித்தவர் :<b>{{s.info.appointed_id}}</b></th></tr>
+<tr><th>FIXED SALARY Rs :<br>நிர்ணயித்த சம்பளம்<b> ரூ   {{s.info.salary}}</b></th><th>DESIGNATION :<br>தொழிலின் தன்மை :<b>{{s.info.designation}}</b></th></tr>
+<tr><th>DEPARTMENT :<br>பணிபுரியும் பிரிவு :<b>{{s.info.department}}</b></th><th>AUTHORISED BY :<br>உறுதியளித்தவர் {{s.info.authorized_id}}</th></tr>
+
+</table></div>
+</div>
+</div>
+</div>
+
+

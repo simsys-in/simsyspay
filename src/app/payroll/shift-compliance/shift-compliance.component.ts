@@ -6,7 +6,6 @@ import { config } from 'src/app/config';
 import { startWith, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { NavService } from 'src/app/service/nav.service';
 
 
 @Component({
@@ -58,7 +57,6 @@ inventory: any;
 
 constructor(
 fb: FormBuilder,
-private nav:NavService,
 private http:HttpClient,
 private routes:Router,
 private snackBar: MatSnackBar,
@@ -174,9 +172,7 @@ inventoryRemove(i){
 this.f.i.splice(i,1);
 this.dataSource = new MatTableDataSource<any>(this.f.i);
 }
-toggle(){
-    this.nav.toggle();
-}
+
 
 
 }

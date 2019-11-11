@@ -8,7 +8,7 @@ import { startWith, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PARAMETERS } from '@angular/core/src/util/decorators';
-import { NavService } from 'src/app/service/nav.service';
+
 
 const appearance: MatFormFieldDefaultOptions = {
   appearance: 'outline'
@@ -148,7 +148,7 @@ constructor(
 fb: FormBuilder,
 private http:HttpClient,
 public routes:ActivatedRoute,
-private nav:NavService,
+
 
 
 ) {
@@ -504,9 +504,6 @@ minus(i){
   this.employee_families=new MatTableDataSource<any>(this.f.t);
 }
 
-toggle(){
-   this.nav.toggle();
-}
 
 
 

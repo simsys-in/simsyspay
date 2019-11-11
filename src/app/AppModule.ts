@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
-import { EmployeeComponent } from './payroll/employee/employee.component';
+
 import { ShiftComponent } from './payroll/shift/shift.component';
 import { DepartmentComponent } from './payroll/department/department.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,15 +40,14 @@ import { HolidaysComponent } from './payroll/holidays/holidays.component';
 import { LeaveTypeComponent } from './payroll/leave-type/leave-type.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { WeeklySalaryReport } from './payroll/payroll_report/weekly-salary-report/weekly-salary-report.component';
-import { MatSortModule, MatPaginator, MatMenuModule, MatButtonModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material';
-import { Employee1Component } from './employee1/employee1.component';
+import { MatSortModule, MatPaginator, MatMenuModule, MatButtonModule } from '@angular/material';
+import { EmployeeComponent } from './payroll/employee/employee.component';
 
 @NgModule({
 declarations: [
 //declarations reference tot he component stored
 AppComponent,//default component initiated project created
 EmployeeComponent,
-Employee1Component,
 DashboardComponent,
 NominationFComponent,
 SalaryComplianceComponent,
@@ -99,10 +98,7 @@ OwlDateTimeModule,
 OwlNativeDateTimeModule,
 
 ],
-providers: [AuthGuard,
-
-
-],//reference to the services is created
+providers: [AuthGuard],//reference to the services is created
 bootstrap: [AppComponent]//reference to the default component. i.e AppComponent or main appcomponnent starts execution
 })
 export class AppModule {

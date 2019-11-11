@@ -35,7 +35,6 @@ export class AuthService {
       cpin:cpin
     }
     
-    
     const params = new HttpParams();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -48,12 +47,9 @@ export class AuthService {
 
     return this.http.post<any>(url, request,httpOptions)
     .pipe(map((user: any) => {
-      
           if (user && user.token) {
-            
               localStorage.setItem('currentUser', JSON.stringify(user));
-              
-            localStorage.setItem('token','Bearer '+user.token);
+              localStorage.setItem('token','Bearer '+user.token);
               this.currentUserSubject.next(user);
           }            
           return user;

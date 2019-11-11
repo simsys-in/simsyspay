@@ -1,246 +1,238 @@
 <div class="d-print-none">
-    <mat-toolbar class="bg-light">
-        <mat-toolbar-row>
-            <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
-            <span class="pl-2 text-primary">Training  Record</span>
-            <span class="example-spacer"></span>
-
-        </mat-toolbar-row>
-    </mat-toolbar>
     <mat-form-field class="col-md-3 p-2">
-        <input type="hidden" [(ngModel)]="s.h.employee_code">
-        <mat-label>
-            <mat-icon>people</mat-icon> <b> Party</b> <i> Employee</i></mat-label>
-        <input matInput type="text" [(ngModel)]="s.h.employee" placeholder="Select Employee" (ngModelChange)="employeeFilter($event);" [matAutocomplete]="employees" class="font-weight-bold">
-
+        <input type="hidden"  [(ngModel)]="s.h.employee_code">
+        <mat-label><mat-icon>people</mat-icon> <b> Party</b> <i> Employee</i></mat-label>
+        <input matInput type="text" [(ngModel)]="s.h.employee" placeholder="Select Employee"   (ngModelChange) ="employeeFilter($event);" [matAutocomplete]="employees" class="font-weight-bold" >
+        
         <mat-autocomplete #employees="matAutocomplete" autoActiveFirstOption (optionSelected)="employeeSelect($event)">
-            <mat-option *ngFor="let t of filteredEmployees" [value]="t">
-                <option (click)=simsView(t.id)>{{t.employee}}</option>
-            </mat-option>
+        <mat-option *ngFor="let t of filteredEmployees" [value]="t">
+       <option (click)=simsView(t.id)>{{t.employee}}</option>
+        </mat-option>
+     
+        </mat-autocomplete>          
+        </mat-form-field>
+        <mat-icon (click)="print()">print</mat-icon> 
+    </div>
+    
 
-        </mat-autocomplete>
-    </mat-form-field>
-    <mat-icon (click)="print()">print</mat-icon>
+
+<div class="col-md-12 col-12 border pt-5 bg-white"  *ngIf="formState=='form'">
+<div class="col-md-12" style="height:100px;">
+<div class="row">
+<div class="col-md-5">
+<h3 class="">TEX INDIA APPARELS</h3>
+<h6>SF No 135/5,Jeeva Nagar,Murugam Palayam Road,Iduvam Palayam,Trippur-641 687.</h6>
+
+</div>
+<div class="col-md-2">
+</div>
+<div class="col-md-5">
+<h3 class="">டெக்ஸ் இந்தியா அப்ரேல்ஸ் </h3>
+<h6>
+எஸ் எப் 135/5,
+ஜீவா நகர் ,முருகம்பாளையம் ரோடு,இடுவம் பாளையம் ,திருப்பூர் -641 687.
+</h6>
 </div>
 
+</div>
+</div>
 
+<div class="col-md-12 border-bg-dark text-center" style="height:100px;">
+<h6>தனி நபர் பயிற்சி ஆவணம்  /<br><br> INDIVIDUAL TRAINING RECORD</h6>
+</div>
+<hr class="bg-dark">
+<div class="col-md-12" style="height:100px;">
+<div class="row">
+<div class="col-md-4 float-right">
+<h6>பெயர்  /  Name:<b>{{s.info.employee}}</b></h6>
+</div>
+<div class="col-md-4">
+<h6>அடையாள எண் / ID No:<b>{{s.info.employee_code}}</b></h6>
+</div>
+<div class="col-md-4">
+<h6>பதவி  / DESIGNATION:<b>{{s.info.designation}}</b></h6>
+</div>
 
-<div class="col-md-12 col-12 border pt-5 bg-white" *ngIf="formState=='form'">
-    <div class="col-md-12" style="height:100px;">
-        <div class="row">
-            <div class="col-md-5">
-                <h3 class="">TEX INDIA APPARELS</h3>
-                <h6>SF No 135/5,Jeeva Nagar,Murugam Palayam Road,Iduvam Palayam,Trippur-641 687.</h6>
-
-            </div>
-            <div class="col-md-2">
-            </div>
-            <div class="col-md-5">
-                <h3 class="">டெக்ஸ் இந்தியா அப்ரேல்ஸ் </h3>
-                <h6>
-                    எஸ் எப் 135/5, ஜீவா நகர் ,முருகம்பாளையம் ரோடு,இடுவம் பாளையம் ,திருப்பூர் -641 687.
-                </h6>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-md-12 border-bg-dark text-center" style="height:100px;">
-        <h6>தனி நபர் பயிற்சி ஆவணம் /<br><br> INDIVIDUAL TRAINING RECORD</h6>
-    </div>
-    <hr class="bg-dark">
-    <div class="col-md-12" style="height:100px;">
-        <div class="row">
-            <div class="col-md-4 float-right">
-                <h6>பெயர் / Name:<b>{{s.info.employee}}</b></h6>
-            </div>
-            <div class="col-md-4">
-                <h6>அடையாள எண் / ID No:<b>{{s.info.employee_code}}</b></h6>
-            </div>
-            <div class="col-md-4">
-                <h6>பதவி / DESIGNATION:<b>{{s.info.designation}}</b></h6>
-            </div>
-
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="row">
-            <table class="table-bordered" style="width:100%;height:800px;">
-                <thead>
-                    <tr>
-                        <th>வ.எண் / S.No</th>
-                        <th>பயிற்சியின் பெயர் / Training Title</th>
-                        <th colspan="3" class="text-center">பயிற்சியின் வகை / Type of Training</th>
-                        <th>பயிற்சி தேதி / Training Date</th>
-                        <th>நேரம் / Hours</th>
-                        <th> தொழிலாளியின் கருத்து / Employee's Feedback</th>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="font-weight-bold">வேலை தொடர்புடையது / On the job</td>
-                        <td class="font-weight-bold">உட்புறம் / Internal</td>
-                        <td class="font-weight-bold">வெளிப்புறம் / External</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>13</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>15</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-    </div>
+</div>
+</div>
+<div class="col-md-12">
+<div class="row">
+<table class="table-bordered" style="width:100%;height:800px;">
+<thead>
+<tr>
+<th>வ.எண்  / S.No</th>
+<th>பயிற்சியின் பெயர்  /  Training Title</th>
+<th colspan="3" class="text-center">பயிற்சியின் வகை  / Type of Training</th>
+<th>பயிற்சி தேதி  / Training Date</th>
+<th>நேரம் / Hours</th>
+<th> தொழிலாளியின் கருத்து / Employee's Feedback</th>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td class="font-weight-bold">வேலை தொடர்புடையது  / On the job</td>
+<td class="font-weight-bold">உட்புறம்  / Internal</td>
+<td class="font-weight-bold">வெளிப்புறம் / External</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+<tfoot>
+</tfoot>
+</table>
+</div>
+</div>
 </div>

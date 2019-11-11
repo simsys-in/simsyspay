@@ -8,7 +8,6 @@ import { MatSnackBar } from '@angular/material';
 import { Router, RouterLinkWithHref } from '@angular/router';
 import { send } from 'q';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { NavService } from 'src/app/service/nav.service';
 
 
 @Component({
@@ -55,7 +54,6 @@ formState: string;
 constructor(
 fb: FormBuilder,
 private http:HttpClient,
-private nav:NavService,
 private routes:Router,
 private snackBar: MatSnackBar,
 
@@ -149,9 +147,7 @@ this.simsNew();
 this.snackBar.open(JSON.stringify(error),"Error",);
 });
 }
-toggle(){
-  this.nav.toggle();
-}
+
 
 
 
