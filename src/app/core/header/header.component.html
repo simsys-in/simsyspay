@@ -1,8 +1,8 @@
-<mat-sidenav-container class="example-sidenav-container example-sidenav bg-secondary" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-  <mat-sidenav class="text-light" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-    <mat-nav-list class="text-dark bg-white d-print-none" *ngIf="isLoggedIn$ | async as isLoggedIn" >
+<mat-sidenav-container class="example-sidenav-container example-sidenav bg-secondary">
+  <mat-sidenav class="text-light" #snav   fixedTopGap="56">
+    <mat-nav-list class="text-dark bg-white d-print-none" >
       <!--<a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>-->
-      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary">dashboard</mat-icon> Dashboard</a>
+      <a mat-list-item routerLink="."><mat-icon class="mr-2 text-secondary ">dashboard</mat-icon> Dashboard</a>
       <h6 class="p-2  bg-info text-center"> Master</h6>
       <a mat-list-item routerLink="/employee"><mat-icon class="mr-2 text-secondary">people</mat-icon> Employee</a>
       <a mat-list-item routerLink="/employee_category"><mat-icon class="mr-2 text-secondary">collections</mat-icon>Employee Category</a>

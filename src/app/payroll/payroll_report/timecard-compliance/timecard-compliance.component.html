@@ -1,0 +1,442 @@
+<mat-card>
+    <mat-toolbar class="bg-light">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+            <span class="pl-2 text-primary">Time Punch</span>
+            <span class="example-spacer"></span>
+
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-card-content>
+        <div class="col-md-12 bg-white" *ngIf="formState=='form'" class="d-print-none">
+            <div class="row">
+                <mat-form-field class="col-md-3 p-2">
+                    <input matInput [matDatepicker]="from_date" placeholder="From Date" [(ngModel)]="s.h.from_date">
+                    <mat-datepicker-toggle matSuffix [for]="from_date"></mat-datepicker-toggle>
+                    <mat-datepicker #from_date></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-3 p-2">
+                    <input matInput [matDatepicker]="to_date" placeholder="To Date" [(ngModel)]="s.h.to_date">
+                    <mat-datepicker-toggle matSuffix [for]="to_date"></mat-datepicker-toggle>
+                    <mat-datepicker #to_date></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-3 p-2">
+                    <input type="hidden" [(ngModel)]="s.h.employee_code">
+                    <mat-label>
+                        <mat-icon>people</mat-icon> <b> Party</b> <i> Employee</i></mat-label>
+                    <input matInput type="text" [(ngModel)]="s.h.employee" placeholder="Select Employee" (ngModelChange)="employeeFilter($event);" [matAutocomplete]="employees" class="font-weight-bold">
+
+                    <mat-autocomplete #employees="matAutocomplete" autoActiveFirstOption (optionSelected)="employeeSelect($event)">
+                        <mat-option *ngFor="let t of filteredEmployees" [value]="t">
+                            {{t.employee}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                <button mat-icon-button (click)="query_detail()" *ngIf="formState=='form'" color="primary"><mat-icon>view_list</mat-icon></button>
+                <button mat-icon-button (click)="simsPrint()" color="accent"><mat-icon>print</mat-icon></button>
+
+            </div>
+        </div>
+
+        <div class="col-md-12 col-12 bg-white" *ngIf="isForm">
+            <div class="row">
+                <div class="col-12 col-md-12 text-center font-weight-bold h6">TEX INDIA APPARELS</div>
+                <div class="col-12 col-md-12 text-center font-weight-bold h6">SF No 135/5,Jeeva Nagar,Muraugam Palayam Road,Iduvam Palayam,Trippur-641 687.</div>
+                <div class="col-12 col-md-12  text-center font-weight-bold h6">Time Card / கால அட்டவணை</div>
+                <div class="col-12 col-md-12 text-center font-weight-bold h6">UNDER SEC 25B OF FACTORY ACT SEE RULE 103-B</div>
+                <div class="col-12 col-md-12 text-center font-weight-bold h6">(Employee daily attendence details / பணியாளர் தினசரி வருகை )
+                    <hr class="bg-dark">
+                </div>
+                <div class="col-md-12 bg-white">
+                    <div class="row">
+                        <table class="table table-sm table-bordered" style="width:100%">
+
+                            <tr class="">
+
+                                <td class="text-right">Employee Name:<br>பணியாளர் பெயர் </td>
+                                <td class=" text-left"><b class="pl-1">{{s.i.employee}}</b></td>
+
+                                <td class="text-right">Date of Join:<br>வேலையில் சேர்ந்த தேதி</td>
+                                <td class="text-left "><b class="pl-1">{{s.i.joined | date:'dd-MM-yyyy'}}</b></td>
+                                <td class="text-right">Month & Year:<br>மாதம் (ம) வருடம் </td>
+                                <td class=" text-left"><b class="pl-1 ">{{s.i.month}}-{{s.i.year}}</b></td>
+                            </tr>
+
+                            <tr class="">
+                                <td class="text-right">Section:<br>பிரிவு</td>
+                                <td class="text-left "><b class="pl-1">{{s.i.employee_department}}</b></td>
+                                <td class="text-right">Designation: <br>பதவி</td>
+                                <td class=""><b class="pl-1">{{s.i.designation}}</b></td>
+                                <td class="text-right">ID Card: <br>அடையாள அட்டை எண் </td>
+                                <td class=""><b class="pl-1">{{s.i.employee_code}}</b></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <hr class="bg-dark">
+                </div>
+                <div class="col-md-12 bg-light">
+                    <div class="List">
+                        <table id="tblLists" class="table table-sm table-bordered border border-primary table-hover" style="width:100%">
+                            <thead class="text-dark bg-warning">
+                                <tr>
+                                    <td class="text-center">Date</td>
+                                    <td class="text-center">Morninng In</td>
+                                    <td class="text-center">Evening Out</td>
+                                    <td class="text-center">OT In </td>
+                                    <td class="text-center">OT Out</td>
+                                    <td class="text-center">OT Hours</td>
+                                    <td class="text-center">Shift</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">{{s.i.day1?s.i.day1:''}}</td>
+                                    <td class="text-center">{{s.i.day1_shiftin?s.i.day1_shiftin:''}}</td>
+                                    <td class="text-center">{{s.i.day1_shiftout?s.i.day1_shiftout:''}}</td>
+                                    <td class="text-center">{{s.i.day1_otin?s.i.day1_otin:''}}</td>
+                                    <td class="text-center">{{s.i.day1_otout?s.i.day1_otout:''}}</td>
+                                    <td class="text-center">{{s.i.day1_ot?s.i.day1_ot:''}}</td>
+                                    <td class="text-center">{{s.i.day1_shift?s.i.day1_shift:''}}</td>
+
+                                    <tr>
+                                        <td class="text-center">{{s.i.day2?s.i.day2:''}}</td>
+                                        <td class="text-center">{{s.i.day2_shiftin?s.i.day2_shiftin:''}}</td>
+                                        <td class="text-center">{{s.i.day2_shiftout?s.i.day2_shiftout:''}}</td>
+                                        <td class="text-center">{{s.i.day2_otin?s.i.day2_otin:''}}</td>
+                                        <td class="text-center">{{s.i.day2_otout?s.i.day2_otout:''}}</td>
+                                        <td class="text-center">{{s.i.day2_ot?s.i.day2_ot:''}}</td>
+                                        <td class="text-center">{{s.i.day2_shift?s.i.day2_shift:''}}</td>
+
+                                        <tr>
+                                            <td class="text-center">{{s.i.day3?s.i.day3:''}}</td>
+                                            <td class="text-center">{{s.i.day3_shiftin?s.i.day3_shiftin:''}}</td>
+                                            <td class="text-center">{{s.i.day3_shiftout?s.i.day3_shiftout:''}}</td>
+                                            <td class="text-center">{{s.i.day3_otin?s.i.day3_otin:''}}</td>
+                                            <td class="text-center">{{s.i.day3_otout?s.i.day3_otout:''}}</td>
+                                            <td class="text-center">{{s.i.day3_ot?s.i.day3_ot:''}}</td>
+                                            <td class="text-center">{{s.i.day3_shift?s.i.day3_shift:''}}</td>
+
+                                            <tr>
+                                                <td class="text-center">{{s.i.day4?s.i.day4:''}}</td>
+                                                <td class="text-center">{{s.i.day4_shiftin?s.i.day4_shiftin:''}}</td>
+                                                <td class="text-center">{{s.i.day4_shiftout?s.i.day4_shiftout:''}}</td>
+                                                <td class="text-center">{{s.i.day4_otin?s.i.day4_otin:''}}</td>
+                                                <td class="text-center">{{s.i.day4_otout?s.i.day4_otout:''}}</td>
+                                                <td class="text-center">{{s.i.day4_ot?s.i.day4_ot:''}}</td>
+                                                <td class="text-center">{{s.i.day4_shift?s.i.day4_shift:''}}</td>
+
+                                                <tr>
+                                                    <td class="text-center">{{s.i.day5?s.i.day5:''}}</td>
+                                                    <td class="text-center">{{s.i.day5_shiftin?s.i.day5_shiftin:''}}</td>
+                                                    <td class="text-center">{{s.i.day5_shiftout?s.i.day5_shiftout:''}}</td>
+                                                    <td class="text-center">{{s.i.day5_otin?s.i.day5_otin:''}}</td>
+                                                    <td class="text-center">{{s.i.day5_otout?s.i.day5_otout:''}}</td>
+                                                    <td class="text-center">{{s.i.day5_ot?s.i.day5_ot:''}}</td>
+                                                    <td class="text-center">{{s.i.day5_shift?s.i.day5_shift:''}}</td>
+
+                                                    <tr>
+                                                        <td class="text-center">{{s.i.day6?s.i.day6:''}}</td>
+                                                        <td class="text-center">{{s.i.day6_shiftin?s.i.day6_shiftin:''}}</td>
+                                                        <td class="text-center">{{s.i.day6_shiftout?s.i.day6_shiftout:''}}</td>
+                                                        <td class="text-center">{{s.i.day6_otin?s.i.day6_otin:''}}</td>
+                                                        <td class="text-center">{{s.i.day6_otout?s.i.day6_otout:''}}</td>
+                                                        <td class="text-center">{{s.i.day6_ot?s.i.day6_ot:''}}</td>
+                                                        <td class="text-center">{{s.i.day6_shift?s.i.day6_shift:''}}</td>
+
+                                                        <tr>
+                                                            <td class="text-center">{{s.i.day7?s.i.day7:''}}</td>
+                                                            <td class="text-center">{{s.i.day7_shiftin?s.i.day7_shiftin:''}}</td>
+                                                            <td class="text-center">{{s.i.day7_shiftout?s.i.day7_shiftout:''}}</td>
+                                                            <td class="text-center">{{s.i.day7_otin?s.i.day7_otin:''}}</td>
+                                                            <td class="text-center">{{s.i.day7_otout?s.i.day7_otout:''}}</td>
+                                                            <td class="text-center">{{s.i.day7_ot?s.i.day7_ot:''}}</td>
+                                                            <td class="text-center">{{s.i.day7_shift?s.i.day7_shift:''}}</td>
+
+                                                            <tr>
+                                                                <td class="text-center">{{s.i.day8?s.i.day8:''}}</td>
+                                                                <td class="text-center">{{s.i.day8_shiftin?s.i.day8_shiftin:''}}</td>
+                                                                <td class="text-center">{{s.i.day8_shiftout?s.i.day8_shiftout:''}}</td>
+                                                                <td class="text-center">{{s.i.day8_otin?s.i.day8_otin:''}}</td>
+                                                                <td class="text-center">{{s.i.day8_otout?s.i.day8_otout:''}}</td>
+                                                                <td class="text-center">{{s.i.day8_ot?s.i.day8_ot:''}}</td>
+                                                                <td class="text-center">{{s.i.day8_shift?s.i.day8_shift:''}}</td>
+
+                                                                <tr>
+                                                                    <td class="text-center">{{s.i.day9?s.i.day9:''}}</td>
+                                                                    <td class="text-center">{{s.i.day9_shiftin?s.i.day9_shiftin:''}}</td>
+                                                                    <td class="text-center">{{s.i.day9_shiftout?s.i.day9_shiftout:''}}</td>
+                                                                    <td class="text-center">{{s.i.day9_otin?s.i.day9_otin:''}}</td>
+                                                                    <td class="text-center">{{s.i.day9_otout?s.i.day9_otout:''}}</td>
+                                                                    <td class="text-center">{{s.i.day9_ot?s.i.day9_ot:''}}</td>
+                                                                    <td class="text-center">{{s.i.day9_shift?s.i.day9_shift:''}}</td>
+
+                                                                    <tr>
+                                                                        <td class="text-center">{{s.i.day10?s.i.day10:''}}</td>
+                                                                        <td class="text-center">{{s.i.day10_shiftin?s.i.day10_shiftin:''}}</td>
+                                                                        <td class="text-center">{{s.i.day10_shiftout?s.i.day10_shiftout:''}}</td>
+                                                                        <td class="text-center">{{s.i.day10_otin?s.i.day10_otin:''}}</td>
+                                                                        <td class="text-center">{{s.i.day10_otout?s.i.day10_otout:''}}</td>
+                                                                        <td class="text-center">{{s.i.day10_ot?s.i.day10_ot:''}}</td>
+                                                                        <td class="text-center">{{s.i.day10_shift?s.i.day10_shift:''}}</td>
+
+                                                                        <tr>
+                                                                            <td class="text-center">{{s.i.day11?s.i.day11:''}}</td>
+                                                                            <td class="text-center">{{s.i.day11_shiftin?s.i.day11_shiftin:''}}</td>
+                                                                            <td class="text-center">{{s.i.day11_shiftout?s.i.day11_shiftout:''}}</td>
+                                                                            <td class="text-center">{{s.i.day11_otin?s.i.day11_otin:''}}</td>
+                                                                            <td class="text-center">{{s.i.day11_otout?s.i.day11_otout:''}}</td>
+                                                                            <td class="text-center">{{s.i.day11_ot?s.i.day11_ot:''}}</td>
+                                                                            <td class="text-center">{{s.i.day11_shift?s.i.day11_shift:''}}</td>
+
+                                                                            <tr>
+                                                                                <td class="text-center">{{s.i.day12?s.i.day12:''}}</td>
+                                                                                <td class="text-center">{{s.i.day12_shiftin?s.i.day12_shiftin:''}}</td>
+                                                                                <td class="text-center">{{s.i.day12_shiftout?s.i.day12_shiftout:''}}</td>
+                                                                                <td class="text-center">{{s.i.day12_otin?s.i.day12_otin:''}}</td>
+                                                                                <td class="text-center">{{s.i.day12_otout?s.i.day12_otout:''}}</td>
+                                                                                <td class="text-center">{{s.i.day12_ot?s.i.day12_ot:''}}</td>
+                                                                                <td class="text-center">{{s.i.day12_shift?s.i.day12_shift:''}}</td>
+
+                                                                                <tr>
+                                                                                    <td class="text-center">{{s.i.day13?s.i.day13:''}}</td>
+                                                                                    <td class="text-center">{{s.i.day13_shiftin?s.i.day13_shiftin:''}}</td>
+                                                                                    <td class="text-center">{{s.i.day13_shiftout?s.i.day13_shiftout:''}}</td>
+                                                                                    <td class="text-center">{{s.i.day13_otin?s.i.day13_otin:''}}</td>
+                                                                                    <td class="text-center">{{s.i.day13_otout?s.i.day13_otout:''}}</td>
+                                                                                    <td class="text-center">{{s.i.day13_ot?s.i.day13_ot:''}}</td>
+                                                                                    <td class="text-center">{{s.i.day13_shift?s.i.day13_shift:''}}</td>
+
+                                                                                    <tr>
+                                                                                        <td class="text-center">{{s.i.day14?s.i.day14:''}}</td>
+                                                                                        <td class="text-center">{{s.i.day14_shiftin?s.i.day14_shiftin:''}}</td>
+                                                                                        <td class="text-center">{{s.i.day14_shiftout?s.i.day14_shiftout:''}}</td>
+                                                                                        <td class="text-center">{{s.i.day14_otin?s.i.day14_otin:''}}</td>
+                                                                                        <td class="text-center">{{s.i.day14_otout?s.i.day14_otout:''}}</td>
+                                                                                        <td class="text-center">{{s.i.day14_ot?s.i.day14_ot:''}}</td>
+                                                                                        <td class="text-center">{{s.i.day14_shift?s.i.day14_shift:''}}</td>
+
+                                                                                        <tr>
+                                                                                            <td class="text-center">{{s.i.day15?s.i.day15:''}}</td>
+                                                                                            <td class="text-center">{{s.i.day15_shiftin?s.i.day15_shiftin:''}}</td>
+                                                                                            <td class="text-center">{{s.i.day15_shiftout?s.i.day15_shiftout:''}}</td>
+                                                                                            <td class="text-center">{{s.i.day15_otin?s.i.day15_otin:''}}</td>
+                                                                                            <td class="text-center">{{s.i.day15_otout?s.i.day15_otout:''}}</td>
+                                                                                            <td class="text-center">{{s.i.day15_ot?s.i.day15_ot:''}}</td>
+                                                                                            <td class="text-center">{{s.i.day15_shift?s.i.day15_shift:''}}</td>
+
+                                                                                            <tr>
+                                                                                                <td class="text-center">{{s.i.day16?s.i.day16:''}}</td>
+                                                                                                <td class="text-center">{{s.i.day16_shiftin?s.i.day16_shiftin:''}}</td>
+                                                                                                <td class="text-center">{{s.i.day16_shiftout?s.i.day16_shiftout:''}}</td>
+                                                                                                <td class="text-center">{{s.i.day16_otin?s.i.day16_otin:''}}</td>
+                                                                                                <td class="text-center">{{s.i.day16_otout?s.i.day16_otout:''}}</td>
+                                                                                                <td class="text-center">{{s.i.day16_ot?s.i.day16_ot:''}}</td>
+                                                                                                <td class="text-center">{{s.i.day16_shift?s.i.day16_shift:''}}</td>
+
+                                                                                                <tr>
+                                                                                                    <td class="text-center">{{s.i.day17?s.i.day17:''}}</td>
+                                                                                                    <td class="text-center">{{s.i.day17_shiftin?s.i.day17_shiftin:''}}</td>
+                                                                                                    <td class="text-center">{{s.i.day17_shiftout?s.i.day17_shiftout:''}}</td>
+                                                                                                    <td class="text-center">{{s.i.day17_otin?s.i.day17_otin:''}}</td>
+                                                                                                    <td class="text-center">{{s.i.day17_otout?s.i.day17_otout:''}}</td>
+                                                                                                    <td class="text-center">{{s.i.day17_ot?s.i.day17_ot:''}}</td>
+                                                                                                    <td class="text-center">{{s.i.day17_shift?s.i.day17_shift:''}}</td>
+
+                                                                                                    <tr>
+                                                                                                        <td class="text-center">{{s.i.day18?s.i.day18:''}}</td>
+                                                                                                        <td class="text-center">{{s.i.day18_shiftin?s.i.day18_shiftin:''}}</td>
+                                                                                                        <td class="text-center">{{s.i.day18_shiftout?s.i.day18_shiftout:''}}</td>
+                                                                                                        <td class="text-center">{{s.i.day18_otin?s.i.day18_otin:''}}</td>
+                                                                                                        <td class="text-center">{{s.i.day18_otout?s.i.day18_otout:''}}</td>
+                                                                                                        <td class="text-center">{{s.i.day18_ot?s.i.day18_ot:''}}</td>
+                                                                                                        <td class="text-center">{{s.i.day18_shift?s.i.day18_shift:''}}</td>
+
+                                                                                                        <tr>
+                                                                                                            <td class="text-center">{{s.i.day19?s.i.day19:''}}</td>
+                                                                                                            <td class="text-center">{{s.i.day19_shiftin?s.i.day19_shiftin:''}}</td>
+                                                                                                            <td class="text-center">{{s.i.day19_shiftout?s.i.day19_shiftout:''}}</td>
+                                                                                                            <td class="text-center">{{s.i.day19_otin?s.i.day19_otin:''}}</td>
+                                                                                                            <td class="text-center">{{s.i.day19_otout?s.i.day19_otout:''}}</td>
+                                                                                                            <td class="text-center">{{s.i.day19_ot?s.i.day19_ot:''}}</td>
+                                                                                                            <td class="text-center">{{s.i.day19_shift?s.i.day19_shift:''}}</td>
+
+                                                                                                            <tr>
+                                                                                                                <td class="text-center">{{s.i.day20?s.i.day20:''}}</td>
+                                                                                                                <td class="text-center">{{s.i.day20_shiftin?s.i.day20_shiftin:''}}</td>
+                                                                                                                <td class="text-center">{{s.i.day20_shiftout?s.i.day20_shiftout:''}}</td>
+                                                                                                                <td class="text-center">{{s.i.day20_otin?s.i.day20_otin:''}}</td>
+                                                                                                                <td class="text-center">{{s.i.day20_otout?s.i.day20_otout:''}}</td>
+                                                                                                                <td class="text-center">{{s.i.day20_ot?s.i.day20_ot:''}}</td>
+                                                                                                                <td class="text-center">{{s.i.day20_shift?s.i.day20_shift:''}}</td>
+
+                                                                                                                <tr>
+                                                                                                                    <td class="text-center">{{s.i.day21?s.i.day21:''}}</td>
+                                                                                                                    <td class="text-center">{{s.i.day21_shiftin?s.i.day21_shiftin:''}}</td>
+                                                                                                                    <td class="text-center">{{s.i.day21_shiftout?s.i.day21_shiftout:''}}</td>
+                                                                                                                    <td class="text-center">{{s.i.day21_otin?s.i.day21_otin:''}}</td>
+                                                                                                                    <td class="text-center">{{s.i.day21_otout?s.i.day21_otout:''}}</td>
+                                                                                                                    <td class="text-center">{{s.i.day21_ot?s.i.day21_ot:''}}</td>
+                                                                                                                    <td class="text-center">{{s.i.day21_shift?s.i.day21_shift:''}}</td>
+
+                                                                                                                    <tr>
+                                                                                                                        <td class="text-center">{{s.i.day22?s.i.day22:''}}</td>
+                                                                                                                        <td class="text-center">{{s.i.day22_shiftin?s.i.day22_shiftin:''}}</td>
+                                                                                                                        <td class="text-center">{{s.i.day22_shiftout?s.i.day22_shiftout:''}}</td>
+                                                                                                                        <td class="text-center">{{s.i.day22_otin?s.i.day22_otin:''}}</td>
+                                                                                                                        <td class="text-center">{{s.i.day22_otout?s.i.day22_otout:''}}</td>
+                                                                                                                        <td class="text-center">{{s.i.day22_ot?s.i.day22_ot:''}}</td>
+                                                                                                                        <td class="text-center">{{s.i.day22_shift?s.i.day22_shift:''}}</td>
+
+                                                                                                                        <tr>
+                                                                                                                            <td class="text-center">{{s.i.day23?s.i.day23:''}}</td>
+                                                                                                                            <td class="text-center">{{s.i.day23_shiftin?s.i.day23_shiftin:''}}</td>
+                                                                                                                            <td class="text-center">{{s.i.day23_shiftout?s.i.day23_shiftout:''}}</td>
+                                                                                                                            <td class="text-center">{{s.i.day23_otin?s.i.day23_otin:''}}</td>
+                                                                                                                            <td class="text-center">{{s.i.day23_otout?s.i.day23_otout:''}}</td>
+                                                                                                                            <td class="text-center">{{s.i.day23_ot?s.i.day23_ot:''}}</td>
+                                                                                                                            <td class="text-center">{{s.i.day23_shift?s.i.day23_shift:''}}</td>
+
+                                                                                                                            <tr>
+                                                                                                                                <td class="text-center">{{s.i.day24?s.i.day24:''}}</td>
+                                                                                                                                <td class="text-center">{{s.i.day24_shiftin?s.i.day24_shiftin:''}}</td>
+                                                                                                                                <td class="text-center">{{s.i.day24_shiftout?s.i.day24_shiftout:''}}</td>
+                                                                                                                                <td class="text-center">{{s.i.day24_otin?s.i.day24_otin:''}}</td>
+                                                                                                                                <td class="text-center">{{s.i.day24_otout?s.i.day24_otout:''}}</td>
+                                                                                                                                <td class="text-center">{{s.i.day24_ot?s.i.day24_ot:''}}</td>
+                                                                                                                                <td class="text-center">{{s.i.day24_shift?s.i.day24_shift:''}}</td>
+
+                                                                                                                                <tr>
+                                                                                                                                    <td class="text-center">{{s.i.day25?s.i.day25:''}}</td>
+                                                                                                                                    <td class="text-center">{{s.i.day25_shiftin?s.i.day25_shiftin:''}}</td>
+                                                                                                                                    <td class="text-center">{{s.i.day25_shiftout?s.i.day25_shiftout:''}}</td>
+                                                                                                                                    <td class="text-center">{{s.i.day25_otin?s.i.day25_otin:''}}</td>
+                                                                                                                                    <td class="text-center">{{s.i.day25_otout?s.i.day25_otout:''}}</td>
+                                                                                                                                    <td class="text-center">{{s.i.day25_ot?s.i.day25_ot:''}}</td>
+                                                                                                                                    <td class="text-center">{{s.i.day25_shift?s.i.day25_shift:''}}</td>
+
+                                                                                                                                    <tr>
+                                                                                                                                        <td class="text-center">{{s.i.day26?s.i.day26:''}}</td>
+                                                                                                                                        <td class="text-center">{{s.i.day26_shiftin?s.i.day26_shiftin:''}}</td>
+                                                                                                                                        <td class="text-center">{{s.i.day26_shiftout?s.i.day26_shiftout:''}}</td>
+                                                                                                                                        <td class="text-center">{{s.i.day26_otin?s.i.day26_otin:''}}</td>
+                                                                                                                                        <td class="text-center">{{s.i.day26_otout?s.i.day26_otout:''}}</td>
+                                                                                                                                        <td class="text-center">{{s.i.day26_ot?s.i.day26_ot:''}}</td>
+                                                                                                                                        <td class="text-center">{{s.i.day26_shift?s.i.day26_shift:''}}</td>
+
+                                                                                                                                        <tr>
+                                                                                                                                            <td class="text-center">{{s.i.day27?s.i.day27:''}}</td>
+                                                                                                                                            <td class="text-center">{{s.i.day27_shiftin?s.i.day27_shiftin:''}}</td>
+                                                                                                                                            <td class="text-center">{{s.i.day27_shiftout?s.i.day27_shiftout:''}}</td>
+                                                                                                                                            <td class="text-center">{{s.i.day27_otin?s.i.day27_otin:''}}</td>
+                                                                                                                                            <td class="text-center">{{s.i.day27_otout?s.i.day27_otout:''}}</td>
+                                                                                                                                            <td class="text-center">{{s.i.day27_ot?s.i.day27_ot:''}}</td>
+                                                                                                                                            <td class="text-center">{{s.i.day27_shift?s.i.day27_shift:''}}</td>
+
+                                                                                                                                            <tr>
+                                                                                                                                                <td class="text-center">{{s.i.day28?s.i.day28:''}}</td>
+                                                                                                                                                <td class="text-center">{{s.i.day28_shiftin?s.i.day28_shiftin:''}}</td>
+                                                                                                                                                <td class="text-center">{{s.i.day28_shiftout?s.i.day28_shiftout:''}}</td>
+                                                                                                                                                <td class="text-center">{{s.i.day28_otin?s.i.day28_otin:''}}</td>
+                                                                                                                                                <td class="text-center">{{s.i.day28_otout?s.i.day28_otout:''}}</td>
+                                                                                                                                                <td class="text-center">{{s.i.day28_ot?s.i.day28_ot:''}}</td>
+                                                                                                                                                <td class="text-center">{{s.i.day28_shift?s.i.day28_shift:''}}</td>
+
+                                                                                                                                                <tr>
+                                                                                                                                                    <td class="text-center">{{s.i.day29?s.i.day29:''}}</td>
+                                                                                                                                                    <td class="text-center">{{s.i.day29_shiftin?s.i.day29_shiftin:''}}</td>
+                                                                                                                                                    <td class="text-center">{{s.i.day29_shiftout?s.i.day29_shiftout:''}}</td>
+                                                                                                                                                    <td class="text-center">{{s.i.day29_otin?s.i.day29_otin:''}}</td>
+                                                                                                                                                    <td class="text-center">{{s.i.day29_otout?s.i.day29_otout:''}}</td>
+                                                                                                                                                    <td class="text-center">{{s.i.day29_ot?s.i.day29_ot:''}}</td>
+                                                                                                                                                    <td class="text-center">{{s.i.day29_shift?s.i.day29_shift:''}}</td>
+
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td class="text-center">{{s.i.day30?s.i.day30:''}}</td>
+                                                                                                                                                        <td class="text-center">{{s.i.day30_shiftin?s.i.day30_shiftin:''}}</td>
+                                                                                                                                                        <td class="text-center">{{s.i.day30_shiftout?s.i.day30_shiftout:''}}</td>
+                                                                                                                                                        <td class="text-center">{{s.i.day30_otin?s.i.day30_otin:''}}</td>
+                                                                                                                                                        <td class="text-center">{{s.i.day30_otout?s.i.day30_otout:''}}</td>
+                                                                                                                                                        <td class="text-center">{{s.i.day30_ot?s.i.day30_ot:''}}</td>
+                                                                                                                                                        <td class="text-center">{{s.i.day30_shift?s.i.day30_shift:''}}</td>
+
+                                                                                                                                                        <tr>
+                                                                                                                                                            <td class="text-center">{{s.i.day31?s.i.day31:''}}</td>
+                                                                                                                                                            <td class="text-center">{{s.i.day31_shiftin?s.i.day31_shiftin:''}}</td>
+                                                                                                                                                            <td class="text-center">{{s.i.day31_shiftout?s.i.day31_shiftout:''}}</td>
+                                                                                                                                                            <td class="text-center">{{s.i.day31_otin?s.i.day31_otin:''}}</td>
+                                                                                                                                                            <td class="text-center">{{s.i.day31_otout?s.i.day31_otout:''}}</td>
+                                                                                                                                                            <td class="text-center">{{s.i.day31_ot?s.i.day31_ot:''}}</td>
+                                                                                                                                                            <td class="text-center">{{s.i.day31_shift?s.i.day31_shift:''}}</td>
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <table id="tbl_timing" class="table table-sm border table-bordered">
+                    <tbody class="thead font-weight-bold">
+
+                    </tbody>
+                    <tbody class="part1">
+
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+
+            </div>
+
+            <div class="col-md-12">
+                <div class="row">
+                    <table class="table table-bordered" style="width:100%">
+                        <tr>
+                            <td class="text-right">Total Working Days</td>
+                            <td><b>{{s.i.num_of_workingdays}}</b></td>
+                            <td class="text-right">OT Hours</td>
+                            <td><b>{{s.i.ot_count?s.i.ot_count:''}}</b></td>
+                            <td class="text-right">Worked Days</td>
+                            <td><b>{{s.i.shift_count}}</b></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">National/Fesival Holidays</td>
+                            <td><b>{{s.i.holiday}}</b></td>
+                            <td class="text-right">Holiday=gl</td>
+                            <td>Week Off-wo<br>Casual Leave-cl:</td>
+                            <td class="text-right">Festival/Holidays Leave<br>Casual Leave:</td>
+                            <td><b>{{s.i.holiday}}<br>
+            </b><b><b>{{s.i.emp_el_count}}</b></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right"></td>
+                            <td></td>
+                            <td class="text-right"></td>
+                            <td></td>
+                            <td class="text-right">Total Worked Days</td>
+                            <td><b>{{s.i.total_workingdays}}</b></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Employee signature/பணியாளர் கையொப்பம் </td>
+                            <td></td>
+                            <td class="text-right"></td>
+                            <td></td>
+                            <td class="text-right-left">Supervisor signature/பொறுப்பாளர் கையொப்பம் </td>
+                            <td></td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </mat-card-content>
+</mat-card>

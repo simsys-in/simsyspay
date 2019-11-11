@@ -1,0 +1,143 @@
+<div class="col-md-12">
+    <mat-card>
+        <mat-toolbar class="bg-light">
+            <mat-toolbar-row>
+                <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+                <button mat-mini-fab>{{f.h.id}}</button> <span class="pl-2 text-primary">Shift Master</span>
+                <span class="example-spacer"></span>
+                <button mat-icon-button (click)="simsSave()" *ngIf="formState=='form' && !f.h.id"><mat-icon>save</mat-icon></button>
+                <button mat-icon-button (click)="simsUpdate(f.h.id)" *ngIf="formState=='form' && f.h.id>0"><mat-icon>save_alt</mat-icon></button>
+                <button mat-icon-button (click)="simsPrint()" *ngIf="f.h.id">
+<mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
+</button>
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+<mat-icon>more_vert</mat-icon>
+</button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="simsNew()" *ngIf="formState=='form' && f.h.id"><mat-icon>notifications_off</mat-icon><span>New</span></button>
+
+                    <button mat-menu-item>
+<mat-icon>mail</mat-icon>
+<span>Send Mail</span>
+</button>
+                    <button mat-menu-item disabled>
+<mat-icon>voicemail</mat-icon>
+<span>Save as PDF</span>
+</button>
+                    <button mat-menu-item (click)="simsPreview()" *ngIf="formState=='form' && f.h.id"><mat-icon>pageview</mat-icon><span>Preview</span></button>
+                    <button mat-menu-item (click)="simsList()" *ngIf="formState=='form'"><mat-icon>notifications_off</mat-icon><span>List</span></button>
+
+                    <button mat-menu-item (click)="simsNew()" *ngIf="formState=='list'"><mat-icon>notifications_off</mat-icon><span>New</span></button>
+
+                    <button mat-menu-item (click)="simsDelete(f.h.id)" *ngIf="formState=='form'"><mat-icon>notifications_off</mat-icon><span>Delete</span></button>
+                </mat-menu>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <mat-card-content *ngIf="formState=='form'">
+            <div class="col-md-8 offset-md-2">
+                <div class="col-md-12 p-2 font-weight-bold bg-warning">Shift Master</div>
+                <mat-form-field class="col-md-6 bg-white" appearance="outline">
+                    <input type="text" matInput placeholder="Shift" [(ngModel)]="f.h.shift" class="font-weight-bold">
+                </mat-form-field>
+                <mat-form-field class="col-md-6 p-1 bg-white" appearance="outline">
+                    <input type="number" matInput placeholder="Early Punch" [(ngModel)]="f.h.early_punch" class="font-weight-bold">
+                </mat-form-field>
+                <mat-form-field class="col-md-6 bg-white" appearance="outline">
+                    <input type="number" matInput placeholder="Late Punch" [(ngModel)]="f.h.late_punch" class="font-weight-bold">
+                </mat-form-field>
+
+
+                <table mat-table [dataSource]="dataSource" class=" bg-white col-md-12 table-bordered">
+                    <ng-container matColumnDef="intime">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Intime </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class=""><input type="time" matInput [(ngModel)]="f.i[i].intime">
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="outtime">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Out Time </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class=""><input matInput type="time" [(ngModel)]="f.i[i].outtime"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="shift_count">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Shift Count </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <mat-form-field class=""><input type="number" matInput [(ngModel)]="f.i[i].shift_count"></mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef class="" style="width:30px;">
+                            <a (click)="inventoryAdd()" href="javascript:" class="text-success">
+                                <mat-icon>add_circle</mat-icon>
+                            </a>
+                        </th>
+                        <td mat-cell *matCellDef="let inventory;let i=index">
+                            <a (click)="inventoryRemove(i)" href="javascript:" class="text-danger">
+                                <mat-icon aria-label="icon-button with a heart icon">remove_circle</mat-icon>
+                            </a>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="example-first-header-row bg-light"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns" class="example-first-footer-row bg-light"></tr>
+                </table>
+
+
+            </div>
+
+        </mat-card-content>
+
+
+
+
+
+        <mat-card-content *ngIf="formState=='list'">
+            <div class="p-2 col-md-12" style="overflow-y:auto">
+                <table mat-table [dataSource]="lists" class="col-md-12 table-bordered">
+
+                    <ng-container matColumnDef="i">
+                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:50px"> S No </th>
+                        <td mat-cell *matCellDef="let row ;let i=index" class="text-center">{{i+1}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:50px"> Vou No </th>
+                        <td mat-cell *matCellDef="let row" class="text-center">{{row.id}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="shift">
+                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width:100px"> Vou Date </th>
+                        <td mat-cell *matCellDef="let row" class="text-center">{{row.shift}}</td>
+                    </ng-container>
+
+
+
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef style="width:30px;"></th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button (click)="simsView(row.id)"><mat-icon>edit</mat-icon></button>
+
+                        </td>
+                    </ng-container>
+
+                    <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+                    <tr mat-header-row *matHeaderRowDef="listColumns" class="example-first-header-row bg-light"></tr>
+                    <tr mat-row *matRowDef="let row; columns: listColumns;"></tr>
+                </table>
+            </div>
+        </mat-card-content>
+
+
+    </mat-card>
+
+</div>

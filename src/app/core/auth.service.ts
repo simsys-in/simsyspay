@@ -28,27 +28,32 @@ export class AuthService {
     }
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string,cpin:number) {
     let request={
+      email:username,
+      password:password,
+      cpin:cpin
     }
+    
     
     const params = new HttpParams();
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'username' :username,
-        'password':password,
-        'Authorization':''
       })
     };
 
     //let url = config.apiUrl+'/payroll_report/attendance_register';
-    let url = config.apiUrl+'/login/auth';
+    let url = config.apiUrl+'login';
 
     return this.http.post<any>(url, request,httpOptions)
     .pipe(map((user: any) => {
+      
           if (user && user.token) {
+            
               localStorage.setItem('currentUser', JSON.stringify(user));
+              
+            localStorage.setItem('token','Bearer '+user.token);
               this.currentUserSubject.next(user);
           }            
           return user;

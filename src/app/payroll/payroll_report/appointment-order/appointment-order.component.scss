@@ -1,0 +1,10 @@
+      .invisible-scrollbar::-webkit-scrollbar {
+            display: none;
+            
+          } 
+
+
+          @media print 
+{ 
+    .page-break { display:block; page-break-before:always; } 
+}

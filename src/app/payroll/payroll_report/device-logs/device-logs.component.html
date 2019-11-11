@@ -1,0 +1,50 @@
+<div class="col-md-12 bg-white" *ngIf="formState=='form'">
+    <mat-toolbar class="bg-light">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+            <span class="pl-2 text-primary">Device Logs</span>
+            <span class="example-spacer"></span>
+
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div class="row">
+        <mat-form-field class="col-md-3 p-2">
+            <input matInput [matDatepicker]="dated" placeholder="Date Time" [(ngModel)]="s.h.dated">
+            <mat-datepicker-toggle matSuffix [for]="dated"></mat-datepicker-toggle>
+            <mat-datepicker #dated></mat-datepicker>
+        </mat-form-field>
+
+
+        <mat-form-field class="col-md-3 p-2">
+            <input type="hidden" [(ngModel)]="s.h.employee_code">
+            <mat-label>
+                <mat-icon>people</mat-icon> <b> Party</b> <i> Employee</i></mat-label>
+            <input matInput type="text" [(ngModel)]="s.h.employee" placeholder="Select Employee" (ngModelChange)="employeeFilter($event);" [matAutocomplete]="employees" class="font-weight-bold">
+
+            <mat-autocomplete #employees="matAutocomplete" autoActiveFirstOption (optionSelected)="employeeSelect($event)">
+                <mat-option *ngFor="let t of filteredEmployees" [value]="t">
+                    {{t.employee}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <button mat-icon-button (click)="query_detail()" *ngIf="formState=='form'" color="primary"><mat-icon>view_list</mat-icon></button>
+        <button mat-icon-button (click)="simsPrint()" color="accent"><mat-icon>print</mat-icon></button>
+        <table class="table table-bordered  col-md-6">
+            <tr class="bg-warning">
+                <th class="text-center">Log Date</th>
+                <th class="text-center">Download Date</th>
+                <th class="text-center">Device LogId</th>
+                <th class="text-center">User Id</th>
+            </tr>
+            <tr *ngFor="let i of s.i">
+                <td><b>{{i.LogDate}}</b></td>
+                <td><b>{{i.DownloadDate}}</b></td>
+                <td><b>{{i.DeviceLogId}}</b></td>
+                <td><b>{{i.UserId}}</b></td>
+
+            </tr>
+        </table>
+
+    </div>
+</div>

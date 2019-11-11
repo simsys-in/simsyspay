@@ -1,32 +1,36 @@
-<mat-card class="col-md-4" style="margin:auto; margin-top: 100px;">
-  <mat-card-header class="bg-info text-light mb-1 pt-1">
-    <mat-card-title><mat-icon class="mr-2">people</mat-icon> Login</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-      <form [formGroup]="headForm" (ngSubmit)="simsSave()">
+<mat-card class="col-md-4 offset-md-4 p-2 blurred-box" style="margin-top: 100px;">
+    <div class="m-1">
 
-        <mat-form-field class="col-md-12 col-12" hintLabel="Max 24 characters">
-            <input matInput #input maxlength="24" placeholder="Username" [formControl]="emailFormControl">
-            <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-              Please enter a valid username
-            </mat-error>
-          </mat-form-field>
+        <div class="col-md-12 text-center"><img mat-card-image class="avatar mb-4" style="width:125px;margin-top: -50px;" src="http://api.simsys.org/public/assets/image/login-icon.png" alt="Photo of a Shiba Inu"></div>
+        <mat-card-content class="p-2">
+            <form [formGroup]="headForm">
+
+                <mat-form-field class="col-md-12 col-12 bg-white p-2 mb-2  font-weight-bold" style="font-size:120%" hintLabel="Max 32 characters">
+                    <input matInput #user maxlength="32" placeholder="Username" formControlName="email">
+                    <mat-hint align="end">{{user.value?.length || 0}}/32</mat-hint>
+                    <mat-error *ngIf="email.hasError('email') && !email.hasError('required')">
+                        Please enter a valid username
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 bg-white  p-2 mb-2 font-weight-bold" style="font-size:120%">
+                    <input matInput placeholder="Enter your password" formControlName="password" [type]="hide ? 'password' : 'text'">
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </mat-form-field>
 
 
-          <mat-form-field class="col-12">
-            <input matInput placeholder="Enter your password" formControlName="password" [type]="hide ? 'password' : 'text'">
-            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </mat-form-field>
+                <mat-form-field class="col-12 bg-white  p-2 mb-2 font-weight-bold" style="font-size:120%">
+                    <input type="number" matInput maxlength="5" placeholder="CPIN" formControlName="cpin">
+                </mat-form-field>
 
-          
-        <mat-form-field class="col-md-6 col-6">
-          <input type="number" matInput maxlength="5" placeholder="Company Code" formControlName="company_code">
-        </mat-form-field>
+            </form>
+            <div class="alert alert-danger text-center" role="alert" *ngIf="error"><b>Error:</b> {{error | json}}</div>
+        </mat-card-content>
 
-          </form>
-  </mat-card-content>
-  <mat-card-actions class="bg-warning text-center pb-2">
-    <button mat-raised-button class="bg-success text-light" (click)="simsSave()"><mat-icon>input</mat-icon> Login</button>
-  </mat-card-actions>
+        <mat-card-actions class="text-center">
+            <button *ngIf="isLoading" class="border-0" style="background-color:transparent"><mat-progress-spinner  class="text-center" mode="indeterminate" color="accent" diameter="25" *ngIf="isLoading"></mat-progress-spinner></button>
+            <button mat-raised-button class="bg-success text-light" (click)="simsSave()" *ngIf="!isLoading"><mat-icon>input</mat-icon> Login</button>
+
+        </mat-card-actions>
+    </div>
 </mat-card>

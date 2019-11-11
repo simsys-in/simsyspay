@@ -1,4 +1,5 @@
 export const config = {
-    apiUrl: 'http://api.simsys.org',
-    loginsts:false
-  };
+  apiUrl: 'http://erp4.simsys.org/api/',
+  loginsts:false,
+  token:''
+};

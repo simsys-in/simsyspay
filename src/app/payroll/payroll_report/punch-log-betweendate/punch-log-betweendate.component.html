@@ -1,0 +1,117 @@
+<mat-card class="d-print-none">
+    <mat-toolbar class="bg-light">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+            <span class="pl-2 text-primary">Punch Log Between Date</span>
+            <span class="example-spacer"></span>
+
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-card-content class="bg-white">
+        <div class="row">
+            <mat-form-field class="col-md-3 p-2">
+                <input matInput [matDatepicker]="from_date" placeholder="From Date" [(ngModel)]="s.h.from_date">
+                <mat-datepicker-toggle matSuffix [for]="from_date"></mat-datepicker-toggle>
+                <mat-datepicker #from_date></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3 p-2">
+                <input matInput [matDatepicker]="to_date" placeholder="To Date" [(ngModel)]="s.h.to_date">
+                <mat-datepicker-toggle matSuffix [for]="to_date"></mat-datepicker-toggle>
+                <mat-datepicker #to_date></mat-datepicker>
+            </mat-form-field>
+
+
+
+
+            <button mat-icon-button (click)="query_detail()" color="primary"><mat-icon>view_list</mat-icon></button>
+            <button mat-icon-button (click)="simsPrint()" color="accent"><mat-icon>print</mat-icon></button>
+        </div>
+    </mat-card-content>
+
+
+</mat-card>
+
+
+<table class="table table-bordered bg-white" *ngIf="formState=='list'">
+
+
+    <tr>
+        <th>Employee</th>
+        <th>Employee Code</th>
+
+        <th>{{s.i[0]}}</th>
+        <th>{{s.i[1]}}</th>
+        <th>{{s.i[2]}}</th>
+        <th>{{s.i[3]}}</th>
+        <th>{{s.i[4]}}</th>
+        <th>{{s.i[5]}}</th>
+        <th>{{s.i[6]}}</th>
+        <th>{{s.i[7]}}</th>
+        <th>{{s.i[8]}}</th>
+        <th>{{s.i[9]}}</th>
+        <th>{{s.i[10]}}</th>
+        <th>{{s.i[11]}}</th>
+        <th>{{s.i[12]}}</th>
+        <th>{{s.i[13]}}</th>
+        <th>{{s.i[14]}}</th>
+        <th>{{s.i[14]}}</th>
+        <th>{{s.i[15]}}</th>
+        <th>{{s.i[16]}}</th>
+        <th>{{s.i[17]}}</th>
+        <th>{{s.i[18]}}</th>
+        <th>{{s.i[19]}}</th>
+        <th>{{s.i[20]}}</th>
+        <th>{{s.i[21]}}</th>
+        <th>{{s.i[22]}}</th>
+        <th>{{s.i[23]}}</th>
+        <th>{{s.i[24]}}</th>
+        <th>{{s.i[25]}}</th>
+        <th>{{s.i[26]}}</th>
+        <th>{{s.i[27]}}</th>
+        <th>{{s.i[28]}}</th>
+        <th>{{s.i[29]}}</th>
+        <th>{{s.i[30]}}</th>
+        <th>{{s.i[31]}}</th>
+    </tr>
+
+    <tr *ngFor="let t of s.t">
+        <td>{{t.employee}}</td>
+        <td (click)="load(t)" [ngStyle]="{'color':'blue'}">{{t.employee_code}}</td>
+        <td>{{t.logs.log0}}</td>
+        <td>{{t.logs.log1}}</td>
+        <td>{{t.logs.log2}}</td>
+        <td>{{t.logs.log3}}</td>
+        <td>{{t.logs.log4}}</td>
+        <td>{{t.logs.log5}}</td>
+        <td>{{t.logs.log6}}</td>
+        <td>{{t.logs.log7}}</td>
+        <td>{{t.logs.log8}}</td>
+        <td>{{t.logs.log9}}</td>
+        <td>{{t.logs.log10}}</td>
+        <td>{{t.logs.log11}}</td>
+        <td>{{t.logs.log12}}</td>
+        <td>{{t.logs.log13}}</td>
+        <td>{{t.logs.log14}}</td>
+        <td>{{t.logs.log15}}</td>
+        <td>{{t.logs.log16}}</td>
+        <td>{{t.logs.log17}}</td>
+        <td>{{t.logs.log18}}</td>
+        <td>{{t.logs.log19}}</td>
+        <td>{{t.logs.log20}}</td>
+        <td>{{t.logs.log21}}</td>
+        <td>{{t.logs.log22}}</td>
+        <td>{{t.logs.log23}}</td>
+        <td>{{t.logs.log24}}</td>
+        <td>{{t.logs.log25}}</td>
+        <td>{{t.logs.log26}}</td>
+        <td>{{t.logs.log27}}</td>
+        <td>{{t.logs.log28}}</td>
+        <td>{{t.logs.log29}}</td>
+        <td>{{t.logs.log30}}</td>
+        <td>{{t.logs.log31}}</td>
+
+    </tr>
+
+
+</table>

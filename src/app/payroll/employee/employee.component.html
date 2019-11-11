@@ -1,51 +1,364 @@
-  <mat-card class="col-md-4" style="margin:auto">
-      <mat-card-header class="bg-info text-light mb-1">
-        <mat-card-title><mat-icon class="mr-2">people</mat-icon>Employee</mat-card-title>
-        <mat-card-subtitle>Collection of Employee details</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-          <mat-form-field class="col-md-4 col-4">
-              <input matInput placeholder="Code" type="number">
-            </mat-form-field>
+<!-- [ngStyle]="{'background-color':'gray'}" -->
+<mat-toolbar class="bg-white">
+    <mat-toolbar-row>
+        <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+        <button mat-mini-fab>{{f.h.id}}</button> <span class="pl-2 text-primary">Employee</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button (click)="simsSave()" *ngIf="formState=='form' && !f.h.id"><mat-icon>save</mat-icon></button>
+        <button mat-icon-button (click)="simsUpdate(f.h.id)" *ngIf="formState=='form' && f.h.id>0"><mat-icon>save_alt</mat-icon></button>
+        <button mat-icon-button (click)="simsPrint()" *ngIf="f.h.id">
+<mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
+</button>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+<mat-icon>more_vert</mat-icon>
+</button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="simsNew()" *ngIf="formState=='form' && f.h.id"><mat-icon>notifications_off</mat-icon><span>New</span></button>
 
-            <mat-form-field class="col-md-8 col-8">
-                <input matInput placeholder="Employee Name">
-              </mat-form-field>
-          
-            <mat-form-field class="col-md-12">
-              <textarea matInput placeholder="Address"></textarea>
-            </mat-form-field>
-          
-            <mat-form-field class="col-md-12">
-              <mat-select placeholder="Employee Category" class="font-weight-bold">
-                  <mat-option *ngFor="let books of myBooks" [value]="books.id">
-                      {{ books.ledger }}
-                    </mat-option>
-              </mat-select>
-            </mat-form-field>
-      </mat-card-content>
-      
-      <mat-form-field class="col-md-12">
+            <button mat-menu-item>
+<mat-icon>mail</mat-icon>
+<span>Send Mail</span>
+</button>
+            <button mat-menu-item disabled>
+<mat-icon>voicemail</mat-icon>
+<span>Save as PDF</span>
+</button>
+            <button mat-menu-item (click)="simsPreview()" *ngIf="formState=='form' && f.h.id"><mat-icon>pageview</mat-icon><span>Preview</span></button>
+            <button mat-menu-item (click)="simsList()" *ngIf="formState=='form'"><mat-icon>notifications_off</mat-icon><span>List</span></button>
 
-        <!-- ADD AN INPUT BOX OF TYPE TEXT AND LINK IT TO THE AUTO COMPLETE PANEL. -->
-        <input type="text" placeholder="Search books ..."
-            matInput 
-            [formControl]="searchTerm" 
-            [matAutocomplete]="auto">  
+            <button mat-menu-item (click)="simsNew()" *ngIf="formState=='list'"><mat-icon>notifications_off</mat-icon><span>New</span></button>
 
-        <!-- CREATE AUTO COMPLETE PANEL WITH OPTIONS. -->
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let books of myBooks" [value]="books.ledger">
-            {{ books.ledger }}
-          </mat-option>
-        </mat-autocomplete>
+            <button mat-menu-item (click)="simsDelete(f.h.id)" *ngIf="formState=='form'"><mat-icon>notifications_off</mat-icon><span>Delete</span></button>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="col-md-6 offset-md-3">
+    <mat-card class="example-card" style="padding-top:0;padding-left:0;padding-right:0">
 
-    </mat-form-field>
+        <mat-card-content *ngIf="formState=='form'">
+
+            <mat-card-title style="background:rgba(0,0,0,.06)">Employee Details </mat-card-title>
+            <div class="row">
+                <div class="col-md-6">
+
+
+                    <mat-card-title style="background:rgba(0,0,0,.06)">Employee</mat-card-title>
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>Employee</mat-label>
+                        <input matInput placeholder="Enter Employee" [(ngModel)]="f.h.employee" class="font-weight-bold">
+                        <input type="hidden" [(ngModel)]="id">
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>Employee Code</mat-label>
+                        <input matInput placeholder="Enter Employee Code" [(ngModel)]="f.h.employee_code" class="font-weight-bold">
+
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6" appearance="outline">
+                        <mat-label>DOB</mat-label>
+                        <input matInput placeholder="Select date of Birth" type="date" [(ngModel)]="f.h.dob" class="font-weight-bold">
+                    </mat-form-field>
+
+
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+
+                        <mat-label>Employee Category </mat-label>
+                        <input type="hidden" [(ngModel)]="f.h.employee_category_id">
+                        <input matInput type="text" [(ngModel)]="f.h.employee_category" placeholder="Select Employee Category" (ngModelChange)="employee_categoryFilter($event);" [matAutocomplete]="employee_categories" class="font-weight-bold">
+
+                        <mat-autocomplete #employee_categories="matAutocomplete" autoActiveFirstOption (optionSelected)="employee_categorySelect($event)">
+                            <mat-option *ngFor="let emp of filteredEmployee_categories" [value]="emp">
+                                {{emp.employee_category}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <input type="hidden" [(ngModel)]="f.h.shift_id">
+                        <mat-label>
+                            <mat-icon>people</mat-icon> <b> Party</b> <i> Shift</i></mat-label>
+                        <input matInput type="text" [(ngModel)]="f.h.shift" placeholder="Select Shift" (ngModelChange)="shiftFilter($event);" [matAutocomplete]="shifts" class="font-weight-bold">
+
+                        <mat-autocomplete #shifts="matAutocomplete" autoActiveFirstOption (optionSelected)="shiftSelect($event)">
+                            <mat-option *ngFor="let s of filteredShifts" [value]="s">
+                                {{s.shift}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6  pl-1" appearance="outline">
+                        <input type="hidden" [(ngModel)]="f.h.department_id">
+                        <mat-label>
+                            <mat-icon>people</mat-icon> <b> Party</b> <i>Department</i></mat-label>
+                        <input matInput type="text" [(ngModel)]="f.h.department" placeholder="Select Department" (ngModelChange)="departmentFilter($event);" [matAutocomplete]="departments" class="font-weight-bold">
+                        <mat-autocomplete #departments="matAutocomplete" autoActiveFirstOption (optionSelected)="departmentSelect($event)">
+                            <mat-option *ngFor="let d of filteredDepartments" [value]="d">
+                                {{d.department}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>Employee Status</mat-label>
+                        <select matNativeControl required [(ngModel)]="f.h.emp_status">
+                    <option value="yes">Active</option>
+                    <option value="suspend">suspend</option>
+                    <option value="resign">resign</option>
+                    <option value="terminate">terminate</option>
+                    
+                    </select>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6  pl-1" appearance="outline">
+                        <input type="hidden" [(ngModel)]="f.h.designation_id">
+                        <mat-label>
+                            <mat-icon>people</mat-icon> <b> Party</b> <i> Designation</i></mat-label>
+                        <input matInput type="text" [(ngModel)]="f.h.designation" placeholder="Select Designation" (ngModelChange)="designationFilter($event);" [matAutocomplete]="designations" class="font-weight-bold">
+
+                        <mat-autocomplete #designations="matAutocomplete" autoActiveFirstOption (optionSelected)="designationSelect($event)">
+                            <mat-option *ngFor="let p of filteredDesignations" [value]="p">
+                                {{p.designation}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <input type="hidden" [(ngModel)]="f.h.branch_id">
+                        <mat-label>
+                            <mat-icon>people</mat-icon> <b> Party</b> <i> Branch</i></mat-label>
+                        <input matInput type="text" [(ngModel)]="f.h.branch" placeholder="Select Branch" (ngModelChange)="branchFilter($event);" [matAutocomplete]="branches" class="font-weight-bold">
+
+                        <mat-autocomplete #branches="matAutocomplete" autoActiveFirstOption (optionSelected)="branchSelect($event)">
+                            <mat-option *ngFor="let p of filteredBranches" [value]="p">
+                                {{p.branch}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label> Open Balance</mat-label>
+                        <input matInput placeholder="Enter Open Balance" [(ngModel)]="f.h.opn_bal" class="font-weight-bold">
+                    </mat-form-field>
+
+
+
+                    <mat-form-field class="col-md-12 " appearance="outline">
+                        <mat-label>Admin Notes</mat-label>
+                        <textarea matInput placeholder="Enter Admin Notes" [(ngModel)]="f.h.narration" class="font-weight-bold"></textarea>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="col-md-6">
+                    <mat-card-title style="background:rgba(0,0,0,.06)">Bank </mat-card-title>
+
+                    <mat-form-field class="col-md-12 pl-1 " appearance="outline">
+                        <input type="hidden" [(ngModel)]="f.h.bank_id">
+                        <mat-label>
+                            <mat-icon>people</mat-icon> <b> Party</b> <i> Bank</i></mat-label>
+                        <input matInput type="text" [(ngModel)]="f.h.bank" placeholder="Select bank" (ngModelChange)="bankFilter($event);" [matAutocomplete]="banks" class="font-weight-bold">
+
+                        <mat-autocomplete #banks="matAutocomplete" autoActiveFirstOption (optionSelected)="bankSelect($event)">
+                            <mat-option *ngFor="let p of filteredBanks" [value]="p">
+                                {{p.bank}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-12 pl-1 " appearance="outline">
+                        <mat-label>Account Name</mat-label>
+                        <input matInput placeholder="Enter Account Name" [(ngModel)]="f.h.bankacname" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-12 pl-1 " appearance="outline">
+                        <mat-label>Account Number</mat-label>
+                        <input matInput placeholder="Account Number" [(ngModel)]="f.h.bankacno" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-12 pl-1 " appearance="outline">
+                        <mat-label>IFSC Code</mat-label>
+                        <input matInput placeholder="Enter IFSC Code" [(ngModel)]="f.h.ifsc_code" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-12 pl-1 " appearance="outline">
+                        <input matInput placeholder="Enter Bank Branch" [(ngModel)]="f.h.bank_branch" class="font-weight-bold">
+                    </mat-form-field>
+
+                </div>
+                <div class="col-md-6">
+                    <mat-card-title style="background:rgba(0,0,0,.06)">Communication </mat-card-title>
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>Mobile</mat-label>
+                        <input matInput placeholder="Enter Mobile" [(ngModel)]="f.h.mobile" class="font-weight-bold">
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6  pl-1" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Enter Email" [(ngModel)]="f.h.email" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>Phone</mat-label>
+                        <input matInput placeholder="Enter phone" [(ngModel)]="f.h.phone" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 pl-1" appearance="outline">
+                        <mat-label>Gender</mat-label>
+                        <select matNativeControl required [(ngModel)]="f.h.gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                
+                                </select>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-12 " appearance="outline">
+                        <mat-label>Present Address</mat-label>
+                        <textarea matInput type="" placeholder="Enter Present Address" [(ngModel)]="f.h.present_address" class="font-weight-bold"></textarea>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-12 " appearance="outline">
+                        <mat-label>Permanent Address</mat-label>
+                        <textarea matInput placeholder="Enter Permanant Address" [(ngModel)]="f.h.permanent_address" class="font-weight-bold"></textarea>
+                    </mat-form-field>
+
+
+                </div>
+                <div class="col-md-6 ">
+                    <mat-card-title style="background:rgba(0,0,0,.06)">Compliance </mat-card-title>
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>ESI No</mat-label>
+                        <input matInput placeholder="Enter ESI NO" [(ngModel)]="f.h.esino" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>PF No</mat-label>
+                        <input matInput placeholder="Enter PF NO" [(ngModel)]="f.h.pfno" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>PAN No</mat-label>
+                        <input matInput placeholder="Enter PAN NO" [(ngModel)]="f.h.panno" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>Adhar No</mat-label>
+                        <input matInput placeholder="Enter ADHAR NO" [(ngModel)]="f.h.adharno" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>
+                            Salary
+                        </mat-label>
+                        <input matInput placeholder="Enter Salary" [(ngModel)]="f.h.salary" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>Basic</mat-label>
+                        <input matInput placeholder="Enter Basic" [(ngModel)]="f.h.basic" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-12 pl-1 " appearance="outline">
+                        <mat-label>OT</mat-label>
+                        <input matInput placeholder=" Enter OT" [(ngModel)]="f.h.ot" class="font-weight-bold">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-12">
+                    <mat-card-title style="background:rgba(0,0,0,.06);">Others </mat-card-title>
+
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>Authorised By</mat-label>
+                        <input matInput placeholder="Enter Authourized By" [(ngModel)]="f.h.authorized_id" class="font-weight-bold">
+                    </mat-form-field>
+
+
+                    <mat-form-field class="col-md-6  pl-1" appearance="outline">
+                        <mat-label>Join date</mat-label>
+                        <input type="date" matInput placeholder="Enter Join Date" [(ngModel)]="f.h.joined" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>Resign Date</mat-label>
+                        <input type="date" matInput placeholder="Enter Resign Date" [(ngModel)]="f.h.resign_date" class="font-weight-bold">
+                    </mat-form-field>
+
+
+
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>Marital Status</mat-label>
+                        <select matNativeControl required [(ngModel)]="f.h.marital_status">
+    <option value="yes">Yes</option>
+    <option value="no">no</option>
     
-      <mat-card-actions class="bg-warning text-center pb-2">
-        <button mat-raised-button class="bg-success text-light"><mat-icon>save</mat-icon></button>
-        <button mat-raised-button class="bg-secondary text-light"><mat-icon>create</mat-icon></button>
-        <button mat-raised-button class="bg-danger text-light"><mat-icon>delete</mat-icon></button>
-        <button mat-raised-button class="bg-info text-light" [routerLink]="['/payroll/employee-list']"><mat-icon>list</mat-icon></button>
-      </mat-card-actions>
+    </select>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>Have Vehicle</mat-label>
+                        <select matNativeControl required [(ngModel)]="f.h.have_vehicle">
+    <option value="yes">Yes</option>
+    <option value="no">no</option>
+    
+    </select>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6  pl-1" appearance="outline">
+                        <mat-label>Driving license</mat-label>
+                        <select matNativeControl required [(ngModel)]="f.h.driving_license_no">
+    <option value="yes">Yes</option>
+    <option value="no">no</option>
+    
+    </select>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>Expected Salary</mat-label>
+                        <input matInput placeholder="Expected Salary" [(ngModel)]="f.h.expected_salary" class="font-weight-bold">
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6 pl-1 " appearance="outline">
+                        <mat-label>Extected Designation</mat-label>
+                        <input matInput placeholder="Enter Expected Designation" [(ngModel)]="f.h.expected_designation" class="font-weight-bold">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6 " appearance="outline">
+                        <mat-label>UAN code</mat-label>
+                        <input type="number" matInput placeholder=" Enter UAN Code" [(ngModel)]="f.h.uno_code" class="font-weight-bold">
+                    </mat-form-field>
+
+
+
+                    <mat-form-field class="col-md-6  pl-1" appearance="outline">
+                        <mat-label>Appointed By</mat-label>
+                        <input matInput placeholder=" Enter Appointed By" [(ngModel)]="f.h.appointed_id" class="font-weight-bold">
+                    </mat-form-field>
+
+                </div>
+            </div>
+
+
+
+        </mat-card-content>
+
+
+
+        <mat-card-content *ngIf="formState=='list'">
+            <div class="col-md-12">
+                <table mat-table [dataSource]="lists" class="col-md-12 table-bordered">
+                    <ng-container matColumnDef="sno">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> S No </th>
+                        <td mat-cell *matCellDef="let row:let i=index" class="text-center">{{i+1}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Vou No </th>
+                        <td mat-cell *matCellDef="let row" class="text-center">{{row.id}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="employee">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Employee </th>
+                        <td mat-cell *matCellDef="let row" class="text-center">{{row.employee}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button (click)="simsView(row.id)"><mat-icon>edit</mat-icon></button>
+
+                        </td>
+                    </ng-container>
+
+                    <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+                    <tr mat-header-row *matHeaderRowDef="listColumns" class="example-first-header-row bg-light"></tr>
+                    <tr mat-row *matRowDef="let row; columns: listColumns;"></tr>
+                </table>
+            </div>
+        </mat-card-content>
+
+
     </mat-card>
+</div>

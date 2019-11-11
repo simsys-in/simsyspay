@@ -1,0 +1,36 @@
+<div class="col-md-12 p-2">
+    <mat-card>
+        <mat-toolbar class="bg-light">
+            <mat-toolbar-row>
+                <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+                <span class="pl-2 text-primary">Time Punch</span>
+                <span class="example-spacer"></span>
+
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <mat-card-content>
+
+            <mat-form-field>
+                <input matInput type="datetime-local" placeholder="Log Date" [(ngModel)]="f.h.LogDate">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3 p-2">
+                <input type="hidden" [(ngModel)]="f.h.UserId">
+                <mat-label>
+                    <mat-icon>people</mat-icon><i> Employee</i></mat-label>
+                <input matInput type="text" placeholder="Select Employee" [(ngModel)]="f.s.employee" (ngModelChange)="employeeFilter($event);" [matAutocomplete]="employees" class="font-weight-bold">
+
+                <mat-autocomplete #employees="matAutocomplete" autoActiveFirstOption (optionSelected)="employeeSelect($event)">
+                    <mat-option *ngFor="let t of filteredEmployees" [value]="t">
+                        {{t.employee}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+
+
+            <button mat-icon-button (click)="simsSave()" title="save"><mat-icon>save</mat-icon></button>
+        </mat-card-content>
+    </mat-card>
+
+</div>
